@@ -10,8 +10,7 @@ from util.constants import Constants
 import components
 from events.handler import EventHandler
 
-print(fetchGames())
-sys.exit()
+print(list(map(lambda x : x.name, fetchGames())))
 
 print(f"{Constants.CNSL_DATA}[DATA.JSON]: {data.data}{Constants.CNSL_RESET}")
 
@@ -19,12 +18,10 @@ class Menu:
 	def __init__(self) -> None:
 		pg.init()
 		Constants.FONT = components.Font()
-
-		
   
 		self.eventsHandler:EventHandler = EventHandler(self)
 
-		self.screen = pg.display.set_mode(Constants.RESOLUTION, Constants.DISPLAY_MODE, display=0)
+		self.screen = pg.display.set_mode(Constants.RESOLUTION, Constants.DISPLAY_MODE, display=1)
 		self.clock:pg.time.Clock = pg.time.Clock()
 
 	def run(self) -> None:
@@ -37,11 +34,11 @@ class Menu:
 			self.render()
 			
 			# Stop the cursor from rendering
-		# pg.mouse.set_visible(False)
-   
+			# pg.mouse.set_visible(False)
+
 			pg.display.update()
 			self.clock.tick(Constants.FPS)
-   
+
 	def render(self):
 		# Clear the screen
 		self.screen.fill("black")
