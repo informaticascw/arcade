@@ -20,13 +20,13 @@ class GUIComponent:
             if isinstance(self, components.gui.Text):
                 img = Constants.FONT.render(self.value, True, self.shadow.color, self.size)
                 rect = pg.Rect(*self.rect)
-                rect[0] += self.shadow.pos[0]
-                rect[1] += self.shadow.pos[1]
+                rect[0] += self.shadow.offset[0]
+                rect[1] += self.shadow.offset[1]
                 surface.blit(img, rect)
             else:
                 rect = pg.Rect(*self.rect)
-                rect[0] += self.shadow.pos[0]
-                rect[1] += self.shadow.pos[1]
+                rect[0] += self.shadow.offset[0]
+                rect[1] += self.shadow.offset[1]
                 pg.draw.rect(surface, self.shadow.color, rect, border_radius=borderRadius)
 
         if self.outline:
