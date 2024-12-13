@@ -46,10 +46,6 @@ class Menu:
 		# Clear the screen
 		self.screen.fill("black")
 
-		# Render page background
-		if isinstance(self.page.background, pg.Surface): self.screen.blit(self.page.background, (0, 0))
-		else: self.screen.fill(self.page.background)
-
 		# Render the page onto the screen
 		self.page.render(self.screen)
 

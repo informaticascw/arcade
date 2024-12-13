@@ -12,14 +12,18 @@ class Text(GUIComponent):
 		self.color = color
 		self.size = size
 		self.pos = pos
+		self.rect = None
 		self.outline = outline
 		self.shadow = shadow
 
 	def draw(self, surface:pg.Surface) -> None:
-		img = Constants.FONT.render(self.value, True, self.color, 96)
-		img.get_rect()[0], img.get_rect()[1] = self.pos
-		surface.blit(img, img.get_rect())
+		img = Constants.FONT.render(self.value, True, self.color, self.size)
+		self.rect = img.get_rect()
+		self.rect[0], self.rect[1] = self.pos
+		super().draw(surface)
+		surface.blit(img, self.rect)
 
+    # Setters -------------------------------------------------------------- #
 	def setFont(self, font:components.Font) -> None:
 		self.font = font
   
@@ -28,7 +32,7 @@ class Text(GUIComponent):
   
 	def setPos(self, pos:Iterable) -> None:
 		self.pos = pos
-  
+
 	def setOutline(self, outline:components.effects.Outline) -> None:
 		self.outline = outline
   

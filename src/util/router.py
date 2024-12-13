@@ -6,7 +6,7 @@ from menu.components.Router import Router
 def getPages (path) -> Iterable:
     path = "\\".join(sys.path[0].split("\\")) + path
     sys.path.append(path)
-
+    
     files = glob.glob(path + "/*.py")
     res = dict()
     

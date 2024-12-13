@@ -1,4 +1,5 @@
 import pygame as pg
+import components.gui.Image as Image
 
 from collections.abc import Iterable
 
@@ -40,8 +41,14 @@ class Page:
 		Args:
 			surface (pg.Surface): Surface to render the page onto
 		"""
+
+		if isinstance(self.background, pg.Surface): surface.blit(self.background, (0, 0))
+		elif isinstance(self.background, Image): self.background.draw(surface)
+		else: surface.fill(self.background)
+  
 		componentTypes = set(self.components.__dict__)
 		for type in componentTypes:
 			if len(self.components.__dict__.get(type)) > 0:
 				for component in self.components.__dict__.get(type):
+					component.update()
 					component.draw(surface)

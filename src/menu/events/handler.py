@@ -3,6 +3,7 @@ import pygame as pg
 from util.data import data
 from util.constants import Constants
 from util.router import router
+from util.data import data
 
 class EventHandler():
     def __init__(self, game):
@@ -22,24 +23,8 @@ class EventHandler():
  
     def eventKeydown(self, event) -> None:
         if event.key == pg.K_ESCAPE:
+            data.save()
             pg.quit()
-
-        if event.key == pg.K_F11:
-            pg.display.toggle_fullscreen()
-            data.data["displayMode"] = 1 if pg.display.is_fullscreen() else 0
-
-        if event.key == pg.K_UP:
-            index = Constants.SUPPORTED_RESOLUTIONS.index(tuple(data.data["resolution"]))
-            index += 1
-            if index == len(Constants.SUPPORTED_RESOLUTIONS): index = 0
-            data.data["resolution"] = Constants.SUPPORTED_RESOLUTIONS[index]
-        if event.key == pg.K_DOWN:
-            index = Constants.SUPPORTED_RESOLUTIONS.index(tuple(data.data["resolution"]))
-            data.data["resolution"] = Constants.SUPPORTED_RESOLUTIONS[index - 1]
-
-        if event.key == pg.K_f:
-            if self.game.page == router.pages["settings"]: router.redirect("main")
-            if self.game.page == router.pages["main"]: router.redirect("settings")
 
     def eventMouseButton(self, event) -> None:
         for button in self.game.page.components.buttons:

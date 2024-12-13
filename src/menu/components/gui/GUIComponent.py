@@ -1,30 +1,36 @@
 import pygame as pg
 from collections.abc import Iterable
-
+import components
+from util.constants import Constants
+import components.effects
 class GUIComponent:
-    """Base class for all gui components, default
+    """Base class for all gui components.
     """
     
-    def __init__(self, rect:pg.Rect, value:str, background:pg.Rect|pg.Surface, color:pg.Color) -> None: 
+    def __init__(self, rect:pg.Rect, shadow:components.effects.Shadow=None, outline:components.effects.Outline=None) -> None: 
         self.rect = rect
-        self.value = value
-        self.background = background
-        self.color = color
         self.transition = False
+        self.shadow = shadow
+        self.outline = outline
 
-    def draw(self, screen) -> None:
-        pg.draw.rect(screen, self.background, self.rect)
-        for textArea in self.textAreas:
-            textArea.render(self.value, )
-    
-    def animate(self) -> None:
+    def draw(self, surface:pg.Surface) -> None:
+        if not self.shadow is None:
+            # For text render the font image rather than the rect
+            if isinstance(self, components.gui.Text):
+                img = Constants.FONT.render(self.value, True, self.shadow.color, self.size)
+                rect = pg.Rect(*self.rect)
+                rect[0] += self.shadow.pos[0]
+                rect[1] += self.shadow.pos[1]
+                surface.blit(img, rect)
+            else:
+                rect = pg.Rect(*self.rect)
+                rect[0] += self.shadow.pos[0]
+                rect[1] += self.shadow.pos[1]
+                borderRadius = self.__dict__.get("borderRadius") if not self.__dict__.get("borderRadius") is None else -1
+                pg.draw.rect(surface, self.shadow.color, rect, border_radius=borderRadius)
+        
+    def update(self) -> None:
         pass
-    
-    def update(self, event) -> None:
-        pass
-            
-    def setValue(self, value:str) -> None:
-        self.value = value
         
     def setBackground(self, background:pg.Rect|pg.Surface):
         self.background = background
@@ -32,12 +38,9 @@ class GUIComponent:
             if self.rect is None:
                 self.rect = self.background.get_rect()
             else: _, _, self.rect[2], self.rect[3] = self.background.get_rect()
-    
-    def setColor(self, color:pg.Color) -> None:
-        self.color = color
         
     def translate(self, pos:Iterable, transitionSpeed:int) -> None:
-        """Translate the position of gui component
+        """Translate the position of gui component.
 
         Args:
             pos (Iterable): New component position.
