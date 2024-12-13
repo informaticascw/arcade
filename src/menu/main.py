@@ -4,10 +4,14 @@ sys.path.append("\\".join(sys.path[0].split("\\")[:-1]))
 
 from util.data import data
 from util.router import router
+from util.games import fetchGames
 from util.constants import Constants
 
 import components
 from events.handler import EventHandler
+
+print(fetchGames())
+sys.exit()
 
 print(f"{Constants.CNSL_DATA}[DATA.JSON]: {data.data}{Constants.CNSL_RESET}")
 
@@ -16,9 +20,11 @@ class Menu:
 		pg.init()
 		Constants.FONT = components.Font()
 
+		
+  
 		self.eventsHandler:EventHandler = EventHandler(self)
 
-		self.screen = pg.display.set_mode(Constants.RESOLUTION, Constants.DISPLAY_MODE, display=1)
+		self.screen = pg.display.set_mode(Constants.RESOLUTION, Constants.DISPLAY_MODE, display=0)
 		self.clock:pg.time.Clock = pg.time.Clock()
 
 	def run(self) -> None:

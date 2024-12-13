@@ -8,6 +8,8 @@ class Constants:
     FONT = None
     DEFAULT_FONT_SIZE = 16
     
+    GAMES_PATH = "./src/games"
+    
     # Console ansii escape code color values
     CNSL_ERROR:str = "\x1b[1;31m"
     CNSL_SUCCESS:str = "\x1b[1;32m"
