@@ -12,16 +12,23 @@ class Text(GUIComponent):
 		self.color = color
 		self.size = size
 		self.pos = pos
-		self.rect = None
 		self.outline = outline
 		self.shadow = shadow
+  
+		self.img = None
+		self.rect = None
 
 	def draw(self, surface:pg.Surface) -> None:
-		img = Constants.FONT.render(self.value, True, self.color, self.size)
-		self.rect = img.get_rect()
+		self.createImg()
 		self.rect[0], self.rect[1] = self.pos
 		super().draw(surface)
-		surface.blit(img, self.rect)
+		surface.blit(self.img, self.rect)
+
+	def createImg(self, center=None) -> pg.Surface:
+		self.img = Constants.FONT.render(self.value, True, self.color, self.size)
+		if center: self.rect = self.img.get_rect(center=center)
+		else: self.rect = self.img.get_rect()
+		return self.img
 
     # Setters -------------------------------------------------------------- #
 	def setFont(self, font:components.Font) -> None:

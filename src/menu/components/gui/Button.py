@@ -4,9 +4,10 @@ from components.gui.GUIComponent import GUIComponent
 from collections.abc import Iterable, Callable
 from util.constants import Constants
 import components.effects
+import components.gui
 
-class Button(GUIComponent):
-    def __init__(self, rect:pg.Rect=None, borderRadius:int=-1, value:str=None, background:pg.Color|pg.Surface=Constants.COLOR_PRIMARY, color:pg.Color=Constants.COLOR_DARK, action:Callable=None, args:list=[], hover:pg.Color|Callable=Constants.COLOR_SECONDARY, shadow:components.effects.Shadow=None, outline:components.effects.Outline=None) -> None:
+class Button(GUIComponent): # Text can be either components.gui.Text class and pos will be relative to button rect, or string.
+    def __init__(self, rect:pg.Rect=None, borderRadius:int=-1, text:object=None, background:pg.Color|pg.Surface=Constants.COLOR_PRIMARY, color:pg.Color=Constants.COLOR_DARK, action:Callable=None, args:list=[], hover:pg.Color|Callable=Constants.COLOR_SECONDARY, shadow:components.effects.Shadow=None, outline:components.effects.Outline=None) -> None:
         """Generate a button class
 
         Args:
@@ -19,7 +20,7 @@ class Button(GUIComponent):
             hover (Color|Callable): The button to change to when hovered
         """
         super().__init__(rect, None, None)
-        self.value = value
+        self.text = text
         self.background = background
         self.color = color
         self.borderRadius = borderRadius
@@ -30,6 +31,14 @@ class Button(GUIComponent):
         
         self.shadow = shadow
         self.outline = outline
+        
+        if isinstance(self.text, components.gui.Text):
+            if self.text.pos == "centered":
+                self.text.createImg(center=self.rect.center)
+                self.text.pos = (self.text.rect[0], self.text.rect[1])
+            else:
+                self.text.pos[0] += self.rect[0]
+                self.text.pos[1] += self.rect[1]
 
     def draw(self, surface:pg.Surface) -> None:
         if (self.background is None or isinstance(self.background, pg.Color)) and self.rect is None:
@@ -45,10 +54,13 @@ class Button(GUIComponent):
             super().draw(surface)
             pg.draw.rect(surface, color, self.rect, border_radius=self.borderRadius)
 
-            if not self.value is None:
-                fontImg = Constants.FONT.render(self.value, False, self.color, 24)
-                fontRect = fontImg.get_rect(center=self.rect.center)
-                surface.blit(fontImg, fontRect)
+            if self.text:
+                if isinstance(self.text, components.gui.Text):
+                    self.text.draw(surface)
+                else:
+                    fontImg = Constants.FONT.render(self.text, False, self.color, 24)
+                    fontRect = fontImg.get_rect(center=self.rect.center)
+                    surface.blit(fontImg, fontRect)
             
     def update(self):
         mx, my = pg.mouse.get_pos()
@@ -66,8 +78,8 @@ class Button(GUIComponent):
     def setBorderRadius(self, borderRadius:int):
         self.borderRadius = borderRadius
 
-    def setValue(self, value:str):
-        self.value = value
+    def setText(self, text:str):
+        self.text = text
 
     def setAction(self, action:Callable, args:list=Iterable[any]):
         self.action = action
