@@ -8,3 +8,8 @@ It is inspired on the arcade running javascript games at [https://github.com/emm
 - code alleen aan de main-branche toevoegen als hij runt en leesbaar is
 - altijd documentatie (readme) aanpassen tegelijk met je code
 - maak incidenten aan en assign die aan jezelf, zodat iedereen ziet waaraan je werkt
+
+# files
+`keymapping.*`<br>
+Mapping of joysticks and buttons on the arcade console to keys on the keyboard emulator attached to the raspberry pi.
+
