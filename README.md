@@ -16,3 +16,6 @@ Mapping of joysticks and buttons on the arcade console to keys on the keyboard e
 `install-arcade.sh*`<br>
 Installs/updates the arcade files onto the pi 5
 
+# startup guide
+
+To initialize the startup files, you'll have to enter terminal and type `nano ~/.config/labwc/init` then enter `lxterminal -e /arcade-install.sh`. If you've done this press Ctrl + O, Enter, Ctrl + X to to save and quit. You can now reboot the pi 5.
