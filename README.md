@@ -18,4 +18,4 @@ Installs/updates the arcade files onto the pi 5
 
 # startup guide
 
-To initialize the startup files, you'll have to enter terminal and type `nano ~/.config/labwc/init` then enter `lxterminal -e /arcade-install.sh`. If you've done this press Ctrl + O, Enter, Ctrl + X to to save and quit. You can now reboot the pi 5.
+To initialize the startup files, you'll have to enter terminal and type `mv Downloads/arcade-install ~` then `nano ~/.config/labwc/init` then enter `lxterminal -e /arcade-install.sh`. If you've done this press Ctrl + O, Enter, Ctrl + X to to save and quit. You can now reboot the pi 5.
