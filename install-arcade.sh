@@ -17,3 +17,4 @@ do
 done
 echo "Internet Connected!"
 #The rest of the code
+sleep(5)
