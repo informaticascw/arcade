@@ -13,3 +13,6 @@ It is inspired on the arcade running javascript games at [https://github.com/emm
 `keymapping.*`<br>
 Mapping of joysticks and buttons on the arcade console to keys on the keyboard emulator attached to the raspberry pi.
 
+`install-arcade.sh*`<br>
+Installs/updates the arcade files onto the pi 5
+
