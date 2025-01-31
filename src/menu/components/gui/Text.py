@@ -20,7 +20,13 @@ class Text(GUIComponent):
 
 	def draw(self, surface:pg.Surface) -> None:
 		self.createImg()
-		self.rect[0], self.rect[1] = self.pos
+  
+		_, _, w, h = self.rect
+		if self.pos[0] == "center": self.rect[0] = Constants.RESOLUTION[0] / 2 - w / 2
+		else: self.rect[0] = self.pos[0]
+		if self.pos[1] == "center": self.rect[1] = Constants.RESOLUTION[1] / 2 - h / 2
+		else: self.rect[1] = self.pos[1]
+  
 		super().draw(surface)
 		surface.blit(self.img, self.rect)
 

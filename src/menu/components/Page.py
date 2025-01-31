@@ -1,7 +1,7 @@
 import pygame as pg
 import components.gui.Image as Image
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Callable
 
 class ComponentCollection:
 	def __init__(self, buttons:Iterable=[], inputs:Iterable=[], switches:Iterable=[], images:Iterable=[], text:Iterable=[]):
@@ -34,7 +34,7 @@ class Page:
 		self.background = background
 		
 		self.components = components
-  
+
 	def render(self, surface:pg.Surface) -> None:
 		"""Render the page onto a pygame surface
 
