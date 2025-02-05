@@ -19,8 +19,10 @@ Installs/updates the arcade files onto the pi 5
 # startup guide
 
 Create a file named autostart using: `sudo nano ~/.config/autostart/install-arcade.desktop`. Now type:
-`[Desktop Entry]
+```
+[Desktop Entry]
 Type=Application
 Name=Start Arcade
-Exec=lxterminal -e "bash /home/arcade/install-arcade.sh"
-Terminal=true`
+Exec=lxterminal -e "bash ~/install-arcade.sh"
+Terminal=true
+```
