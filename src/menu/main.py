@@ -22,7 +22,7 @@ class Menu:
 	def __init__(self) -> None:
 		self.eventsHandler:EventHandler = EventHandler(self)
 
-		self.screen = pg.display.set_mode(Constants.RESOLUTION, Constants.DISPLAY_MODE, display=1)
+		self.screen = pg.display.set_mode(Constants.RESOLUTION, Constants.DISPLAY_MODE)
 		self.clock:pg.time.Clock = pg.time.Clock()
 
 	def run(self) -> None:
