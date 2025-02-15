@@ -1,4 +1,2 @@
 import os
-
-print(os.system("dir"))
-
+print(os.name)

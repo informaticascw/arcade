@@ -1,4 +1,5 @@
 import pygame as pg
+import os
 
 class Constants:
     RESOLUTION:tuple = (1920, 1080)
@@ -10,7 +11,8 @@ class Constants:
     FONT = None
     DEFAULT_FONT_SIZE = 16
     
-    GAMES_PATH = "./src/games"
+    # GAMES_PATH = "./src/games"
+    GAMES_PATH = os.path.join("src", "pages")
     
     # Console ansii escape code color values
     CNSL_ERROR:str = "\x1b[1;31m"

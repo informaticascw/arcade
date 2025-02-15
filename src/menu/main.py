@@ -1,6 +1,14 @@
 import pygame as pg
-import sys
-sys.path.append("\\".join(sys.path[0].split("\\")[:-1]))
+import sys, os
+
+# Linux and Windows compatability
+if os.name == "posix": # LINUX
+    sys.path.append(f"{os.getcwd()}/src")
+if os.name == "nt":
+	sys.path.append(f"{os.getcwd()}\\src")
+
+
+sys.path.append(f"{os.getcwd()}\\src")
 
 import components
 from util.constants import Constants

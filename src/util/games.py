@@ -11,10 +11,11 @@ class Game():
 		self.entrypoint = pathToGame
 
 def fetchGames(path=Constants.GAMES_PATH) -> list:
-	searchPath = "\\".join(sys.path[0].split("\\")[:-2]) + path
-	sys.path.append(searchPath)
-	
-	files = glob.glob(f"{searchPath}/*")
+	files = glob.glob(os.path.join(path, "/", "*"))
+ 
+	print(files)
+
+	pass
 	res = []
 	
 	for index, gamePath in enumerate(files):
@@ -48,4 +49,4 @@ def start_game(path):
 		result = subprocess.run(["python", path], shell=True, capture_output=True, text=True, check=True)
 		print(result.stderr, result.stdout)
 	except:
-		print(f"{Constants.CNSL_ERROR} [GAME UTIL] Game failed to launch")
+		print(f"{Constants.CNSL_ERROR}[GAME UTIL] Game failed to launch")
