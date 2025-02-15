@@ -1,4 +1,4 @@
-import sys, glob, json
+import sys, glob, json, os, subprocess
 from util.constants import Constants
 from importlib.machinery import SourceFileLoader
 
@@ -25,14 +25,27 @@ def fetchGames(path=Constants.GAMES_PATH) -> list:
 		with open(f"{path}/{gameDir}/metadata.json", "r") as file:
 			metadata = json.load(file)
 		
-		instructions = SourceFileLoader(metadata['instructionspage'][:-3], f"{path}/{gameDir}/{metadata['instructionspage']}").load_module()
-		
-		# game = SourceFileLoader(metadata['entrypoint'][:-3], f"{path}/{gameDir}/{metadata['entrypoint']}").load_module()
+		instructions = None
+
+		try:
+			file = SourceFileLoader(metadata['instructionspage'][:-3], f"{path}/{gameDir}/{metadata['instructionspage']}").load_module()
+			instructions = file.page
+		except:
+			pass
+
 		pathToGame = f"{path}/{gameDir}/{metadata['entrypoint']}"
 		
-		res.append(Game(index, metadata['name'], metadata['author'], instructions.page, pathToGame ))
+		res.append(Game(index, metadata['name'], metadata['author'], instructions, pathToGame ))
 	
 	return res
 
 def start_game(path):
-    SourceFileLoader("main", path).load_module()
+	print(Constants.CNSL_DATA, "[GAME PATH] ", path, Constants.CNSL_RESET)
+	
+	# os.system(f"python {path}") THIS WORKS AS WELL BUT NOT SURE IF IT WORKS SAME ON ALL OS
+	
+	try:
+		result = subprocess.run(["python", path], shell=True, capture_output=True, text=True, check=True)
+		print(result.stderr, result.stdout)
+	except:
+		print(f"{Constants.CNSL_ERROR} [GAME UTIL] Game failed to launch")

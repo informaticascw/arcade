@@ -15,6 +15,7 @@ class EventHandler():
             match event.type:
                 case pg.QUIT:
                     data.save()
+                    self.game.running = False
                     sys.exit()
                 case pg.KEYDOWN:
                     self.eventKeydown(event)

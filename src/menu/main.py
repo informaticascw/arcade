@@ -25,8 +25,10 @@ class Menu:
 		self.screen = pg.display.set_mode(Constants.RESOLUTION, Constants.DISPLAY_MODE)
 		self.clock:pg.time.Clock = pg.time.Clock()
 
+		self.running = True
+
 	def run(self) -> None:
-		while True:
+		while self.running:
 			self.page:components.Page = router.current
 
 			# Handle events

@@ -1,2 +1,4 @@
-for i in range(4):
-    print(i % 2)
+import os
+
+print(os.system("dir"))
+
