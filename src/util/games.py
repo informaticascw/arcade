@@ -3,41 +3,36 @@ from util.constants import Constants
 from importlib.machinery import SourceFileLoader
 
 class Game():
-	def __init__(self ,id, name, author, instructionsPage, pathToGame):
+	def __init__(self ,id, name, authors, instructionsPage, pathToGame):
 		self.id = id
 		self.name = name
-		self.author = author
+		self.authors = authors
 		self.instructionsPage = instructionsPage
 		self.entrypoint = pathToGame
 
 def fetchGames(path=Constants.GAMES_PATH) -> list:
-	files = glob.glob(os.path.join(path, "/", "*"))
- 
-	print(files)
-
-	pass
 	res = []
-	
-	for index, gamePath in enumerate(files):
-		gameDir = gamePath.split("\\")[-1]
-		
+	for index, dir in enumerate(os.listdir(path)):
+		gameDir = os.path.join(path, dir)
+  
+		# Get the metadata
 		metadata = None
-		
-		with open(f"{path}/{gameDir}/metadata.json", "r") as file:
-			metadata = json.load(file)
-		
-		instructions = None
-
 		try:
-			file = SourceFileLoader(metadata['instructionspage'][:-3], f"{path}/{gameDir}/{metadata['instructionspage']}").load_module()
+			with open(os.path.join(gameDir, "metadata.json"), "r") as f:
+				metadata = json.load(f)
+		except:
+			raise Exception(f"{gameDir} does not contain a metadata.json file, please add one or remove the game.")
+
+		# Get the instruction if there are
+		instructions = None
+		try:
+			file = SourceFileLoader(metadata["instructionspage"].replace(".py", ""), os.path.join(gameDir, metadata["instructionspage"])).load_module()
 			instructions = file.page
 		except:
 			pass
 
-		pathToGame = f"{path}/{gameDir}/{metadata['entrypoint']}"
-		
-		res.append(Game(index, metadata['name'], metadata['author'], instructions, pathToGame ))
-	
+		res.append(Game(index, metadata['name'], metadata['authors'], instructions, os.path.join(gameDir, metadata["entrypoint"])))
+
 	return res
 
 def start_game(path):

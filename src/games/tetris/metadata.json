@@ -1,6 +1,6 @@
 {
 	"name": "Tetris",
-	"author": "Enrico",
+	"authors": ["Enrico"],
 	"coverimage": "./assets/example.jpg",
 	"entrypoint": "main.py",
 	"instructionspage": "instructions.py"

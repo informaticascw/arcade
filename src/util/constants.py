@@ -12,7 +12,7 @@ class Constants:
     DEFAULT_FONT_SIZE = 16
     
     # GAMES_PATH = "./src/games"
-    GAMES_PATH = os.path.join("src", "pages")
+    GAMES_PATH = os.path.join("src", "games")
     
     # Console ansii escape code color values
     CNSL_ERROR:str = "\x1b[1;31m"
