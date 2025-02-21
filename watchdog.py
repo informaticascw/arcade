@@ -1,2 +1,2 @@
 import subprocess, pynput
-subprocess.call("bash test.sh")
+subprocess.call("./test.sh")
