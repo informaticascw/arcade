@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ~/Arcade/2425-arcade-main
+
 KEYBOARD_DEVICE="/dev/input/event5"
 PYTHON_SCRIPT="src/menu/main.py"
 
