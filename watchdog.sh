@@ -20,7 +20,7 @@ PYTHON_SCRIPT="src/menu/main.py"
 python "$PYTHON_SCRIPT" &
 
 close_all_games() {
-    for pid in $(pgrep -f "python3"); do
+    for pid in $(pgrep -f "python"); do
         if ! ps -p "$pid" -o cmd= | grep -q "$PYTHON_SCRIPT"; then
             kill "$pid"
         fi
