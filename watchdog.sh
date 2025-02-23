@@ -42,4 +42,7 @@ sudo evtest "$KEYBOARD_DEVICE" | while read line; do
 	if echo "$line" | grep -q "KEY_1" && echo "$line" | grep -q "value 1"; then
 		restart_menu
 	fi
+ 	if echo "$line" | grep -q "KEY_2" && echo "$line" | grep -q "value 1"; then
+		close_all_games
+	fi
 done
