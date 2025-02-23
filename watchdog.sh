@@ -2,7 +2,19 @@
 
 cd ~/Arcade/2425-arcade-main
 
-KEYBOARD_DEVICE="/dev/input/event5"
+find_keyboard_device() {
+	grep -E -A 5 "Keyboard" /proc/bus/input/devices | grep -oE "event[0-9]+" | head -n 1
+}
+
+KEYBOARD_DEVICE="/dev/input/$(find_keyboard_device)"
+
+echo "keyboard: $KEYBOARD_DEVICE"
+
+if [ -z "$KEYBOARD_DEVICE" ]; then
+	echo "Couldn't find an attached keyboard device"
+ 	exit 1
+fi
+
 PYTHON_SCRIPT="src/menu/main.py"
 
 python "$PYTHON_SCRIPT" &
