@@ -34,7 +34,7 @@ def fetchGames(path=Constants.GAMES_PATH) -> list:
 		res.append(Game(index, metadata['name'], metadata['authors'], instructions, os.path.join(gameDir, metadata["entrypoint"])))
 
 	return res
- 
+
 def start_game(path):
 	print(Constants.CNSL_DATA, "[GAME PATH] ", path, Constants.CNSL_RESET)
 	
@@ -43,7 +43,7 @@ def start_game(path):
 	print(f"cd {os.path.dirname(path)} && python {os.path.basename(path)}",)
  
 	try:
-		result = subprocess.run(f"cd {os.path.dirname(path)} && python {os.path.basename(path)}", shell=True)
+		result = subprocess.run(f"cd {os.path.dirname(path)} && python {os.path.basename(path)}", shell=True, capture_output=True)
 		print(result.stderr, result.stdout)
 	except:
 		print(f"{Constants.CNSL_ERROR}[GAME UTIL] Game failed to launch")
