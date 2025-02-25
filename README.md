@@ -20,9 +20,7 @@ Installs/updates the arcade files onto the pi 5
 
 # startup guide
 
-To initialize the startup files, you'll have to download the file called `arcade-install.sh` enter terminal and make a directory called "Arcade". This is done by entering `mkdir Arcade`. Now type `mv Downloads/install-arcade.sh ~/Arcade`. To make sure the file is executable type `chmod +x Arcade/install-arcade.sh`. To make it run on startup, enter `nano ~/.config/labwc/init` and put `lxterminal -e ~/Arcade/install-arcade.sh` in the file. Once you've done this press Ctrl + O, Enter, Ctrl + X to save and quit. You can now reboot the pi 5 and it should configure itself. (WIP)
-
-Create a file named autostart using: `sudo nano ~/.config/autostart/install-arcade.desktop`. Now type:
+To initialize the startup files, you'll have to download the file called `install-arcade.sh` enter terminal and make a directory called "Arcade". This is done by entering `mkdir Arcade`. Now type `mv Downloads/install-arcade.sh ~/Arcade`. To make sure the file is executable type `chmod +x ~/Arcade/install-arcade.sh`. To make it run on startup, create a file named `install-arcade.desktop` in the autostart directory using: `sudo nano ~/.config/autostart/install-arcade.desktop`. Now type:
 
 ```
 [Desktop Entry]

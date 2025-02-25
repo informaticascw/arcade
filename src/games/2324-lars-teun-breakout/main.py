@@ -105,7 +105,7 @@ paddle_spritesheet_y = [594, 528, 462, 726, 792, 858, 660, 780, 780]
 
 pygame.init()
 font = pygame.font.Font("Text_font.ttf", 32)
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN | pygame.SCALED)
 fps_clock = pygame.time.Clock()
 
 #
