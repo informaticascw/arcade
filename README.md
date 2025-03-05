@@ -26,7 +26,7 @@ To initialize the startup files, you'll have to download the file called `instal
 [Desktop Entry]
 Type=Application
 Name=Start Arcade
-Exec=lxterminal -e "bash ~/install-arcade.sh"
+Exec=lxterminal -e "bash ~/Arcade/install-arcade.sh"
 Terminal=true
 ```
 
