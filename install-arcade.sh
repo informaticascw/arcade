@@ -25,7 +25,7 @@ rm -rf ~/Arcade/2425-arcade-main
 unzip -o ~/main.zip  -d ~/Arcade/
 rm -rf ~/main.zip
 bash ~/Arcade/2425-arcade-main/watchdog.sh
-#python ~/Arcade/2425-arcade-main/src/games/flappybird/main.py
+# python ~/Arcade/2425-arcade-main/src/games/flappybird/main.py
 
 
 read -p "Press [Enter] to close..."

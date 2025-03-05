@@ -30,6 +30,9 @@ class GUIComponent:
                 pg.draw.rect(surface, self.shadow.color, rect, border_radius=borderRadius)
 
         if self.outline:
+            if isinstance(self, components.gui.Button):
+                if not self.hoverStatus: return
+                
             if isinstance(self, components.gui.Text):
                 for i in range(4):
                     rect = pg.Rect(*self.rect)

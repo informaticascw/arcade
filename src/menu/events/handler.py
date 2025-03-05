@@ -1,13 +1,13 @@
-import sys
 import pygame as pg
+import sys
+
 from util.data import data
 from util.constants import Constants
-from util.router import router
 from util.data import data
 
 class EventHandler():
-    def __init__(self, game):
-        self.game = game
+    def __init__(self, menu):
+        self.menu = menu
         
     def handleEvent(self):
         events = pg.event.get()
@@ -15,21 +15,27 @@ class EventHandler():
             match event.type:
                 case pg.QUIT:
                     data.save()
-                    self.game.running = False
+                    self.menu.running = False
                     sys.exit()
                 case pg.KEYDOWN:
                     self.eventKeydown(event)
-                case pg.MOUSEBUTTONDOWN:
-                    self.eventMouseButton(event)
  
     def eventKeydown(self, event) -> None:
-        if event.key == pg.K_ESCAPE:
-            data.save()
-            pg.quit()
-
-    def eventMouseButton(self, event) -> None:
-        for button in self.game.page.components.buttons:
-            if button.rect.collidepoint(event.pos):
-                if button.action == "redirect":
-                    router.redirect(*button.args)
-                else: button.action(*button.args)
+        match event.key:
+            case pg.K_ESCAPE:
+                data.save()
+                pg.quit()
+            case pg.K_w:
+                print("W")
+                self.menu.selection[1] -= 1
+            case pg.K_a:
+                print("A")
+                self.menu.selection[0] -= 1
+            case pg.K_s:
+                print("S")
+                self.menu.selection[1] += 1
+            case pg.K_d:
+                print("D")
+                self.menu.selection[0] += 1
+        
+        

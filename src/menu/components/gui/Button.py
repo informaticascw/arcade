@@ -26,7 +26,6 @@ class Button(GUIComponent): # Text can be either components.gui.Text class and p
         self.borderRadius = borderRadius
         self.action = action
         self.args = args
-        self.hover = hover
         self.hoverStatus = False
         
         self.shadow = shadow
@@ -47,12 +46,8 @@ class Button(GUIComponent): # Text can be either components.gui.Text class and p
         if isinstance(self.background, pg.Surface):
             surface.blit(self.background, self.rect)
         else:
-            color = self.background
-            if self.hoverStatus and not self.hover is None and not isinstance(self.hover, Callable):
-                color = self.hover
-
             super().draw(surface)
-            pg.draw.rect(surface, color, self.rect, border_radius=self.borderRadius)
+            pg.draw.rect(surface, self.background, self.rect, border_radius=self.borderRadius)
 
             if self.text:
                 if isinstance(self.text, components.gui.Text):
@@ -61,10 +56,6 @@ class Button(GUIComponent): # Text can be either components.gui.Text class and p
                     fontImg = Constants.FONT.render(self.text, False, self.color, 24)
                     fontRect = fontImg.get_rect(center=self.rect.center)
                     surface.blit(fontImg, fontRect)
-            
-    def update(self):
-        mx, my = pg.mouse.get_pos()
-        self.hoverStatus = self.rect.collidepoint((mx, my))
     
     def run(self):
         self.action(*self.args)

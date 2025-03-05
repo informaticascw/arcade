@@ -4,14 +4,13 @@ import os
 class Constants:
     RESOLUTION:tuple = (1920, 1080)
     FPS:int = 100
-    DISPLAY_MODE:int = pg.FULLSCREEN
+    # DISPLAY_MODE:int = pg.FULLSCREEN
     # DISPLAY_MODE:int = pg.NOFRAME
-    # DISPLAY_MODE:int = 0
+    DISPLAY_MODE:int = 0
     
     FONT = None
     DEFAULT_FONT_SIZE = 16
     
-    # GAMES_PATH = "./src/games"
     GAMES_PATH = os.path.join("src", "games")
     
     # Console ansii escape code color values
