@@ -24,7 +24,7 @@ class Menu:
 		self.running = True
   
 		self.slideIndex = 0
-		self.selection = [2, 0]
+		self.selection = [0, 0]
   
 		self.games = fetchGames()
 
@@ -46,14 +46,14 @@ class Menu:
 			self.render()
 			
 			# Stop the cursor from rendering
-			# pg.mouse.set_visible(False)
+			pg.mouse.set_visible(False)
 
 			pg.display.update()
 			self.clock.tick(Constants.FPS)
 
 	def render(self):
 		# Clear the screen
-		self.screen.fill("black")
+		self.screen.fill((0, 0, 0))
 		self.screen.blit(self.background, (0, 0))
 		self.header.draw(self.screen)
 

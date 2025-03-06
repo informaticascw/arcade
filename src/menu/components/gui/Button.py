@@ -23,6 +23,7 @@ class Button(GUIComponent): # Text can be either components.gui.Text class and p
         self.text = text
         self.background = background
         self.color = color
+        self.originalColor = color
         self.borderRadius = borderRadius
         self.action = action
         self.args = args
@@ -50,6 +51,9 @@ class Button(GUIComponent): # Text can be either components.gui.Text class and p
             pg.draw.rect(surface, self.background, self.rect, border_radius=self.borderRadius)
 
             if self.text:
+                if self.hoverStatus:
+                    self.color = Constants.COLOR_PRIMARY
+                else: self.color = self.originalColor
                 if isinstance(self.text, components.gui.Text):
                     self.text.draw(surface)
                 else:

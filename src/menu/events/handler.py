@@ -27,28 +27,52 @@ class EventHandler():
                     self.eventKeydown(event)
  
     def eventKeydown(self, event) -> None:
+        sel = self.menu.selection
+        slide = self.menu.slides[self.menu.slideIndex]
+        
+        newSelection = list(self.menu.selection)
+        
         match event.key:
             case pg.K_ESCAPE:
+                self.menu.running = False
                 data.save()
                 pg.quit()
             case pg.K_w:
-                print("W")
-                self.menu.selection[1] -= 1
+                newSelection[1] -= 1
             case pg.K_a:
-                print("A")
-                self.menu.selection[0] -= 1
+                newSelection[0] -= 1
             case pg.K_s:
-                print("S")
-                self.menu.selection[1] += 1
+                newSelection[1] += 1
             case pg.K_d:
-                print("D")
-                self.menu.selection[0] += 1
+                newSelection[0] += 1
             case pg.K_q:
-                sel = self.menu.selection
-                slide = self.menu.slides[self.menu.slideIndex]
-
                 index = game_positions.index(sel)
-                print(index, slide.batch[index])
-                if slide.batch[index]:
-                    start_game(slide.batch[index].entrypoint)
+
+                try:
+                    slide.components.buttons[index].run()
+                except:
+                    pass
+                    
         
+        print(newSelection)
+        if newSelection in game_positions:    
+            print(game_positions.index(newSelection), len(slide.batch))
+            if -1 < game_positions.index(newSelection) < len(slide.batch):
+                self.menu.selection = newSelection
+            else:
+                # Selection is out of bounds
+                
+                if len(self.menu.slides) == 1:
+                    return
+                
+                if newSelection[0] > self.menu.selection[0]:
+                    if self.menu.slideIndex + 1 > len(self.menu.slides) - 1:
+                        self.menu.slideIndex = 0
+                    else:
+                        self.slideIndex += 1
+                
+                if newSelection[0] > self.menu.selection[0]:
+                    if self.menu.slideIndex - 1 < 0:
+                        self.menu.slideIndex = len(self.menu.slides)[-1]
+                    else:
+                        self.slideIndex -= 1
