@@ -36,6 +36,8 @@ class Menu:
   
 		self.header = components.gui.Text("STANISLAS ARCADE", Constants.COLOR_PRIMARY, 108, ("center", 100), shadow=components.effects.Shadow((10, -2), Constants.COLOR_SECONDARY))
 		self.background = pg.image.load("assets/menu_background.jpg")
+  
+		print(self.slides)
 
 	def run(self) -> None:
 		while self.running:

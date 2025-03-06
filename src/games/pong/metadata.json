@@ -1,7 +1,7 @@
 {
-	"name": "Flappybird",
+	"name": "Pong",
 	"authors": ["Enrico"],
 	"coverimage": "./assets/example.jpg",
-	"entrypoint": "flappybird.py",
+	"entrypoint": "main.py",
 	"instructionspage": "instructions.py"
 }

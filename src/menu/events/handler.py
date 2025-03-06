@@ -51,28 +51,31 @@ class EventHandler():
                 try:
                     slide.components.buttons[index].run()
                 except:
-                    pass
-                    
-        
-        print(newSelection)
-        if newSelection in game_positions:    
-            print(game_positions.index(newSelection), len(slide.batch))
-            if -1 < game_positions.index(newSelection) < len(slide.batch):
+                    pass # error popup maybe ~
+                
+        if newSelection in game_positions and -1 < game_positions.index(newSelection) < len(slide.batch):
                 self.menu.selection = newSelection
-            else:
-                # Selection is out of bounds
-                
-                if len(self.menu.slides) == 1:
-                    return
-                
-                if newSelection[0] > self.menu.selection[0]:
-                    if self.menu.slideIndex + 1 > len(self.menu.slides) - 1:
-                        self.menu.slideIndex = 0
-                    else:
-                        self.slideIndex += 1
-                
-                if newSelection[0] > self.menu.selection[0]:
-                    if self.menu.slideIndex - 1 < 0:
-                        self.menu.slideIndex = len(self.menu.slides)[-1]
-                    else:
-                        self.slideIndex -= 1
+        else:
+            # Selection is out of bounds
+            print(f"{Constants.CNSL_INFO}[Events] Selection out of bounds{Constants.CNSL_RESET}")
+            if len(self.menu.slides) == 1:
+                return
+
+            if newSelection[0] > self.menu.selection[0]:
+                if self.menu.slideIndex + 1 > len(self.menu.slides) - 1:
+                    self.menu.slideIndex = 0
+                else:
+                    self.menu.slideIndex += 1
+            
+            if newSelection[0] < 0:
+                if self.menu.slideIndex - 1 < 0:
+                    self.menu.slideIndex = len(self.menu.slides) - 1
+                else:
+                    self.menu.slideIndex -= 1
+                    
+            btns = self.menu.slides[self.menu.slideIndex].components.buttons
+            print(btns[:3])
+            possibleBtns = btns[3:] or btns[:3] if self.menu.selection[1] > 0 else btns[:3]
+            index = btns.index(possibleBtns[:1][0])
+            
+            self.menu.selection = game_positions[index]
