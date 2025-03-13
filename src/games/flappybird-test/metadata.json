@@ -1,7 +1,7 @@
 {
-	"name": "Breakout",
+	"name": "Flappybird-test",
 	"authors": ["Enrico"],
 	"coverimage": "./assets/example.jpg",
-	"entrypoint": "main.py",
+	"entrypoint": "flappybird.py",
 	"instructionspage": "instructions.py"
 }

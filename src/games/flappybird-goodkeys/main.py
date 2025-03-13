@@ -61,7 +61,7 @@ class Player:
 		self.checkCollisions()
 		self.updateScore()
 
-		if keys[pg.K_SPACE] and not self.dead: self.vertSpeed = constants.jumpSpeed;
+		if keys[pg.K_z] and not self.dead: self.vertSpeed = constants.jumpSpeed;
 		self.pos.y += self.vertSpeed * dt;
 		if not game.gameOver: self.vertSpeed += constants.fallingConstant * dt;
 		self.rect[1] = self.pos.y
@@ -126,10 +126,10 @@ while running:
 		keys = pg.key.get_pressed()
 		if event.type == pg.QUIT:
 			running = False
-		if event.type == pg.KEYDOWN:
-			if keys[pg.K_ESCAPE]:
+		if event.type == pg.K_s:
+			if keys[pg.K_q]:
 				pg.quit()
-			if keys[pg.K_SPACE] and not game.hasStarted:
+			if keys[pg.K_z] and not game.hasStarted:
 				game.hasStarted = True
 				player.move(keys)
 			if keys[pg.K_r] and game.gameOver:
@@ -147,7 +147,7 @@ while running:
 		game.addPipe(Pipe.random())
 
 	if not game.hasStarted:
-		startTitle = constants.font.render("Press SPACE to start", False, "White")
+		startTitle = constants.font.render("Press [Z] to start", False, "White")
 		screen.blit(startTitle, (resolution[0]/2 - startTitle.get_rect()[2]/2, resolution[1] - startTitle.get_rect()[3] - 20))
 	else:
 		for pipe in game.pipes:

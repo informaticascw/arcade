@@ -1,5 +1,5 @@
 {
-	"name": "Pong",
+	"name": "Flappybird keys",
 	"authors": ["Enrico"],
 	"coverimage": "./assets/example.jpg",
 	"entrypoint": "main.py",

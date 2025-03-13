@@ -1,5 +1,5 @@
 {
-	"name": "Flappybird-1",
+	"name": "Breakout test",
 	"authors": ["Enrico"],
 	"coverimage": "./assets/example.jpg",
 	"entrypoint": "main.py",

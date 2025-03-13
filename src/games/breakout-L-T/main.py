@@ -43,10 +43,10 @@ hearts = 3
 text_color = 'white'
 
 game_status_msg = 'TEUN & LARS'
-continue_msg = 'Press space to begin'
+continue_msg = 'Press [ Z ] to begin, [ P ] for pause.'
 score_msg = ''
 level_msg = ''
-uitleg_msg = 'move left [a]      [d] move right'
+uitleg_msg = '[a]left [d]right, [e][r][x][c] powerups'
 
 fireball = False
 fireball_counter = 0
@@ -424,20 +424,20 @@ while running:
        time.sleep(0.5)
 
     # powerups calling
-    if keys[pygame.K_1]:
+    if keys[pygame.K_e]:
        fireball = True
 
-    if keys[pygame.K_2]:
+    if keys[pygame.K_r]:
        hoekje = ra.randint(40, 140)
        balls_speed_x.append((ma.cos( hoekje * (ma.pi/180) )) * (ball_speed_xy))
        balls_speed_y.append( -abs( ma.sin( hoekje * (ma.pi/180) ) * (ball_speed_xy)) )
        balls_x.append(paddle_x + PADDLE_WIDTH/2)
        balls_y.append(ball_y)
    
-    if keys[pygame.K_3]:
+    if keys[pygame.K_x]:
        guns = True
 
-    if keys[pygame.K_4]:
+    if keys[pygame.K_c]:
        hearts += 1
 
     # stop paddle at end of screen
@@ -686,7 +686,7 @@ while running:
     # check if you won
     if len(bricks_x) == 0 and not pause:
       game_status_msg = "You won!"
-      continue_msg = "Press space for the next level"
+      continue_msg = "Press [Z] for the next level"
       game_status = "won"
       pause = True
       level += 1
@@ -696,17 +696,17 @@ while running:
        hearts -= 1
        if hearts <= 0:
           game_status_msg = "You lost!"
-          continue_msg = "Press space to play again"
+          continue_msg = "Press [Z] to play again"
           pause = True
           game_status = "died"
        else: 
           game_status_msg = "You lost a heart"
-          continue_msg = "Press space to continue"
+          continue_msg = "Press [Z] to continue"
           pause = True
           game_status = "lost"
 
     # continue game
-    if pause == True and keys[pygame.K_SPACE]:
+    if pause == True and keys[pygame.K_z]:
       if game_status == "lost" or game_status == "won":
          set_beginwaardes(False)
       if game_status == "died" or game_status == "start":
