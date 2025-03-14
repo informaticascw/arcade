@@ -22,12 +22,13 @@ do
 	ONLINE=$?
 	if [ $ONLINE -ne 0 ]
 	then
- 		if $TRIES >= 3 then
-   			echo "No internet was found within a minute after starting up"
+ 		if [ $TRIES \> 2 ] 
+		then
+   			echo "No internet was found within 3 attempts"
       			echo "Starting Arcade without internet..."
 	 		break 1
 	 	else
-			echo "Couldn't establish an internet connection."
+			echo "Couldn't establish an internet connection, trying again after 10 seconds"
 			sleep 10
 	fi
 done
