@@ -30,6 +30,7 @@ do
 	 	else
 			echo "Couldn't establish an internet connection, trying again after 10 seconds"
 			sleep 10
+   		fi
 	fi
 done
 if [ $ONLINE -eq 0 ]
