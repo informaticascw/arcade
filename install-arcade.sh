@@ -30,11 +30,12 @@ do
 			sleep 10
 	fi
 done
-if [ $ONLINE -ne 0 ]
+if [ $ONLINE -eq 0 ]
 then
 	echo "Internet Connected!"
 	echo "Downloading and updating Arcade..."
  	start_with_internet
+fi
 
 bash ~/Arcade/2425-arcade-main/watchdog.sh
 
