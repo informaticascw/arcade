@@ -16,12 +16,13 @@ start_with_internet() {
 
 while [ $ONLINE -ne 0 ]
 do
-#Pinging a frequently used google DNS server
+	TRIES=$((TRIES + 1))
+	#Pinging a frequently used google DNS server
 	ping -c 1 8.8.8.8 > /dev/null 2>&1
 	ONLINE=$?
 	if [ $ONLINE -ne 0 ]
 	then
- 		if $TRIES >= 7 then
+ 		if $TRIES >= 3 then
    			echo "No internet was found within a minute after starting up"
       			echo "Starting Arcade without internet..."
 	 		break 1
