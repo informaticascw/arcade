@@ -37,15 +37,15 @@ class EventHandler():
                 self.menu.running = False
                 data.save()
                 pg.quit()
-            case pg.K_w:
+            case pg.K_w | pg.K_i:
                 newSelection[1] -= 1
-            case pg.K_a:
+            case pg.K_a | pg.K_j:
                 newSelection[0] -= 1
-            case pg.K_s:
+            case pg.K_s | pg.K_k:
                 newSelection[1] += 1
-            case pg.K_d:
+            case pg.K_d | pg.K_l:
                 newSelection[0] += 1
-            case pg.K_q:
+            case pg.K_q | pg.K_e | pg.K_r | pg.K_z | pg.K_x | pg.K_c | pg.K_u | pg.K_o | pg.K_p | pg.K_b | pg.K_n | pg.K_m:
                 index = game_positions.index(sel)
 
                 try:
