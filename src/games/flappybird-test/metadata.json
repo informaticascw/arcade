@@ -1,7 +1,0 @@
-{
-	"name": "Flappybird-test",
-	"authors": ["Enrico"],
-	"coverimage": "./assets/example.jpg",
-	"entrypoint": "flappybird.py",
-	"instructionspage": "instructions.py"
-}

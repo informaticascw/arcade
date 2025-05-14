@@ -1,7 +1,0 @@
-{
-	"name": "Tetris-test",
-	"authors": ["Enrico"],
-	"coverimage": "./assets/example.jpg",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
-}
