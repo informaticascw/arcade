@@ -6,22 +6,6 @@ import pygame, time
 from random import randint
 from math import ceil
 
-
-# Background music
-menu_music = "./menu_music.mp3"
-gameplay_music = "./gameplay_music.mp3"
-game_over_music = "./game_over_music.mp3"
-
-def play_menu_music():
-    pygame.mixer.music.load(menu_music)
-    pygame.mixer.music.play(-1)  # Loop oneindig
-    pygame.mixer.music.set_volume(0.5)  # Volume aanpassen
-
-def play_gameplay_music():
-    pygame.mixer.music.load(gameplay_music)
-    pygame.mixer.music.play(-1)
-    pygame.mixer.music.set_volume(0.5)
-
 #
 # definitions 
 #
@@ -116,6 +100,17 @@ def setBreakout(level: int): # resets the breakoutgame by restoring the bricks a
    level_dict = eval('level_' + str(level))
    initialiseBreakoutgameVariables(level) # resets all the variables
    makeBricks(level_dict)
+
+# music
+def play_menu_music():
+    pygame.mixer.music.load(menu_music)
+    pygame.mixer.music.play(-1)  # Loop oneindig
+    pygame.mixer.music.set_volume(0.5)  # Volume aanpassen
+
+def play_gameplay_music():
+    pygame.mixer.music.load(gameplay_music)
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
 
 def update_paddle_speed():
     global paddle_speed
@@ -236,7 +231,6 @@ paddle_width = PADDLE_MEDIUM_WIDTH  # store original paddle width
 #
 # init game
 #
-print("test for music: " + str(pygame.mixer.get_sdl_mixer_version())) # music
 pygame.mixer.pre_init() # music test
 pygame.init()
 try:
@@ -252,6 +246,12 @@ else:
    powerup_sound = pygame.mixer.Sound("./Power.mp3")  # Power-up opgepakt
    level_complete_sound = pygame.mixer.Sound("./Win.mp3")  # Level voltooid
    game_over_sound = pygame.mixer.Sound("./Lose.mp3")  # Game over
+   # Background music
+   menu_music = "./menu_music.mp3"
+   gameplay_music = "./gameplay_music.mp3"
+   game_over_music = "./game_over_music.mp3"
+
+musicIsPlaying = False
 
 font = pygame.font.SysFont('default', 64)                                                          # creates the font for the game
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN | pygame.SCALED) # makes sure the width and heigth of the screen are set to preference and scales them the max while keeping them in the same ratio
@@ -460,8 +460,10 @@ while running: # This creates a loop which keeps getting repeated until the game
       #
 
       drawButtons(homescreen_buttons, selected_button) # draws the buttons on the homescreen
-      if musicIsInitialised: # only execute is music is working
+      if musicIsInitialised and not musicIsPlaying: # only execute if music is working and is not playing already
          play_menu_music()
+         musicIsPlaying = True
+
       
       game_status_msg = "Move with WASD and confirm with Q" # info for the player
 
@@ -475,6 +477,9 @@ while running: # This creates a loop which keeps getting repeated until the game
             if game_status == 1: # if breakout is selected
                level = 1
                setBreakout(level)   # resets the breakout game to level 1
+               if musicIsInitialised: # only execute is music is working
+                  pygame.mixer.stop() # stops the current music so new music can be played
+                  musicIsPlaying = False
 
          elif keys[pygame.K_w] : # key w is down
             selected_button -= 1                             # moves the selected button number 1 down; selected button goes up visualy
@@ -499,8 +504,9 @@ while running: # This creates a loop which keeps getting repeated until the game
    elif game_status == 1: # breakout game
       
       game_status_msg = "Speel met [A] en [D]" # tell the player what they should do
-      if musicIsInitialised: # only execute is music is working
+      if musicIsInitialised and not musicIsPlaying: # only execute if music is working and is not playing already: # only execute is music is working
          play_gameplay_music()
+         musicIsPlaying = True
       # 
       # move everything
       #
@@ -518,7 +524,7 @@ while running: # This creates a loop which keeps getting repeated until the game
       if button_cooldown_timer == 0: # if there is no cooldown at the moment
          # press 1 to skip the level
          if keys[pygame.K_1] : # keys 1 is down
-            print("player skipped level") # debug
+            print("player skipped level: " + str(level)) # debug
             bricks = [] # makes bricks empty so the level is beaten
             button_cooldown_timer = button_cooldown_ticks # cooldown of when the game wont register any key presses from user in ticks
       else:
@@ -690,9 +696,10 @@ while running: # This creates a loop which keeps getting repeated until the game
             ball_speed_y = 0 # set ballspeed to 0
             game_status_msg = "You won the game!" # If you finished the last level set to winningscreen
             game_status = 4  # game over screen
-            if musicIsInitialised: # only execute is music is working
+            if musicIsInitialised: # only execute if music is working (we do not check if music is playing already beacause we only execute this code once)
                pygame.mixer.music.load(game_over_music)
                pygame.mixer.music.play(-1)  # -1 betekent loop oneindig
+               musicIsPlaying = True
          else: # if you completed a level
             level += 1  # Go to next level
             setBreakout(level)
@@ -708,9 +715,10 @@ while running: # This creates a loop which keeps getting repeated until the game
             ball_speed_y = 0
             game_status_msg = "You lost!"
             game_status = 4  # game over screen
-            if musicIsInitialised: # only execute is music is working
+            if musicIsInitialised: # only execute if music is working (we do not check if music is playing already beacause we only execute this code once)
                pygame.mixer.music.load(game_over_music)
                pygame.mixer.music.play(-1)
+               musicIsPlaying = True
          else: # if you have lives left
             ball_x = paddle_x + paddle_width // 2 - BALL_WIDTH // 2 # Resets bal and paddle position
             ball_y = paddle_y - BALL_HEIGHT
@@ -770,6 +778,7 @@ while running: # This creates a loop which keeps getting repeated until the game
          game_status_img = font.render(line, True, 'green')
          screen.blit(game_status_img, (50, textheight))
          textheight += 30  # move down for the next line
+      font = pygame.font.SysFont('default', 64)   
 
       if button_cooldown_timer == 0: # if there is no cooldown at the moment
          if keys[pygame.K_q] : # key q is down
@@ -777,7 +786,7 @@ while running: # This creates a loop which keeps getting repeated until the game
             button_cooldown_timer = button_cooldown_ticks # cooldown gets set to 10 so the player doesn't hit a button twice
       else:
          button_cooldown_timer -= 1
-      font = pygame.font.SysFont('default', 64)    
+ 
    #
    # quit python
    #   
@@ -792,9 +801,10 @@ while running: # This creates a loop which keeps getting repeated until the game
    elif game_status == 4: # game over screen
       
       drawButtons(game_over_screen_buttons, selected_button)
-      if musicIsInitialised: # only execute is music is working
+      if musicIsInitialised and not musicIsPlaying: # only execute if music is working and is not playing already
          pygame.mixer.music.load(game_over_music)
          pygame.mixer.music.play(-1)
+         musicIsPlaying = True
 
       if button_cooldown_timer == 0: # if there is no cooldown at the moment
          button_cooldown_timer = button_cooldown_ticks # cooldown gets set to 10 so the player doesn't hit a button twice
@@ -802,10 +812,17 @@ while running: # This creates a loop which keeps getting repeated until the game
             if selected_button == 0:
                game_status = 1 # play again / breakout game
                level = 1
+               
+               if musicIsInitialised: # only execute is music is working
+                  pygame.mixer.stop() # stops music so new music can be played
+                  musicIsPlaying = False
                setBreakout(level) # resets the breakout game to level 1
 
             elif selected_button == 1:
                game_status = 0 # homescreen
+               if musicIsInitialised: # only execute is music is working
+                  pygame.mixer.stop() # stops music so new music can be played
+                  musicIsPlaying = False
                selected_button = 0 # resets the selected button
             elif selected_button == 2:
                game_status = 3 # end python
