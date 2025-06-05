@@ -7,7 +7,7 @@ ONLINE=1
 TRIES=0
 
 start_with_internet() {
-	sudo apt install wget unzip
+	sudo apt install -y wget unzip
 	wget https://github.com/leerlingenscw/2425-arcade/archive/refs/heads/main.zip
 	rm -rf ~/Arcade/2425-arcade-main
 	unzip -o ~/main.zip  -d ~/Arcade/
