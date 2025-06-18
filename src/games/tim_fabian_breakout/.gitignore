@@ -1,2 +1,4 @@
 # disable syncing telemetry data from tutor extension with github
 # .data/
+# we don't want to put our local highscore on github
+highscore.txt

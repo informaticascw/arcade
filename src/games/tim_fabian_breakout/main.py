@@ -5,59 +5,51 @@
 import pygame, time
 from random import randint
 from math import ceil
+from pathlib import Path # we use this to check the existence of highscore.txt
 
 #
 # definitions 
 #
 
-def drawButtons(buttons: list, selected: int, columns: int = 1):
+def drawButtons(buttons: list, selected: int, columns: int = 1, color: str = 'normal', color_from: int = 100): # color_from just needs to be very high
    rows = ceil(len(buttons) / columns)
    for row in range(0, rows):
       row_buttons = buttons[(columns * row):(columns * (row + 1))]
 
       for button in row_buttons:
-         if buttons.index(button) == selected: # makes it so the selected button is drawn in orange and the others in blue
-            temp_img = orange_button_img.copy()
+         if buttons.index(button) >= color_from:
+            temp_img = button_images[color].copy()
          else:
-            temp_img = blue_button_img.copy()
+            if buttons.index(button) == selected: # makes it so the selected button is drawn in orange and the others in blue
+               temp_img = orange_button_img.copy()
+            else:
+               temp_img = blue_button_img.copy()
+
 
          button_img_text = (font.render(button, True, 'white')) # makes the button text into an img
          temp_img.blit(button_img_text, ((temp_img.get_width() - button_img_text.get_width()) // 2, (temp_img.get_height() - button_img_text.get_height()) // 2)) # draws the text img onto the middle of the 'temp_img'
 
          screen.blit(temp_img, ((((SCREEN_WIDTH - (columns * BUTTON_WIDTH)) // (columns + 1)) * (row_buttons.index(button)+ 1)) + (BUTTON_WIDTH * row_buttons.index(button)), ((SCREEN_HEIGHT - (rows * BUTTON_HEIGHT)) // (rows + 1) * (row + 1)) + (BUTTON_HEIGHT * row)))
 
-
-
-#   buttonsPercolumn = ceil(len(buttons) / columns) # the amount of buttons needed per column
-#
-#   for column in range(0,columns):
-#
-#      column_buttons = buttons[(buttonsPercolumn * column):(buttonsPercolumn * (column + 1))]
-#
-#      for button in column_buttons:
-#         if buttons.index(button) == selected: # makes it so the selected button is drawn in orange and the others in blue
-#            temp_img = orange_button_img.copy()
-#         else:
-#            temp_img = blue_button_img.copy()
-#
-#         button_img_text = (font.render(button, True, 'white')) # makes the button text into an img
-#         temp_img.blit(button_img_text, ((temp_img.get_width() - button_img_text.get_width()) // 2, (temp_img.get_height() - button_img_text.get_height()) // 2)) # draws the text img onto the middle of the 'temp_img'
-#
-#         screen.blit(temp_img, ((((SCREEN_WIDTH - (columns * BUTTON_WIDTH)) // (columns + 1)) * (column + 1)) + (BUTTON_WIDTH * column), ((SCREEN_HEIGHT - (buttonsPercolumn * BUTTON_HEIGHT)) // (buttonsPercolumn + 1) * (column_buttons.index(button) + 1)) + (BUTTON_HEIGHT * column_buttons.index(button))))
-
 def draw_hearts():           # draws the heart images
     for i in range(0,lives): # for every live you have
         screen.blit(heart_img, (SCREEN_WIDTH - (42 + (i * 35)), 10)) # draw on the right side of the screen, every next 35px left of it
 
-def initialiseBreakoutgameVariables(level: int, newlives: int = 3): # resets all the variables
-   global balls, paddle_steer, paddle_x, paddle_y, bricks_animations, lives, button_cooldown_timer, paddle_width, paddle_img, powerups, powerup_timer, paddle_speed, reset_delay_timer, controls_reversed, controls_reversed_display_timer, controls_message_timer
+def initialiseBreakoutgameVariables(level: int, newlives: int = 3, two_player_mode: bool = False): # resets all the variables
+   global balls, paddle_steer, paddle_x, paddle_y, bricks_animations, lives, button_cooldown_timer, paddle_width, paddle_img, powerups, powerup_timer, paddle_speed, reset_delay_timer, controls_reversed, powerup_message_timer, controls_message_timer, paddle2_x, paddle2_y, paddle2_width, paddle2_img, paddle2_speed, player1_score, player2_score, singleplayer_score, score_multiplier, game_status
    paddle_width = PADDLE_MEDIUM_WIDTH  # Reset to original width
    paddle_img = paddle_medium_img
    paddle_steer = 12                             # how much you can steer the ball with your paddle
    paddle_x = (SCREEN_WIDTH - paddle_width) // 2 # places ball x in middle of screen
    paddle_y = SCREEN_HEIGHT - 64                 # places ball y 64 pixels above bottom of screen
+   paddle_speed = 10 # starting speed of the paddle
 
-      # a list containing al the information about the balls
+     
+   controls_reversed = False
+   controls_message_timer = 180
+   powerup_message_timer = 0
+  
+   # a list containing al the information about the balls
    balls = [{
       "x": (SCREEN_WIDTH - BALL_WIDTH) // 2,
       "y": paddle_y - BALL_HEIGHT,
@@ -66,8 +58,25 @@ def initialiseBreakoutgameVariables(level: int, newlives: int = 3): # resets all
    }]
    if balls[0]["speed_x"] == 0:
       balls[0]["speed_x"] = 1
+   balls[0]["speed_x"], balls[0]["speed_y"] = limit_ball_speed(balls[0]["speed_x"], balls[0]["speed_y"], MAX_BALL_SPEED)
    
-   paddle_speed = 10 # starting speed of the paddle
+   
+   if two_player_mode:  # Two player mode
+      paddle2_width = PADDLE_MEDIUM_WIDTH
+      paddle2_img = paddle_medium_img
+      paddle2_x = (SCREEN_WIDTH - paddle2_width) // 2
+      paddle2_y = 64  # Positioned at top of screen
+      paddle2_speed = 10
+      # Spawn ball for player 2 (top)
+      balls.append({
+         "x": paddle2_x + (paddle2_width - BALL_WIDTH) // 2,
+         "y": paddle2_y + PADDLE_HEIGHT,
+         "speed_x": randint(-3, 3),
+         "speed_y": 5,
+         })
+      if balls[1]["speed_x"] == 0:
+         balls[1]["speed_x"] = 1
+      balls[1]["speed_x"], balls[1]["speed_y"] = limit_ball_speed(balls[1]["speed_x"], balls[1]["speed_y"], MAX_BALL_SPEED)
 
    bricks_animations = []
    powerups = []
@@ -77,14 +86,25 @@ def initialiseBreakoutgameVariables(level: int, newlives: int = 3): # resets all
 
    lives = newlives # resets lives, 3 is standard
    button_cooldown_timer = 0 # timer reset because we now are in breakout
+
+   if level == 1: # only reset the score if we go to level 1
+      player1_score = 0
+      player2_score = 0
    
-   controls_reversed = False
-   
-   controls_message_timer = 180
-   controls_reversed_display_timer = 0
-  
-def makeBricks(level):
-   global bricks # global var so it will update over the whole code
+   score_multiplier = 1 # we reset the score multiplier every level so it doesn't get to big
+   if level == 1 or game_status == 8:  # only reset if we are in level selection screen or on level 1, this is also reset when we go to two player so the game isn't confused that we have singleplayer_score in twoplayer
+      singleplayer_score = 0
+
+def makeBricks(level, two_player_mode:bool = False):
+   global bricks, levels # global var so it will update over the whole code
+   if two_player_mode:
+      level = levels["2p"][level-1]
+   else:
+      if level > 5 and level <= LAST_LEVEL:
+            level = generate_random_level(level) 
+      
+      else:
+         level = levels["1p"][level-1]
    bricks = []   # list of all bricks, every bricks item is ordered: [x position, y position, bricks_lives, brick_color]
    color_options = ['blue', 'orange', 'green', 'red', 'yellow', 'purple']
 
@@ -106,25 +126,51 @@ def makeBricks(level):
    columns = len(level["shape"][0])
    
    
-   indentation_bricks = (SCREEN_WIDTH - (columns * BRICK_WIDTH)) // 2 # centers the bricks horizontaly
-   if indentation_bricks < 0: # if there are too many bricks to fit on the screen (debug)
+   x_indentation_bricks = (SCREEN_WIDTH - (columns * BRICK_WIDTH)) // 2 # centers the bricks horizontaly
+   if x_indentation_bricks < 0: # if there are too many bricks to fit on the screen (debug)
       raise ValueError('Too many columns of bricks') # shows error message
+
+   if two_player_mode:
+      y_indentation_bricks = (SCREEN_HEIGHT - (rows * BRICK_HEIGHT)) // 2
+   else:
+      y_indentation_bricks = 64
    
    # makes the list with bricks, every time: x + 96 and each row: y + 32
    for i in range(0,rows):       # for every row
       for j in range(0,columns): # every column in that row
          if level["shape"][i][j] == 1:  # if there is no brick at that position, skip it
             brick = {}                                  # resets the list of the brick
-            brick["x_position"] = ((j * 96) + indentation_bricks) # adds the x position of the brick
-            brick["y_position"] = ((i * 32) + 64)                 # adds the y position of the brick
+            brick["x_position"] = ((j * 96) + x_indentation_bricks) # adds the x position of the brick
+            brick["y_position"] = ((i * 32) + y_indentation_bricks)                 # adds the y position of the brick
             brick["lives"] = (level["brick_lives"])               # adds the lives of that brick
             brick["color"] = (color_options[randint(0, len(color_options)-1)])
             bricks.append(brick)                        # adds that brick to the list of all bricks
 
-def setBreakout(level: int): # resets the breakoutgame by restoring the bricks and the variables
-   level_dict = eval('level_' + str(level))
-   initialiseBreakoutgameVariables(level) # resets all the variables
-   makeBricks(level_dict)
+def generate_random_level(level):
+    # Increase difficulty with level
+    rows = min(5 + (level - 6) // 2, 8)  # Max 8 rows
+    columns = min(10 + (level - 6), 13)  # Max 13 columns
+    
+    # Create a random pattern with increasing density
+    shape = []
+    for i in range(rows):
+        row = []
+        for j in range(columns):
+            # Higher chance to have a brick as level increases
+            if randint(1, 10) > (3 if level < 8 else 2):
+                row.append(1)
+            else:
+                row.append(0)
+        shape.append(row)
+    
+    return {
+        "shape": shape,
+        "brick_lives": 2  # All bricks have 2 lives
+    }
+
+def setBreakout(level: int, two_player_mode: bool = False, newlives: int = 3): # resets the breakoutgame by restoring the bricks and the variables
+   initialiseBreakoutgameVariables(level, two_player_mode= two_player_mode, newlives= newlives) # resets all the variables
+   makeBricks(level, two_player_mode)
 
 # music
 def play_menu_music():
@@ -137,18 +183,28 @@ def play_gameplay_music():
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(volume/100)
 
-def update_paddle_speed():
-    global paddle_speed
-    # calculates average speed of all balls
-    total_speed = 0
-    for ball in balls:
-        ball_speed = (ball["speed_x"]**2 + ball["speed_y"]**2)**0.5
-        total_speed += ball_speed
+def calculate_average_ballspeed() -> float:
+   # calculates average speed of all balls
+   total_speed = 0
+   for ball in balls:
+      ball_speed = (ball["speed_x"]**2 + ball["speed_y"]**2)**0.5
+      total_speed += ball_speed
     
-    average_ball_speed = total_speed / len(balls)
+   average_ball_speed = total_speed / len(balls)
+   return average_ball_speed
+
+def update_paddle_speed():
+    global paddle_speed, paddle2_speed
+    if len(balls) == 0:  # if there are no balls to avoid dividing by 0
+        paddle_speed = 10
+        paddle2_speed = 10
+        return
+    
+    average_ball_speed = calculate_average_ballspeed()
     
     # increases paddle speed based on average ball speed with maximum limit
     paddle_speed = min(10 + average_ball_speed / 3, MAX_PADDLE_SPEED)
+    paddle2_speed = min(10 + average_ball_speed / 3, MAX_PADDLE_SPEED)
 
 def limit_ball_speed(speed_x, speed_y, max_speed):
     current_speed = (speed_x**2 + speed_y**2)**0.5
@@ -158,7 +214,7 @@ def limit_ball_speed(speed_x, speed_y, max_speed):
     return speed_x, speed_y
 
 def handleMenuInputs(buttons: list, columns: int = 1):
-   global button_cooldown_timer, button_cooldown_ticks, keys, game_status, GAME_STATUSES, selected_button, level, musicIsPlaying, musicIsInitialised
+   global button_cooldown_timer, button_cooldown_ticks, keys, game_status, GAME_STATUSES, selected_button, level, musicIsPlaying, musicIsInitialised, two_player_mode
    while len(buttons) % columns != 0:
       buttons.append('')
 
@@ -167,18 +223,28 @@ def handleMenuInputs(buttons: list, columns: int = 1):
       
       if keys[pygame.K_q] : # key q is down         
          selected_button_name = str(buttons[selected_button]) # we set this here in case we change it below
-         if GAME_STATUSES[selected_button_name] == 0 or (GAME_STATUSES[selected_button_name] == 1 and str(buttons[selected_button]) != "resume"):
-            if musicIsInitialised: # only execute is music is working
-               pygame.mixer.stop() # stops the current music so new music can be played
-               musicIsPlaying = False
-
-            if GAME_STATUSES[selected_button_name] == 0: # if we go to the homescreen
-               selected_button = 0    # reset selected button
-            else: # resets game if breakout is selected and it is not resumed from the pause menu
+         try:
+            GAME_STATUSES[selected_button_name] # if the name of the button is not found in the list of gamestatuses it will give crash
+            # resets things if needed
+            # music
+            if (GAME_STATUSES[selected_button_name] == 0 and (game_status == 4 or game_status == 5)) or (GAME_STATUSES[selected_button_name] == 1 and (game_status == 0 or game_status == 4 or game_status == 8)): # if (we go to homescreen from pause or game over) or (we go to breakout from homescreen, game over or level select)
+               if musicIsInitialised: # only execute is music is working
+                  pygame.mixer.stop() # stops the current music so new music can be played
+                  musicIsPlaying = False
+            # selected button
+            if GAME_STATUSES[selected_button_name] == 6 or GAME_STATUSES[selected_button_name] == 8: # if we go to settings or level select
+               selected_button = 0
+            # reset breakout
+            if (GAME_STATUSES[selected_button_name] == 1 or GAME_STATUSES[selected_button_name] == 7) and str(buttons[selected_button]) != "resume": # if we go to breakout while it is not resumed from the pause menu
                level = 1
-               setBreakout(level)   # resets the breakout game to level 1
-         if GAME_STATUSES[selected_button_name] == 6: # settings
-            selected_button = 0
+               if GAME_STATUSES[selected_button_name] == 7:
+                  two_player_mode = True
+               setBreakout(level, two_player_mode)   # resets the breakout game to level 1
+         except KeyError:
+            if 'level' in selected_button_name:
+               print('A keyerror got exepted, \'' + str(selected_button_name) + '\' was not found in \'GAME_STATUSES\'')
+            else:
+               raise KeyError('\'' + str(selected_button_name) + '\' was not found in \'GAME_STATUSES\'')
          return selected_button_name # tell the program which button is selected
       
       elif keys[pygame.K_w] : # key w is down
@@ -215,6 +281,9 @@ def handleMenuInputs(buttons: list, columns: int = 1):
    else:
       button_cooldown_timer -= 1 # decrease cooldown by 1
 
+   while '' in buttons: # removes all the '' in the list of buttons, buttons should be a local variable but is somehow accessed by drawButtons so we need to revome the ''
+      buttons.remove('')
+
 
 # constant values
 FPS = 30                     # frames Per Second
@@ -232,17 +301,17 @@ BUTTON_WIDTH = 300           # width of button in pixels
 BUTTON_HEIGHT = 100          # height of button in pixels
 BRICK_EXPLOSION_WIDTH = 80   # width of explosion in pixels
 BRICK_EXPLOSION_HEIGHT = 77  # height of explosion in pixels
-LAST_LEVEL = 5               # the number of the last level
+LAST_LEVEL = 10               # the number of the last level
 STAR_WIDTH = 32              # width of star in pixels
 STAR_HEIGHT = 32             # height of star in pixels
 POWERUP_DURATION = 300       # duration of powerup effect in frames (10 seconds at 30 FPS)
 MAX_PADDLE_SPEED = 20        # maximum speed of the paddle
 MAX_BALL_SPEED = 15          # maximum speed of the ball
 RESET_DELAY = 45             # amount of frames between lives
-REVERSE_CONTROLS_DURATION = 300 # amount of frames the reverse controls last
-CONTROLS_REVERSED_DISPLAY_DURATION = 45 # amount of frames the reverse control warning lasts
-GAME_STATUSES = {"homescreen": 0,
-                 "Back": 0,
+POWERUP_MESSAGE_DURATION = 300 # amount of frames the reverse control warning lasts
+WINNING_SCORE = 100          # the amount of points you need to get to win in two player
+GAME_STATUSES = {"Back": -1, # back needs to be handled by other code
+                 "homescreen": 0,
                  "breakout": 1, # start, resume, play again and breakout all need to start the breakout game
                  "start": 1,
                  "resume": 1,
@@ -250,75 +319,159 @@ GAME_STATUSES = {"homescreen": 0,
                  "info": 2,
                  "quit": 3,
                  "game over": 4,
+                 "yes": 4, "no": 4, # yes and no are usen while saving your highscore
                  "pause": 5,
                  "settings": 6,
                  "no sound": 6,
-                 "volume": 6} # if a button is selected this will tell the code to which number the game_status var needs to be set
+                 "volume": 6,
+                 "two player": 7,
+                 "level select": 8} # if a button is selected this will tell the code to which number the game_status var needs to be set
 
 # global variables
 # breakout game variables are set when you start the game
 
 level = 1 # the current level
+max_level_playable = 1 # we use this for the level selection screen
 
-level_1 = { "shape": [
-        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0]
+level_1 = {"shape": [
+        [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
+        [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+        [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0]
     ],  "brick_lives": 1} # how the bricks should be made in level 1
 
 level_2 = {"shape": [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+        [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0]
     ],  "brick_lives": 2} # how the bricks should be made in level 2
 
 level_3 = {"shape": [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
-        [1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1],
-        [1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1],
-        [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1]
+        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0],
+        [1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1],
+        [1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
     ], "brick_lives": 2} # how the bricks should be made in level 3
 
-level_4 = { "shape": [
-    [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
-    [0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0],
-    [0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+level_4 = {"shape": [
+        [0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0],
+        [0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0],
+        [0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0]
+    ], "brick_lives": 2}
 
-], "brick_lives": 2}
+level_5 = {"shape": [
+        [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+        [0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0],
+        [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    ], "brick_lives": 2}
 
-level_5 = { "shape": [
-    [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-    [0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0],
-    [1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
-    [1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1],
-    [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-], "brick_lives": 2}
+level_1_2p = { 
+    "shape": [
+        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+        [0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0],
+        [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0]
+    ],
+    "brick_lives": 1,
+}
 
+level_2_2p = {
+    "shape": [
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    ],
+    "brick_lives": 2,
+}
 
-game_status = 0 # 0 = homescreen, 1 = breakoutgame, 2 = infoscreen, 3 = stopping python, 4 = game over
+level_3_2p = {
+    "shape": [
+        [1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1],
+        [1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1],
+        [0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0],
+        [1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1],
+        [1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1]
+    ],
+    "brick_lives": 2,
+}
 
-volume = 100 # the volume of all sound as a number from 0 to 100
+level_4_2p = {
+    "shape": [
+        [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
+        [1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1],
+        [1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+        [1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1],
+        [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0]
+    ],
+    "brick_lives": 2,
+}
+
+level_5_2p = {
+    "shape": [
+        [1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1],
+        [0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0],
+        [1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1],
+        [0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0],
+        [1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1]
+    ],
+    "brick_lives": 2,
+}
+
+levels = {'1p': [level_1, level_2, level_3, level_4, level_5], '2p': [level_1_2p, level_2_2p, level_3_2p, level_4_2p, level_5_2p]}
+
+controls_reversed = False
+controls_message_timer = 0
+powerup_message_timer = 0
+
+reset_delay_timer = 0
+
+old_game_status = 0 # so we can keep track of the last game status that we were in
+game_status = 0 # 0 = homescreen, 1 = breakoutgame, 2 = infoscreen, 3 = stopping python, 4 = game over, 5 = pause menu, 6 = settings menu, 7 = two player mode, 8 = level select
+
+volume = 50 # the volume of all sound as a number from 0 to 100
 volume_change_mode = False
 
 selected_button = 0        # index of which button is selected
 button_cooldown_timer = 0  # the timer for the cooldown on hitting a button
 button_cooldown_ticks = 10 # the reset value for the timer
+extra_ball_cooldown_timer = 0 # the timer for the cooldown on spawning a new ball (debug)
 
-homescreen_buttons = ['start', 'info', 'settings', 'quit'] # all the buttons on the homescreen
-pause_menu_buttons = ['resume', 'homescreen', 'quit']
+homescreen_buttons = ['start', 'two player', 'level select', 'info', 'settings', 'quit'] # all the buttons on the homescreen
+pause_menu_buttons = ['resume', 'settings', 'homescreen']
 settings_buttons = ['volume', 'Back']
-game_over_screen_buttons = ['play again', 'homescreen', 'quit']
+game_over_screen_buttons = ['play again', 'settings', 'homescreen', 'quit']
+save_highscore_buttons = ['yes', 'no']
+level_select_buttons = []
+for i in range(0, LAST_LEVEL): # this will generate the names for all the levels even if you add new levels
+   level_select_buttons.append('level' + str(i+1))
+
+singleplayer_score = 0
+score_multiplier = 1
+highscore = 0
+add_highscore_mode = False
+highscore_checked = False
+
+player1_score = 0
+player2_score = 0
+
+two_player_mode = False
+
+balls = [] # a list of all the active balls
+powerups = [] # a list of all the active powerups
+powerup_timer = 0
+bricks = [] # a list of all the active bricks
 
 informationtext = [
     "BREAKOUT GAME - HOW TO PLAY",
@@ -370,7 +523,7 @@ try:
 except:
    print("music could not be initialised")
    musicIsInitialised = False
-   settings_buttons[0] = 'no sound'
+   settings_buttons[0] = 'no sound' # the button for changing volume is set to 'no sound' to give information to the player
 else:
    # music
    # Sound effects
@@ -384,6 +537,7 @@ else:
    all_sounds = [bounce_sound, powerup_sound, level_complete_sound, game_over_sound, ready_sound, break_sound]
    for sound in all_sounds:
       sound.set_volume(volume/100)
+   break_sound.set_volume(break_sound.get_volume() * 0.5) # break block sound is very loud so it gets scaled down more than the rest
    
    # Background music
    menu_music = "./menu_music.mp3"
@@ -393,12 +547,18 @@ else:
 musicIsPlaying = False
 
 font = pygame.font.SysFont('default', 64)                                                          # creates the font for the game
+font_smaller = pygame.font.SysFont('default', 40)                                                  # Smaller font for some text
+font_smallest = pygame.font.SysFont('default', 24)                                                 # Smallest font for info screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN | pygame.SCALED) # makes sure the width and heigth of the screen are set to preference and scales them the max while keeping them in the same ratio
 fps_clock = pygame.time.Clock()                                                                    # makes an object to keep track of the time
 
+# loading constant texts, needs to be done after font is loaded
+savehighscore_text = font.render('Do you want to save your highscore?', True, 'white')
+savehighscore_subtext = font_smaller.render('(this will create a file called \'highscore.txt\')', True, 'white')
+
 ready_text = (font.render("READY?", True, "white"))
-text_x = SCREEN_WIDTH // 2 - ready_text.get_width() // 2
-text_y = SCREEN_HEIGHT // 2 - ready_text.get_height() // 2
+ready_text_x = SCREEN_WIDTH // 2 - ready_text.get_width() // 2
+ready_text_y = SCREEN_HEIGHT // 2 - ready_text.get_height() // 2
 
 #
 # read images
@@ -565,6 +725,14 @@ orange_button_img = pygame.Surface((96, 32), pygame.SRCALPHA) # makes a new butt
 orange_button_img.blit(orange_brick_img, (0,0))               # puts the orange_brick_img onto the new surface
 orange_button_img = pygame.transform.scale(orange_button_img, (BUTTON_WIDTH, BUTTON_HEIGHT)) # transforms the img to the desired widht and height
 
+red_button_img = pygame.Surface((96, 32), pygame.SRCALPHA) # makes a new button surface
+red_button_img.blit(red_brick_img, (0,0))                  # puts the red_brick_img onto the new surface
+red_button_img = pygame.transform.scale(red_button_img, (BUTTON_WIDTH, BUTTON_HEIGHT)) # transforms the img to the desired widht and height
+
+button_images = {'blue': blue_button_img,
+                 'orange': orange_button_img,
+                 'red': red_button_img}
+
 heart_img = pygame.Surface((64, 58), pygame.SRCALPHA)
 heart_img.blit(spritesheet, (0, 0), (1637, 652, 64, 58))  # picks the hearth from the spitesheet
 heart_img = pygame.transform.scale(heart_img, (32, 28))  # Maak het hartje kleiner
@@ -614,6 +782,7 @@ while running: # This creates a loop which keeps getting repeated until the game
       #
       pressed_button = handleMenuInputs(homescreen_buttons, columns = 2)
       if pressed_button != None:
+         old_game_status = game_status
          game_status = GAME_STATUSES[pressed_button] # this sets the game status number to the number that is defined by the name on the selected button
    
 
@@ -621,14 +790,17 @@ while running: # This creates a loop which keeps getting repeated until the game
    # breakout game
    #
 
-   elif game_status == 1: # breakout game
+   elif game_status == 1 or game_status == 7: # breakout game
       
       if controls_message_timer > 0:
          game_status_msg = "Move with A and D" # tell the player what they should do
          controls_message_timer -= 1
       else:
-         if controls_reversed and controls_reversed_display_timer > 0:
-            game_status_msg = "REVERSE CONTROLS!"
+         if powerup_message_timer > 0:
+            if controls_reversed:
+               game_status_msg = "REVERSE CONTROLS!"
+            else:
+               game_status_msg = "SCORE MULTIPLIER: " + str(score_multiplier) + "X"
          else:
             game_status_msg = ""
       
@@ -643,7 +815,8 @@ while running: # This creates a loop which keeps getting repeated until the game
          #
   
          # player inputs
-         update_paddle_speed() # updates the paddlespeed based on the ballspeed
+         if len(balls) > 0:  # Only update paddle speed if there are balls
+            update_paddle_speed() # updates the paddlespeed based on the ballspeed
       
          if not controls_reversed:
             if keys[pygame.K_d]:      # key d is down
@@ -656,15 +829,48 @@ while running: # This creates a loop which keeps getting repeated until the game
                paddle_x = paddle_x - paddle_speed
             if keys[pygame.K_a]:      # key a is down (now moves right)
                paddle_x = paddle_x + paddle_speed
-            
+
+         if game_status == GAME_STATUSES["two player"]:
+            if not controls_reversed:
+               if keys[pygame.K_l]:      # l is right for player 2
+                  paddle2_x += paddle2_speed
+               if keys[pygame.K_j]:       # j is left for player 2
+                  paddle2_x -= paddle2_speed
+            else:
+               if keys[pygame.K_l]:      # reverse controls
+                  paddle2_x -= paddle2_speed
+               if keys[pygame.K_j]:
+                  paddle2_x += paddle2_speed
+
+         # debug controls
+         #  
          # press 1 to skip the level
-         if keys[pygame.K_1] : # keys 1 is down
+         if keys[pygame.K_1] : # key 1 is down
             print("player skipped level: " + str(level)) # debug
             bricks = [] # makes bricks empty so the level is beaten
          
+         # press 0 to spawn an extra ball
+         if keys[pygame.K_0] : # key 0 is down
+            if extra_ball_cooldown_timer == 0:
+               print("player spawned a ball, number of balls is: " + str(len(balls))) # debug
+               # spawn a ball
+               balls.append({
+                  "x": paddle_x + (paddle_width - BALL_WIDTH) // 2,
+                  "y": paddle_y - BALL_HEIGHT,
+                  "speed_x": randint(-3, 3),
+                  "speed_y": -5,
+                  })
+               if balls[-1]['speed_x'] == 0:
+                  balls[-1]['speed_x'] = 1
+               extra_ball_cooldown_timer = 10
+            else:
+               extra_ball_cooldown_timer -= 1
+
          if button_cooldown_timer == 0:
             if keys[pygame.K_r] : # key r is down
                button_cooldown_timer = button_cooldown_ticks
+               old_game_status = game_status
+               selected_button = 0
                game_status = GAME_STATUSES["pause"] # pause the game
          else:
             button_cooldown_timer -= 1
@@ -674,11 +880,60 @@ while running: # This creates a loop which keeps getting repeated until the game
             ball["x"] += ball["speed_x"]  # this moves the bal with the ballspeed from the old x of the bal to the new x
             ball["y"] += ball["speed_y"]  # this moves the bal with the ballspeed from the old y of the bal to the new y
   
-        
+            # losing
+            
+
+            if game_status == 7:  # Two player mode
+               # Delete ball if it touches the top of the screen (player 1 scores)
+               if ball["y"] < -BALL_HEIGHT:
+                  player1_score += 10
+                  balls.remove(ball)
+                  continue
+         
+               # Delete ball if it touches the bottom of the screen (player 2 scores)
+               if ball["y"] > SCREEN_HEIGHT:
+                  player2_score += 10
+                  balls.remove(ball)
+                  continue
+    
+               
+                     
+            else:
+               # only needs to be executed if we are in single player mode
+               # bounces ball if it reaches the top of the screen
+               if ball["y"] < 0:
+                  ball["speed_y"] = abs(ball["speed_y"])
+                  ball["speed_x"], ball["speed_y"] = limit_ball_speed(ball["speed_x"], ball["speed_y"], MAX_BALL_SPEED)
+
+               if ball["y"] > SCREEN_HEIGHT:
+                  balls.remove(ball)
+                  if len(balls) == 0:  # there are no more balls
+                     lives -= 1
+                     if lives == 0: # if you have no lives left
+                        game_status_msg = "You lost!"
+                        old_game_status = game_status
+                        game_status = GAME_STATUSES["game over"]  # game over screen
+                        if musicIsInitialised: # only execute is music is working
+                           pygame.mixer.stop() # stops the current music so new music can be played
+                           musicIsPlaying = False
+                     else: # if you have lives left
+                        reset_delay_timer = RESET_DELAY  # Start delay
+                        # Reset ball position/speed, powerups, etc.
+                        balls.append({
+                        "x": paddle_x + (paddle_width - BALL_WIDTH) // 2,  # Spawn in middle of paddle
+                        "y": paddle_y - BALL_HEIGHT,
+                        "speed_x": randint(-3, 3),
+                        "speed_y": int(-(level ** 0.5) * 6),
+                        })
+                        if balls[0]["speed_x"] == 0:
+                           balls[0]["speed_x"] = 1
+                        if reset_delay_timer == RESET_DELAY and musicIsInitialised:
+                           ready_sound.play()
+                  continue
       
-         # bounces ball
+            # bounces ball
   
-         # bounces ball if it reaches the side of the screen
+            # bounces ball if it reaches the side of the screen
             if ball["x"] < 0:
                ball["speed_x"] = abs(ball["speed_x"])
                ball["speed_x"], ball["speed_y"] = limit_ball_speed(ball["speed_x"], ball["speed_y"], MAX_BALL_SPEED)
@@ -686,33 +941,21 @@ while running: # This creates a loop which keeps getting repeated until the game
                ball["speed_x"] = -abs(ball["speed_x"])
                ball["speed_x"], ball["speed_y"] = limit_ball_speed(ball["speed_x"], ball["speed_y"], MAX_BALL_SPEED)
   
-            # bounces ball if it reaches the top of the screen
-            if ball["y"] < 0:
-               ball["speed_y"] = abs(ball["speed_y"])
-               ball["speed_x"], ball["speed_y"] = limit_ball_speed(ball["speed_x"], ball["speed_y"], MAX_BALL_SPEED)
-      
+                  
   
   
         
             # 
             # handle collisions
             #
-  
-            # paddle-wall colisions
-            if paddle_x + paddle_width > SCREEN_WIDTH: # if paddle goes of the screen on the right side
-               paddle_x = SCREEN_WIDTH - paddle_width  # paddle is set to the rightmost x position
-     
-            if paddle_x < 0: # if paddle goes of the screen on the left side
-               paddle_x = 0  # paddle is set to the leftmost x position
-  
          
             # ball-paddle collision for multiple balls
    
             # Top of paddle collision
             if (ball["x"] + BALL_WIDTH > paddle_x and  # if the ball is right of paddle's left side
-               ball["x"] < paddle_x + paddle_width and # and if the ball is left of paddle's right side
-               ball["y"] + BALL_HEIGHT > paddle_y and  # and if the ball's bottom is under paddle's top
-               ball["y"] < paddle_y):                  # and if the ball's top is above paddle's top
+                ball["x"] < paddle_x + paddle_width and # and if the ball is left of paddle's right side
+                ball["y"] + BALL_HEIGHT > paddle_y and  # and if the ball's bottom is under paddle's top
+                ball["y"] < paddle_y):                  # and if the ball's top is above paddle's top
     
                   ball["speed_y"] = abs(ball["speed_y"]) * -1 # bounce ball by negating y speed
                   print(f'ball hit paddle {round(ball["x"] + (BALL_WIDTH / 2) - (paddle_x + (paddle_width / 2)), 1)}px of the middle of the paddle') # debug info
@@ -727,20 +970,50 @@ while running: # This creates a loop which keeps getting repeated until the game
                   if musicIsInitialised: # only execute if music is working
                      bounce_sound.play()
 
+
             # Side of paddle collision
-            elif (ball["y"] + BALL_HEIGHT > paddle_y and 
-               ball["y"] < paddle_y + PADDLE_HEIGHT and  # if ball is between paddle's top and bottom
-               ((ball["x"] + BALL_WIDTH > paddle_x and ball["x"] < paddle_x) or  # left side collision
-               (ball["x"] + BALL_WIDTH > paddle_x + paddle_width and ball["x"] < paddle_x + paddle_width))): # right side collision
+            elif (ball["y"] + BALL_HEIGHT > paddle_y and # if the ball's bottom is under paddle's top
+                ball["y"] < paddle_y + PADDLE_HEIGHT and  # if ball's top is above paddle's bottom
+                ((ball["x"] + BALL_WIDTH > paddle_x and ball["x"] < paddle_x) or  # left side collision
+                (ball["x"] + BALL_WIDTH > paddle_x + paddle_width and ball["x"] < paddle_x + paddle_width))): # right side collision
     
                   ball["speed_x"] *= -1 # bounce ball by negating x speed
                   if musicIsInitialised: # only execute if music is working
                      bounce_sound.play()
 
-            # delete ball if it touches the bottom of the screen
-            if ball["y"] + BALL_HEIGHT > SCREEN_HEIGHT:
-               balls.remove(ball)
-               continue
+            
+            # Top of paddle 2 collision
+            # this paddle is on the top of the screen so it needs to bounce on the bottom of the paddle
+            if game_status == 7:
+               if (ball["x"] + BALL_WIDTH > paddle2_x and # if the ball is right of paddle's left side
+                   ball["x"] < paddle2_x + paddle2_width and  # and if the ball is left of paddle's right side
+                   ball["y"] < paddle2_y + PADDLE_HEIGHT and  # and if the ball's top is above paddle's bottom
+                   ball["y"] + BALL_HEIGHT > paddle2_y + PADDLE_HEIGHT):      # and if the ball's bottom is under paddle's bottom
+                     # Handle collision
+    
+                     ball["speed_y"] = abs(ball["speed_y"]) * 1 # bounce ball by negating y speed
+                     print(f'ball hit paddle2 {round(ball["x"] + (BALL_WIDTH / 2) - (paddle2_x + (paddle_width / 2)), 1)}px of the middle of the paddle') # debug info
+        
+                     # Calculate new x speed based on where ball hits paddle
+                     hit_position = ((ball["x"] + (BALL_WIDTH / 2)) - (paddle2_x + (paddle2_width / 2))) / (paddle2_width / 2)
+                     ball["speed_x"] = (ball["speed_x"] + (hit_position * paddle_steer)) / 2
+        
+                     # Limit ball speed
+                     ball["speed_x"], ball["speed_y"] = limit_ball_speed(ball["speed_x"], ball["speed_y"], MAX_BALL_SPEED)
+                  
+                     if musicIsInitialised: # only execute if music is working
+                        bounce_sound.play()
+            
+               # Side of paddle 2 collision
+               elif (ball["y"] < paddle2_y  + PADDLE_HEIGHT and # if the ball's top is avove paddle's bottom
+                   ball["y"] + BALL_HEIGHT > paddle2_y and  # if ball's bottom is under paddles top
+                   ((ball["x"] + BALL_WIDTH > paddle2_x and ball["x"] < paddle2_x) or  # left side collision
+                   (ball["x"] + BALL_WIDTH > paddle2_x + paddle2_width and ball["x"] < paddle2_x + paddle2_width))): # right side collision
+    
+                     ball["speed_x"] *= -1 # bounce ball by negating x speed
+                     if musicIsInitialised: # only execute if music is working
+                        bounce_sound.play()
+            
 
             # Brick collision
             for i in range(len(bricks)-1, -1, -1):  # Loop backwards through bricks
@@ -769,141 +1042,225 @@ while running: # This creates a loop which keeps getting repeated until the game
                   # .copy() is used here so we dont get an error when drawing the animations, if the same block is hit twice too fast, a bad refrence (or something refrence related) whould give it an error
                   bricks_animations[-1]["frame"] = 0  # adds zero because that is the frame of the current animation
                   bricks[i]["lives"] -= 1 # removes 1 life from that block
+                  
                   if bricks[i]["lives"] == 0:
-                     powerup_roll = randint(1, 100)  # 1-6 for different probabilities
-                     
-                     if powerup_roll <= 5:
-                        powerups.append({
-                           "x_position": bricks[i]["x_position"] + BRICK_WIDTH//2 - STAR_WIDTH//2,
-                           "y_position": bricks[i]["y_position"],
-                           "type": "small",
-                           "frame": 0
-                        })
-                     elif powerup_roll <= 15:
-                        powerups.append({
-                           "x_position": bricks[i]["x_position"] + BRICK_WIDTH//2 - STAR_WIDTH//2, # adds all the propertys of the powerup to the list powerups
-                           "y_position": bricks[i]["y_position"],
-                           "type": "large",
-                           "frame": 0
-                        })
-                     elif powerup_roll <= 35:
-                     #  add an extra bal for purple blocks
-                        balls.append({
-                           "x": bricks[i]["x_position"] + BRICK_WIDTH//2 - BALL_WIDTH//2,
-                           "y": bricks[i]["y_position"] + BRICK_HEIGHT//2 - BALL_HEIGHT//2,
-                           "speed_x": randint(-5, 5),  # random x speed for created ball
-                           "speed_y": randint(4, 6),   # random x speed for created ball
-                           })
-                        if balls[-1]["speed_x"] == 0:
-                           balls[-1]["speed_x"] = 1
-                     elif powerup_roll <= 40:
-                        powerups.append({
-                           "x_position": bricks[i]["x_position"] + BRICK_WIDTH//2 - STAR_WIDTH//2,
-                           "y_position": bricks[i]["y_position"],
-                           "type": "reverse",
-                           "frame": 0
-                           })
+                     if game_status == 7: # two player score handling
+                        # we check which direction the ball came from to give a player points
+                        # the ball has already bounce so we check the direction reversed
+                        if ball["speed_y"] > 0: # ball goes down, went up when it hit the brick
+                           player1_score += 1
+                        elif ball["speed_y"] < 0: # ball goes up, went down when it hit the brick
+                           player2_score += 1
+
+                     if game_status == 1: # we only have powerups and singelplayer_score in single player
+                        base_points = level * 10  # higher levels give more points
+                        singleplayer_score += base_points * score_multiplier
+                        powerup_roll = randint(1, 100)  # 1-100 for different probabilities
+                        powerup_for_player = 1 if ball["speed_y"] > 0 else 2 # decides which player gets the powerup
+                        if powerup_roll <= 5: # 5% chance
+                           # small paddle
+                           powerups.append({
+                              "x_position": bricks[i]["x_position"] + BRICK_WIDTH//2 - STAR_WIDTH//2,
+                              "y_position": bricks[i]["y_position"],
+                              "type": "small",
+                              "frame": 0,
+                              "for_player": powerup_for_player,
+                              "speed": 3 if powerup_for_player == 1 else -3
+                              })
+                        elif powerup_roll <= 15: # 10% chance
+                           # large paddle
+                           powerups.append({
+                              "x_position": bricks[i]["x_position"] + BRICK_WIDTH//2 - STAR_WIDTH//2, # adds all the propertys of the powerup to the list powerups
+                              "y_position": bricks[i]["y_position"],
+                              "type": "large",
+                              "frame": 0,
+                              "for_player": powerup_for_player,
+                              "speed": 3 if powerup_for_player == 1 else -3
+                              })
+                        elif powerup_roll <= 35: # 20% chance
+                           #  extra bal
+                           average_ballspeed = calculate_average_ballspeed()
+                           balls.append({
+                              "x": bricks[i]["x_position"] + BRICK_WIDTH//2 - BALL_WIDTH//2,
+                              "y": bricks[i]["y_position"] + BRICK_HEIGHT//2 - BALL_HEIGHT//2,
+                              "speed_x": ball['speed_x'] + randint(-10,10)/10, # the new ball gets the speed of the ball that hit the brick +/- a random value from -1 to 1
+                              "speed_y": ball['speed_y'] + randint(-10,10)/10
+                              })
+                           if balls[-1]["speed_x"] == 0:
+                              balls[-1]["speed_x"] = 1
+                        elif powerup_roll <= 40: # 5% chance
+                           # reverse controls
+                           powerups.append({
+                              "x_position": bricks[i]["x_position"] + BRICK_WIDTH//2 - STAR_WIDTH//2,
+                              "y_position": bricks[i]["y_position"],
+                              "type": "reverse",
+                              "frame": 0,
+                              "for_player": powerup_for_player,
+                              "speed": 3 if powerup_for_player == 1 else -3
+                              })
+                        elif powerup_roll <= 50: # 10% chance
+                           # score multiplier
+                           powerups.append({
+                              "x_position": bricks[i]["x_position"] + BRICK_WIDTH//2 - STAR_WIDTH//2,
+                              "y_position": bricks[i]["y_position"],
+                              "type": "score_mult",
+                              "frame": 0,
+                              "for_player": powerup_for_player,
+                              "speed": 3 if powerup_for_player == 1 else -3
+                              })
                      bricks.pop(i) # removes the block from list of all bricks
                   
                   ball["speed_x"] *= randint(95, 110)/100
                   ball["speed_y"] *= randint(95, 110)/100
                   ball["speed_x"], ball["speed_y"] = limit_ball_speed(ball["speed_x"], ball["speed_y"], MAX_BALL_SPEED)
                   break # stops the loop so we don't get errors
-            
-         # Move and draw powerups
-         for powerup in powerups[:]:
-            powerup["y_position"] += 3  # Move powerup downward
-    
-            # Draw powerup
-            if powerup["type"] == "large":
-               screen.blit(good_star_img, (powerup["x_position"], powerup["y_position"]))
-            else:
-               screen.blit(bad_star_img, (powerup["x_position"], powerup["y_position"]))
-    
-            # Check collision with paddle
-            if (powerup["x_position"] + STAR_WIDTH > paddle_x and
-               powerup["x_position"] < paddle_x + paddle_width and
-               powerup["y_position"] + STAR_HEIGHT > paddle_y and
-               powerup["y_position"] < paddle_y + PADDLE_HEIGHT):
-            
-               paddle_center = paddle_x + paddle_width //2
-            
-               if musicIsInitialised: # only execute is music is working
-                  powerup_sound.play()
-            
-               if powerup["type"] == "small":
-                  paddle_width = PADDLE_SMALL_WIDTH
-                  paddle_img = paddle_small_img
-               
-               elif powerup["type"] == "reverse":
-                  controls_reversed = True
-                  powerup_timer = POWERUP_DURATION
-                  controls_reversed_display_timer = CONTROLS_REVERSED_DISPLAY_DURATION
-               else:
-                  paddle_width = PADDLE_LARGE_WIDTH
-                  paddle_img = paddle_large_img
-            
-               if controls_reversed_display_timer > 0: # makes sure the controls reversed text is only there when the controls are reversed
-                  controls_reversed_display_timer -= 1
-               
-               # Keep paddle centered
-               paddle_x = paddle_center - paddle_width // 2
-    
-               powerup_timer = POWERUP_DURATION
-               powerups.remove(powerup)
-               continue  # Skip the rest of the loop for this powerup
-        
-            # Remove if off screen
-            if powerup["y_position"] > SCREEN_HEIGHT:
-               powerups.remove(powerup)
 
-         # Handle powerup timer
-         if powerup_timer > 0:
+         if game_status == 7:
+            # Respawn balls if none are left
+            if len(balls) == 0:
+               # Spawn ball for player 1 (bottom)
+               balls.append({
+                  "x": paddle_x + (paddle_width - BALL_WIDTH) // 2,
+                  "y": paddle_y - BALL_HEIGHT,
+                  "speed_x": randint(-3, 3),
+                  "speed_y": -5,
+                  })
+        
+               # Spawn ball for player 2 (top)
+               balls.append({
+                  "x": paddle2_x + (paddle2_width - BALL_WIDTH) // 2,
+                  "y": paddle2_y + PADDLE_HEIGHT,
+                  "speed_x": randint(-3, 3),
+                  "speed_y": 5,
+                  })
+        
+               if balls[0]["speed_x"] == 0:
+                  balls[0]["speed_x"] = 1
+               if balls[1]["speed_x"] == 0:
+                  balls[1]["speed_x"] = 1
+
+            # winning two player
+            if player1_score >= WINNING_SCORE:
+               game_status_msg = "Player 1 wins!"
+               old_game_status = game_status
+               game_status = GAME_STATUSES["game over"]
+               if musicIsInitialised:
+                  pygame.mixer.stop()
+                  musicIsPlaying = False
+            elif player2_score >= WINNING_SCORE:
+               game_status_msg = "Player 2 wins!"
+               old_game_status = game_status
+               game_status = GAME_STATUSES["game over"]
+               if musicIsInitialised:
+                  pygame.mixer.stop()
+                  musicIsPlaying = False
+         
+         # paddle-wall colisions
+         if paddle_x + paddle_width > SCREEN_WIDTH: # if paddle goes of the screen on the right side
+            paddle_x = SCREEN_WIDTH - paddle_width  # paddle is set to the rightmost x position
+   
+         if paddle_x < 0: # if paddle goes of the screen on the left side
+            paddle_x = 0  # paddle is set to the leftmost x position
+
+         # paddle2-wall colisions
+         if game_status ==7:
+            if paddle2_x + paddle2_width > SCREEN_WIDTH: # if paddle goes of the screen on the right side
+               paddle2_x = SCREEN_WIDTH - paddle2_width  # paddle is set to the rightmost x position
+   
+            if paddle2_x < 0: # if paddle goes of the screen on the left side
+               paddle2_x = 0  # paddle is set to the leftmost x position  
+         
+         # Move and draw powerups
+         if game_status == 1: # we only have powerups in single player
+            for powerup in powerups[:]:
+               powerup["y_position"] += 3  # Move powerup downward
+    
+               # Draw powerup
+               if powerup["type"] == "large" or powerup["type"] == "score_mult":
+                  screen.blit(good_star_img, (powerup["x_position"], powerup["y_position"]))
+               else:
+                  screen.blit(bad_star_img, (powerup["x_position"], powerup["y_position"]))
+    
+               # Check collision with paddle
+               if (powerup["x_position"] + STAR_WIDTH > paddle_x and
+                  powerup["x_position"] < paddle_x + paddle_width and
+                  powerup["y_position"] + STAR_HEIGHT > paddle_y and
+                  powerup["y_position"] < paddle_y + PADDLE_HEIGHT):
+            
+                  paddle_center = paddle_x + paddle_width //2
+            
+                  if musicIsInitialised: # only execute is music is working
+                     powerup_sound.play()
+            
+                  if powerup["type"] == "small":
+                     paddle_width = PADDLE_SMALL_WIDTH
+                     paddle_img = paddle_small_img
+                     singleplayer_score -= 100 * score_multiplier # powerdowns subtract points from score
+                  elif powerup["type"] == "reverse":
+                     controls_reversed = True
+                     powerup_message_timer = POWERUP_MESSAGE_DURATION
+                     singleplayer_score -= 100 * score_multiplier # powerdowns subtract points from score
+                  elif powerup["type"] == "large":
+                     paddle_width = PADDLE_LARGE_WIDTH
+                     paddle_img = paddle_large_img
+                     singleplayer_score += 100 * score_multiplier
+                  elif powerup["type"] == "score_mult":
+                     score_multiplier += 1
+                     powerup_message_timer = POWERUP_MESSAGE_DURATION
+                     singleplayer_score += 100 * score_multiplier
+            
+                  # Keep paddle centered after powerups
+                  paddle_x = paddle_center - paddle_width // 2
+    
+                  powerup_timer = POWERUP_DURATION
+                  powerups.remove(powerup)
+                  continue  # Skip the rest of the loop for this powerup
+            
+        
+               # Remove if off screen
+               if ((powerup["for_player"] == 1 and powerup["y_position"] > SCREEN_HEIGHT) or
+               (powerup["for_player"] == 2 and powerup["y_position"] + STAR_HEIGHT < 0)):
+                  powerups.remove(powerup)
+
+         # Handle powerup timing
+         if powerup_message_timer > 0: # makes sure the controls reversed text is only there when the controls are reversed
+            powerup_message_timer -= 1
+         if powerup_timer >= 0:
             powerup_timer -= 1
          if powerup_timer == 0:
             # Reset paddle to original size
-            powerup_timer = -1 # powerup_timer is set to -1 so we dont execute the folowing code more than 1 time
             paddle_width = PADDLE_MEDIUM_WIDTH
             paddle_img = paddle_medium_img
+            if game_status == 7:
+               paddle2_width = PADDLE_MEDIUM_WIDTH
+               paddle2_img = paddle_medium_img
             if controls_reversed:
                controls_reversed = False
 
          # checks if game is over
-         # winning
+         # winning one player
+         
          if len(bricks) == 0: # when there are no bricks
             if level == LAST_LEVEL: # if you completed the last level
                ball_speed_x = 0 # set ballspeed to 0
                ball_speed_y = 0 # set ballspeed to 0
                game_status_msg = "You won the game!" # If you finished the last level set to winningscreen
+               old_game_status = game_status
                game_status = GAME_STATUSES["game over"]  # game over screen
-               if musicIsInitialised: # only execute if music is working (we do not check if music is playing already beacause we only execute this code once)
-                  pygame.mixer.music.load(game_over_music)
-                  pygame.mixer.music.play(-1)  # -1 betekent loop oneindig
-                  musicIsPlaying = True
+               highscore_checked = False
+               if musicIsInitialised: # only execute is music is working
+                  pygame.mixer.stop() # stops the current music so new music can be played
+                  musicIsPlaying = False
             else: # if you completed a level
                level += 1  # Go to next level
-               setBreakout(level)
+               setBreakout(level, two_player_mode, newlives= lives)
                game_status_msg = "Level " + str(level) + "!"
                if musicIsInitialised: # only execute is music is working
                   level_complete_sound.play()
+            if not two_player_mode: # the level selection screen update is for single player only
+               max_level_playable = max(max_level_playable, level)
 
-         # losing
-         if len(balls) == 0:  # there are no more balls
-            if reset_delay_timer <= 0:  # Only process if not in delay
-               lives -= 1
-               if lives == 0: # if you have no lives left
-                  ball_speed_x = 0
-                  ball_speed_y = 0
-                  game_status_msg = "You lost!"
-                  game_status = GAME_STATUSES["game over"]  # game over screen
-                  if musicIsInitialised: # only execute if music is working (we do not check if music is playing already beacause we only execute this code once)
-                     pygame.mixer.music.load(game_over_music)
-                     pygame.mixer.music.play(-1)
-                     musicIsPlaying = True
-               else: # if you have lives left
-                  reset_delay_timer = RESET_DELAY  # Start delay
-                  # Reset ball position/speed, powerups, etc.
-                  initialiseBreakoutgameVariables(level, newlives = lives)
+
       else:
          reset_delay_timer -= 1  # removes 1 from the timer every frame 
 
@@ -912,8 +1269,17 @@ while running: # This creates a loop which keeps getting repeated until the game
       #
   
       # draw level info
-      level_img = font.render(f"Level: {level}", True, 'white')
-      screen.blit(level_img, (10, 10))  # Teken in de linkerbovenhoek
+      level_img = font.render("Level: " + str(level), True, 'white')
+      screen.blit(level_img, (20, SCREEN_HEIGHT - 50))  # bottom left corner
+
+      if game_status == 7:
+         # Score player 1 (bottom)
+         score1_img = font.render("P1: " + str(player1_score), True, 'white')
+         screen.blit(score1_img, (SCREEN_WIDTH - 150, SCREEN_HEIGHT - 50))
+         # Score player 2 (top)
+         score2_img = font.render("P2: " + str(player2_score), True, 'white')
+         screen.blit(score2_img, (SCREEN_WIDTH - 150, 10))
+         screen.blit(paddle2_img, (paddle2_x, paddle2_y))
 
       # draw ball and paddle
       for ball in balls:
@@ -937,12 +1303,17 @@ while running: # This creates a loop which keeps getting repeated until the game
             bricks_animations.pop(i)        # remove that animation
       
       if reset_delay_timer > 0:
-         screen.blit(ready_text, (text_x, text_y))
+         screen.blit(ready_text, (ready_text_x, ready_text_y))
          if reset_delay_timer == RESET_DELAY and musicIsInitialised:
             ready_sound.play()
       # draw hearts
-      draw_hearts()
-   
+      if game_status == 1:
+         draw_hearts()
+
+      if game_status == 1:  # only singleplayer
+         score_img = font.render("Score: " + str(singleplayer_score), True, 'white')
+         screen.blit(score_img, (10, 10))  # top left
+
    #
    # info screen
    #
@@ -955,7 +1326,6 @@ while running: # This creates a loop which keeps getting repeated until the game
       temp_img.blit(button_img_text, ((temp_img.get_width() - button_img_text.get_width()) // 2, (temp_img.get_height() - button_img_text.get_height()) // 2)) # draws the text img onto the middle of the 'temp_img'
       screen.blit(temp_img, ((SCREEN_WIDTH - temp_img.get_width()) // 2, (SCREEN_HEIGHT - temp_img.get_height()) - 50)) # places the button in the middlebottom of the screen
 
-      font_small = pygame.font.SysFont('default', 24)  # Smaller font for info screen
       game_status_msg = '' 
 
        # Split the information text into two columns
@@ -972,7 +1342,7 @@ while running: # This creates a loop which keeps getting repeated until the game
          
          # uses different colors for headers
          text_color = 'orange' if line.endswith(":") and not line.startswith(" ") else 'white'
-         line_surface = font_small.render(line, True, text_color)
+         line_surface = font_smallest.render(line, True, text_color)
          screen.blit(line_surface, (50, textheight))
          textheight += 25
          
@@ -984,7 +1354,7 @@ while running: # This creates a loop which keeps getting repeated until the game
             continue
         
         text_color = 'orange' if line.endswith(":") and not line.startswith(" ") else 'white'
-        line_surface = font_small.render(line, True, text_color)
+        line_surface = font_smallest.render(line, True, text_color)
         screen.blit(line_surface, (SCREEN_WIDTH // 2 + 50, textheight))
         textheight += 25
 
@@ -992,7 +1362,10 @@ while running: # This creates a loop which keeps getting repeated until the game
       selected_button = 0
       pressed_button = handleMenuInputs(['Back'])
       if pressed_button == 'Back':
-         game_status = GAME_STATUSES['Back'] # this sets the game status number to the number that is defined by the name on the selected button
+         # we want to go back to the old game status, but we also want to put the current game status in old_game_status
+         temp_var = game_status
+         game_status = old_game_status
+         old_game_status = temp_var
  
    #
    # quit python
@@ -1006,16 +1379,64 @@ while running: # This creates a loop which keeps getting repeated until the game
    #
 
    elif game_status == 4: # game over screen
-      
       if musicIsInitialised and not musicIsPlaying: # only execute if music is working and is not playing already
-         pygame.mixer.music.load(game_over_music)
-         pygame.mixer.music.play(-1)
-         musicIsPlaying = True
+            pygame.mixer.music.load(game_over_music)
+            pygame.mixer.music.play(-1)
+            musicIsPlaying = True
+            if old_game_status == 1 and lives == 0:
+               game_over_sound.play()
 
-      drawButtons(game_over_screen_buttons, selected_button)
-      pressed_button = handleMenuInputs(game_over_screen_buttons)
-      if pressed_button != None:
-         game_status = GAME_STATUSES[pressed_button] # this sets the game status number to the number that is defined by the name on the selected button
+      if not highscore_checked:
+            try:
+               highscorefile = open("highscore.txt")
+            except FileNotFoundError:
+               highscore = 0 # if there is no highscore.txt file we say the highscore is 0
+            else:
+               highscore = int(highscorefile.read())
+               highscorefile.close()
+            highscore_checked = True
+            if singleplayer_score > highscore: # we put this in here so we can say 'no' to saving our highscore while not triggering this the whole time
+               add_highscore_mode = True
+
+      if add_highscore_mode:
+         if old_game_status == 1:  # if we come from single player
+            final_score_img = font.render("Final Score: " + str(singleplayer_score), True, 'white')
+            screen.blit(final_score_img, (SCREEN_WIDTH // 2 - final_score_img.get_width() // 2, 50))
+            highscore_img = font.render('Current highscore: ' + str(highscore), True, 'white')
+            screen.blit(highscore_img, (SCREEN_WIDTH // 2 - highscore_img.get_width() // 2, 100))
+            screen.blit(savehighscore_text, (SCREEN_WIDTH // 2 - savehighscore_text.get_width() // 2, 150))
+            temp_path = Path('highscore.txt')
+            if not temp_path.exists(): # if the file does not exist yet, we warn the user that pressing 'yes' will create a file
+               screen.blit(savehighscore_subtext, (SCREEN_WIDTH // 2 - savehighscore_subtext.get_width() // 2, 200))
+            drawButtons(save_highscore_buttons, selected_button, columns=2)
+            pressed_button = handleMenuInputs(save_highscore_buttons, columns=2)
+            if pressed_button == 'yes':
+               highscorefile = open("highscore.txt", "w")
+               highscorefile.write(str(singleplayer_score))
+               highscorefile.close()
+               highscore = singleplayer_score
+               add_highscore_mode = False
+            elif pressed_button == 'no':
+               add_highscore_mode = False
+
+      else: # if we are not in add_highscore_mode
+         if not two_player_mode:
+            final_score_img = font.render("Final Score: " + str(singleplayer_score), True, 'white')
+            screen.blit(final_score_img, (SCREEN_WIDTH // 2 - final_score_img.get_width() // 2, 50))
+            highscore_img = font.render('Highscore: ' + str(highscore), True, 'white')
+            screen.blit(highscore_img, (SCREEN_WIDTH // 2 - highscore_img.get_width() // 2, 100))
+         
+         drawButtons(game_over_screen_buttons, selected_button, columns = 2)
+         pressed_button = handleMenuInputs(game_over_screen_buttons, columns = 2)
+         if pressed_button != None:
+            if pressed_button == 'save score':
+               add_highscore_mode = True
+            elif pressed_button == 'play again' and two_player_mode == True:
+               old_game_status = game_status
+               game_status = 7 # back to two player mode
+            else:
+               old_game_status = game_status
+               game_status = GAME_STATUSES[pressed_button] # this sets the game status number to the number that is defined by the name on the selected button
 
    #
    # game paused screen
@@ -1027,13 +1448,21 @@ while running: # This creates a loop which keeps getting repeated until the game
       drawButtons(pause_menu_buttons, selected_button)
       pressed_button = handleMenuInputs(pause_menu_buttons)
       if pressed_button != None:
-         game_status = GAME_STATUSES[pressed_button] # this sets the game status number to the number that is defined by the name on the selected button
+         old_game_status = game_status
+         if pressed_button == 'resume' and two_player_mode == True:
+            game_status = 7 # back to two player mode
+         else:
+            game_status = GAME_STATUSES[pressed_button] # this sets the game status number to the number that is defined by the name on the selected button
 
       if button_cooldown_timer == 0:
          if keys[pygame.K_r] : # key r is down
             button_cooldown_timer = button_cooldown_ticks
             reset_delay_timer = RESET_DELAY         # pauses game if you play again after you paused
-            game_status = GAME_STATUSES["breakout"] # go back to breakout
+            old_game_status = game_status
+            if two_player_mode == True:
+               game_status = 7 # back to two player mode
+            else:
+               game_status = 1 # back to single player mode
       else:
          button_cooldown_timer -=1
 
@@ -1051,18 +1480,38 @@ while running: # This creates a loop which keeps getting repeated until the game
             volume_change = keys[pygame.K_w] - keys[pygame.K_s]
             volume += volume_change
             volume = max(0, min(volume, 100))
+            pygame.mixer.music.set_volume(volume/100)  # change volume so you can here the change directly
             pressed_button = handleMenuInputs(['volume'])
             if pressed_button == 'volume':
+               for sound in all_sounds:
+                  sound.set_volume(volume/100)
                volume_change_mode = False
                game_status_msg = 'volume set to: ' + str(volume)
       else:
          pressed_button = handleMenuInputs(settings_buttons)
          if pressed_button == 'Back':
-            game_status = GAME_STATUSES['Back']
+            # we want to go back to the old game status, but we also want to put the current game status in old_game_status
+            temp_var = game_status
+            game_status = old_game_status
+            old_game_status = temp_var
          elif pressed_button == 'no sound':
             game_status_msg = 'Sound is not working. Try restarting your game.'
          elif pressed_button == 'volume':
             volume_change_mode = True
+   
+   #
+   # level select screen
+   #
+   elif game_status == 8:
+      drawButtons(level_select_buttons, selected_button, columns = 4, color = 'red', color_from = max_level_playable)
+      # we draw the buttons first in red and than the buttons of all the completed levels on top of it, so you see all th elevel but cant access all
+      pressed_button = handleMenuInputs(level_select_buttons[:max_level_playable], columns = min(4, len(level_select_buttons[:max_level_playable])))
+      if pressed_button != None:
+         selected_button = 0
+         level = int(pressed_button[-1]) # the last character of the string is the level number
+         setBreakout(level)
+         old_game_status = game_status
+         game_status = GAME_STATUSES['breakout']
 
 
 
