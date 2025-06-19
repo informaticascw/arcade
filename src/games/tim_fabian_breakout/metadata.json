@@ -1,7 +1,0 @@
-{
-	"name": "Tim Fabian Breakout",
-	"authors": ["Kees", "Annie"],
-	"coverimage": "screenshot.jpg",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
-}

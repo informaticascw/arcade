@@ -1,0 +1,16 @@
+- achtergrond (een andere achtergrond)
+- levens (je verliest niet in 1 keer)
+- powerups: (als je een blok breed heb je een kans om een powerup te krijgen die naar beneden valt)
+    - extra leven, maar je kan maximaal 5 levens hebben (ook te testen met toets "z")
+    - extra bal (er wordt een extra bal toegevoegd te testen met knop "o")
+    - brede plank (de plank wordt groter te testen met toets "r")
+- stopt de game (als de "e" toest wordt ingedrukt)
+- cheat (50 ballen toevoegen met de "m" toets)
+- pauze (game gaat op pauze als je op toets "p" drukt)
+- tekst (Bij de start van de game, pauze of bij een powerup krijg je een tekst)
+- blokken, dit gebeurt nog niet bij level 1 en 2. (breken niet in 1 keer en ze hebben ook een andere kleur)
+- snelheid (elke keer dat de bal tegen iets aan gaat, gaat de bal iets sneller)
+- random kaatsen (de bal veranderd een beetje van hoek als die de blokken en de plank raakt)
+- score (je krijgt punten als je een blok breekt)
+- startmenu
+- als je alle blokken breekt, komt er een nieuw level. Dit gaat door totdat je dood bent

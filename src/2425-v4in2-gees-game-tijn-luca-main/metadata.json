@@ -1,0 +1,7 @@
+{
+	"name": "Best Breakout",
+	"authors": ["Tijn", "Luca"],
+	"coverimage": "screenshot.jpg",
+	"entrypoint": "main.py",
+	"instructionspage": "instructions.py"
+}

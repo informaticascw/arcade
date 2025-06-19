@@ -1,0 +1,7 @@
+{
+	"name": "Hub-Kasper Breakout",
+	"authors": ["Hub", "Kasper"],
+	"coverimage": "screenshot.jpg",
+	"entrypoint": "main.py",
+	"instructionspage": "instructions.py"
+}
