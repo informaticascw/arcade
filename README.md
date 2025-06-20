@@ -1,8 +1,10 @@
 # arcade
 
-This repository will be used to make the code for an arcade running python games.
+This repository contains the code for an arcade running python games.
 
-It is inspired on the arcade running javascript games at [https://github.com/emmauscollege/arcade](https://github.com/emmauscollege/arcade)
+It is inspired on the arcade running javascript games at:
+[https://github.com/emmauscollege/arcade](https://github.com/emmauscollege/arcade)<br>
+and would never have come to life without the hard work of [Spookie6](https://github.com/Spookie6) and [Fabstershu](https://github.com/Fabsterschu)
 
 # werkafspraken
 
@@ -46,3 +48,4 @@ Terminal=true
         -   `/constants`: Constante waardes voor het project, zoals resolutie, fps, kleuren, etc.
         -   `/data`: Een bestand dat een `data` variable bevat waarin je data mee op kunt slaan op een data.json bestand
         -   `/router` Dit initialiseert de `Router` component van de components library. Dit is een centraal punt om te navigeren door de menu pages (en de verschillende games).
+
