@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/Arcade/2425-arcade-main
+cd ~/Arcade/arcade-main
 
 find_keyboard_device() {
 	grep -E -A 5 "Ultimarc|Keyboard" /proc/bus/input/devices | grep -oE "event[0-9]+" | head -n 1
