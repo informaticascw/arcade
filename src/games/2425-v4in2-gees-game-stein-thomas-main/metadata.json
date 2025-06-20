@@ -1,0 +1,7 @@
+{
+	"name": "Star Crash Breakout",
+	"authors": ["Thomas", "Stein"],
+	"coverimage": "screenshot.jpg",
+	"entrypoint": "main.py",
+	"instructionspage": "instructions.py"
+}

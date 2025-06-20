@@ -1,0 +1,19 @@
+Uitbreidingen:
+- Verschillende kleuren blokken:
+    - Dit gebeurd door automatisch de X en Y waarde van de blokken in de Spritesheet uit te lezen uit het XML-bestand
+    - De block_img's staan in lijsten: 1 voor hele en 1 voor stukke blokken
+- Bal stuitert van paddle afhankelijk van waar op de paddle hij stuitert
+- makeBlocksGrid() is een simpele functie om een grid van blokken te maken, zonder dat je handmatig de Y-waarde, X-waarde, kleur, damage, etc. op moet geven voor elk blok
+- Introscherm
+- Eindscherm
+- De speler heeft meerdere levens
+- Blokken hebben 'damage' dus je moet ze een bepaald aantal keer raken voor ze verdwijnen, als ze nog maar 1 leven overhebben hebben ze een stukke textuur
+- Verschillende levels  
+    - met verschillende layouts
+- De snelheid van zowel de paddle als de bal verhoogt naarmate het spel verder gaat om het moeilijker te maken
+- Power-ups
+- Score
+- een text boven de blokken die veranderd met de game status
+- makeCustomShape werkt als makeBlocksGrid, alleen kan je nu nested lijsten opgeven om een vorm te maken
+- bal begint boven de paddle wanneer je een leven verliest en op de paddle aan begin van een level
+- Leaderboard toegevoegd

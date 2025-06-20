@@ -1,0 +1,7 @@
+{
+	"name": "Fenne-Nienke-Annelie Breakout",
+	"authors": ["Nienke","Annelie","Fenne"],
+	"coverimage": "screenshot.jpg",
+	"entrypoint": "main.py",
+	"instructionspage": "instructions.py"
+}
