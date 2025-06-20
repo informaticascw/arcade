@@ -8,8 +8,8 @@ TRIES=0
 
 start_with_internet() {
 	sudo apt install -y wget unzip
-	wget https://github.com/leerlingenscw/2425-arcade/archive/refs/heads/main.zip
-	rm -rf ~/Arcade/2425-arcade-main
+	wget https://github.com/informaticascw/arcade/archive/refs/heads/main.zip
+	rm -rf ~/Arcade/arcade-main
 	unzip -o ~/main.zip  -d ~/Arcade/
 	rm -rf ~/main.zip
 }
@@ -40,7 +40,7 @@ then
  	start_with_internet
 fi
 
-bash ~/Arcade/2425-arcade-main/watchdog.sh
+bash ~/Arcade/arcade-main/watchdog.sh
 
 
 read -p "Press [Enter] to close..."
