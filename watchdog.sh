@@ -38,11 +38,18 @@ restart_menu() {
 	python3 "$PYTHON_SCRIPT" &
 }
 
-sudo evtest "$KEYBOARD_DEVICE" | while read line; do
+sudo evtest "$KEYBOARD_DEVICE" | while true; do
+    if read -t 600 line; then  # if line read within 600 seconden
 	if echo "$line" | grep -q "KEY_1" && echo "$line" | grep -q "value 1"; then
+ 		echo "KEY_1 pressed. Closing all games and restarting menu."
 		restart_menu
 	fi
  	if echo "$line" | grep -q "KEY_2" && echo "$line" | grep -q "value 1"; then
+                echo "KEY_2 pressed. Closing all games."
 		close_all_games
 	fi
+     else
+        echo "No input for 10 minutes. Closing all games."
+        close_all_games
+     fi
 done
