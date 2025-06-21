@@ -1,5 +1,5 @@
 {
-	"name": "Hub-Kasper Breakout",
+	"name": "Hub-Kasper",
 	"authors": ["Hub", "Kasper"],
 	"coverimage": "screenshot.jpg",
 	"entrypoint": "main.py",

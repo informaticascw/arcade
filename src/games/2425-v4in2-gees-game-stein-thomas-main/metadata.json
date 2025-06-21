@@ -1,5 +1,5 @@
 {
-	"name": "Star Crash Breakout",
+	"name": "Thomas & Stein",
 	"authors": ["Thomas", "Stein"],
 	"coverimage": "screenshot.jpg",
 	"entrypoint": "main.py",

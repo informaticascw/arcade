@@ -1,5 +1,5 @@
 {
-	"name": "L&T Breakout",
+	"name": "Lars & Teun",
 	"authors": ["Lars", "Teun"],
 	"coverimage": "./assets/example.jpg",
 	"entrypoint": "main.py",

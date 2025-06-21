@@ -1,5 +1,5 @@
 {
-	"name": "Olaf & Raphael Breakout",
+	"name": "Olaf & Raphael",
 	"authors": ["Olaf", "Raphael"],
 	"coverimage": "images/the best game.jpg",
 	"entrypoint": "main.py",
