@@ -36,14 +36,25 @@ def fetchGames(path=Constants.GAMES_PATH) -> list:
 	return res
 
 def start_game(path):
-	print(Constants.CNSL_DATA, "[GAME PATH] ", path, Constants.CNSL_RESET)
-	
-	# os.system(f"python {path}") THIS WORKS AS WELL BUT NOT SURE IF IT WORKS SAME ON ALL OS
- 
-	print(f"cd {os.path.dirname(path)} && python {os.path.basename(path)}",)
- 
-	try:
-		result = subprocess.run(f"cd {os.path.dirname(path)} && python {os.path.basename(path)}", shell=True, capture_output=True)
-		print(result.stderr, result.stdout)
-	except:
-		print(f"{Constants.CNSL_ERROR}[GAME UTIL] Game failed to launch")
+    print(Constants.CNSL_DATA, "[GAME PATH] ", path, Constants.CNSL_RESET)
+
+    game_dir = os.path.dirname(path)
+    game_file = os.path.basename(path)
+
+    # Copy environment and ensure DISPLAY is set for TigerVNC / noVNC
+    env = os.environ.copy()
+    env.setdefault("DISPLAY", ":1")  # or whatever display VNC uses
+
+    try:
+        result = subprocess.run(
+            ["python3", game_file],
+            cwd=game_dir,
+            env=env,
+            capture_output=True,
+            text=True
+        )
+        print(result.stdout)
+        if result.stderr:
+            print("[GAME ERROR]", result.stderr)
+    except Exception as e:
+        print(f"{Constants.CNSL_ERROR}[GAME UTIL] Game failed to launch: {e}")
