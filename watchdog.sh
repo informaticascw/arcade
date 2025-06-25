@@ -22,7 +22,7 @@ python "$PYTHON_SCRIPT" &
 close_all_games() {
     for pid in $(pgrep -f "python"); do
         if ! ps -p "$pid" -o cmd= | grep -q "$PYTHON_SCRIPT"; then
-            kill "$pid"
+            kill -KILL "$pid"
         fi
     done
     sleep 0.5
@@ -32,7 +32,7 @@ restart_menu() {
 	close_all_games
  
 	if pgrep -f "$PYTHON_SCRIPT" > /dev/null; then
-		pkill -f "$PYTHON_SCRIPT"
+		pkill -KILL -f "$PYTHON_SCRIPT"
 		sleep 1
 	fi
 	python3 "$PYTHON_SCRIPT" &
