@@ -1,0 +1,38 @@
+[
+    {
+        "label": "textures",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "textures",
+        "description": "textures",
+        "detail": "textures",
+        "documentation": {}
+    },
+    {
+        "label": "pygame,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pygame.",
+        "description": "pygame.",
+        "detail": "pygame.",
+        "documentation": {}
+    },
+    {
+        "label": "power_ups_ik_heb_geen_zin_meer",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "power_ups_ik_heb_geen_zin_meer = {\n    \"41-paddle-slow\": textures.items[\"41-paddle-slow.png\"],\n    \"42-paddle-fast\": textures.items[\"42-paddle-fast.png\"],\n    \"43-paddle-balls\": textures.items[\"43-paddle-balls.png\"],\n    # \"44-paddle-comet-red\": textures.items[\"44-paddle-comet-red.png\"],\n    # \"45-paddle-comet-green\": textures.items[\"45-paddle-comet-green.png\"],\n    # \"46-paddle-arrows-inside\": textures.items[\"46-paddle-arrows-inside.png\"],\n    # \"47-paddle-arrows-outside\": textures.items[\"47-paddle-arrows-outside.png\"],\n    # \"48-paddle-redbar\": textures.items[\"48-paddle-redbar.png\"],\n    # \"50-paddle-electric-step1\": textures.items[\"50-paddle-electric-step1.png\"],",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "lastTime:float",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "lastTime:float = 0\nlastPowerup: float=time.time()\ngame_status: int=2\nstart_time: float=time.time()\ndespawn_timer: float=time.time()\nstart_timeout_counter: float=time.time()\n# if(DEBUG):game_status=0\nwhile running:\n    keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed() \n    if keys[pygame.K_q]:DEBUG=1",
+        "detail": "main",
+        "documentation": {}
+    }
+]
