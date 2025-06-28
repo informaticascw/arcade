@@ -36,7 +36,7 @@ def draw_hearts():           # draws the heart images
         screen.blit(heart_img, (SCREEN_WIDTH - (42 + (i * 35)), 10)) # draw on the right side of the screen, every next 35px left of it
 
 def initialiseBreakoutgameVariables(level: int, newlives: int = 3): # resets all the variables
-   global balls, paddle_steer, paddle_x, paddle_y, bricks_animations, lives, button_cooldown_timer, paddle_width, paddle_img, powerups, powerup_timer, paddle_speed, reset_delay_timer, controls_reversed, powerup_message_timer, controls_message_timer, paddle2_x, paddle2_y, paddle2_width, paddle2_img, paddle2_speed, player1_score, player2_score, two_player_mode, singleplayer_score, score_multiplier, game_status
+   global balls, paddle_steer, paddle_x, paddle_y, bricks_animations, lives, button_cooldown_timer, paddle_width, paddle_img, powerups, powerup_timer, paddle_speed, reset_delay_timer, controls_reversed, powerup_message_timer, controls_message_timer, paddle2_x, paddle2_y, paddle2_width, paddle2_img, paddle2_speed, player1_score, player2_score, two_player_mode, singleplayer_score, score_multiplier, game_status, cheats_used
    paddle_width = PADDLE_MEDIUM_WIDTH  # Reset to original width
    paddle_img = paddle_medium_img
    paddle_steer = 12                             # how much you can steer the ball with your paddle
@@ -87,13 +87,12 @@ def initialiseBreakoutgameVariables(level: int, newlives: int = 3): # resets all
    lives = newlives # resets lives, 3 is standard
    button_cooldown_timer = 0 # timer reset because we now are in breakout
 
-   if level == 1: # only reset the score if we go to level 1
-      player1_score = 0
-      player2_score = 0
-   
    score_multiplier = 1 # we reset the score multiplier every level so it doesn't get to big
    if level == 1 or game_status == 8:  # only reset if we are in level selection screen or on level 1, this is also reset when we go to two player so the game isn't confused that we have singleplayer_score in twoplayer
+      cheats_used = False # when you use cheats you can't upload to highscore
       singleplayer_score = 0
+      player1_score = 0
+      player2_score = 0
 
 def makeBricks(level):
    global bricks, levels, two_player_mode # global var so it will update over the whole code
@@ -865,14 +864,16 @@ while running: # This creates a loop which keeps getting repeated until the game
          # debug controls
          #  
          # press 1 to skip the level
-         if keys[pygame.K_1] : # key 1 is down
+         if keys[pygame.K_3] : # key 3 is down
             print("player skipped level: " + str(level)) # debug
+            cheats_used = True
             bricks = [] # makes bricks empty so the level is beaten
          
          # press 0 to spawn an extra ball
-         if keys[pygame.K_0] : # key 0 is down
+         if keys[pygame.K_4] : # key 4 is down
             if extra_ball_cooldown_timer == 0:
                print("player spawned a ball, number of balls is: " + str(len(balls))) # debug
+               cheats_used = True
                # spawn a ball
                balls.append({
                   "x": paddle_x + (paddle_width - BALL_WIDTH) // 2,
@@ -1415,7 +1416,7 @@ while running: # This creates a loop which keeps getting repeated until the game
                highscore = int(highscorefile.read())
                highscorefile.close()
             highscore_checked = True
-            if singleplayer_score > highscore: # we put this in here so we can say 'no' to saving our highscore while not triggering this the whole time
+            if singleplayer_score > highscore and cheats_used == False: # we put this in here so we can say 'no' to saving our highscore while not triggering this the whole time
                add_highscore_mode = True
 
       if add_highscore_mode:
