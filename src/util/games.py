@@ -24,12 +24,8 @@ def fetchGames(path=Constants.GAMES_PATH) -> list:
 			raise Exception(f"{gameDir} does not contain a metadata.json file, please add one or remove the game.")
 
 		# Get the instruction if there are
+		# not implemented, as old implementation resized screen in some cases
 		instructions = None
-		try:
-			file = SourceFileLoader(metadata["instructionspage"].replace(".py", ""), os.path.join(gameDir, metadata["instructionspage"])).load_module()
-			instructions = file.page
-		except:
-			pass
 
 		res.append(Game(index, metadata['name'], metadata['authors'], instructions, os.path.join(gameDir, metadata["entrypoint"])))
 
