@@ -15,16 +15,19 @@ font_small = pg.font.Font(FONT_PATH, 32)
 surface = pg.Surface(RESOLUTION, pg.SRCALPHA)
 
 # Render de teksten
+text0 = font_med.render("HIT ANY KEY", True, PINK)
 text1 = font_big.render("LET'S PLAY", True, PINK)
 text2 = font_med.render("Games gemaakt door leerlingen", True, PINK)
 text3 = font_small.render("4e klas informatica", True, PINK)
 
 # Center de teksten verticaal met wat ruimte ertussen
+rect0 = text0.get_rect(center=(RESOLUTION[0]//2, RESOLUTION[1]//2 - 140))
 rect1 = text1.get_rect(center=(RESOLUTION[0]//2, RESOLUTION[1]//2 - 80))
 rect2 = text2.get_rect(center=(RESOLUTION[0]//2, RESOLUTION[1]//2 + 10))
 rect3 = text3.get_rect(center=(RESOLUTION[0]//2, RESOLUTION[1]//2 + 70))
 
 # Zet de teksten op het oppervlak
+surface.blit(text0, rect0)
 surface.blit(text1, rect1)
 surface.blit(text2, rect2)
 surface.blit(text3, rect3)
