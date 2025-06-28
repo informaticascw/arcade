@@ -13,6 +13,7 @@ from util.data import data
 from util.games import fetchGames
 
 from events.handler import EventHandler
+from components.Screensaver import Screensaver  # Add this import
 
 class Menu:
 	def __init__(self) -> None:
@@ -37,6 +38,9 @@ class Menu:
 		self.header = components.gui.Text("STANISLAS ARCADE", Constants.COLOR_PRIMARY, 108, ("center", 100), shadow=components.effects.Shadow((10, -2), Constants.COLOR_SECONDARY))
 		self.background = pg.image.load("assets/menu_background.jpg")
   
+		self.screensaver_active = False
+		self.screensaver = Screensaver()
+
 		print(self.slides)
 
 	def run(self) -> None:
@@ -59,9 +63,12 @@ class Menu:
 		self.screen.blit(self.background, (0, 0))
 		self.header.draw(self.screen)
 
-		# Render the page onto the screen
-		self.slides[self.slideIndex].update()
-		self.slides[self.slideIndex].render(self.screen)
+		# Render the screensaver if active, otherwise render the page
+		if self.screensaver.active:
+			self.screensaver.render(self.screen)
+		else:
+			self.slides[self.slideIndex].update()
+			self.slides[self.slideIndex].render(self.screen)
 
 if __name__ == "__main__":
 	Menu().run()

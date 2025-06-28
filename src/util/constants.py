@@ -24,3 +24,7 @@ class Constants:
     COLOR_PRIMARY:pg.Color = pg.Color("#0094AA")
     COLOR_SECONDARY:pg.Color = pg.Color("#52AE32")
     COLOR_DARK:pg.Color = pg.Color("#424242")
+
+    # Screensaver
+    SCREENSAVER_TIMEOUT_MS = 10000  # Time in milliseconds after which the screensaver activates
+    SCREENSAVER_IMAGE_PATH = "./assets/screensaver.png"  # Path to the screensaver image
