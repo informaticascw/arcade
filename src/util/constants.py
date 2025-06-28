@@ -28,3 +28,5 @@ class Constants:
     # Screensaver
     SCREENSAVER_TIMEOUT_MS = 10000  # Time in milliseconds after which the screensaver activates
     SCREENSAVER_IMAGE_PATH = "./assets/screensaver.png"  # Path to the screensaver image
+    SCREENSAVER_OVERLAY_OPACITY = 127  # 0-255, 191 = 75% opacity = 25% transparency
+    SCREENSAVER_FONT_PATH = "./assets/font.ttf" 

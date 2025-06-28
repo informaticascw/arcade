@@ -63,12 +63,13 @@ class Menu:
 		self.screen.blit(self.background, (0, 0))
 		self.header.draw(self.screen)
 
-		# Render the screensaver if active, otherwise render the page
+		# Render the page
+		self.slides[self.slideIndex].update()
+		self.slides[self.slideIndex].render(self.screen)
+		# Render the screensaver if active
 		if self.screensaver.active:
+			self.screensaver.update()
 			self.screensaver.render(self.screen)
-		else:
-			self.slides[self.slideIndex].update()
-			self.slides[self.slideIndex].render(self.screen)
 
 if __name__ == "__main__":
 	Menu().run()
