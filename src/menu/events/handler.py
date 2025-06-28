@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+import time  # Add this import
 
 from util.data import data
 from util.constants import Constants
@@ -14,9 +15,18 @@ for i in range(2):
 class EventHandler():
     def __init__(self, menu):
         self.menu = menu
-        
+        self.last_keydown_time = time.time_ns() // 1_000_000  # Track last input time in ms
+
     def handleEvent(self):
         events = pg.event.get()
+        current_time = time.time_ns() // 1_000_000  # Current time in ms
+        screensaver_timeout = Constants.SCREENSAVER_TIMEOUT_MS  # Already in ms
+
+        # Check for screensaver timeout
+        if current_time - self.last_keydown_time > screensaver_timeout:
+            self.activate_screensaver()
+            self.last_keydown_time = current_time  # Reset timer after activating screensaver
+
         for event in events:
             match event.type:
                 case pg.QUIT:
@@ -24,7 +34,12 @@ class EventHandler():
                     self.menu.running = False
                     sys.exit()
                 case pg.KEYDOWN:
-                    self.eventKeydown(event)
+                    self.last_keydown_time = current_time  # Reset timer on key press
+                    # If screensaver is active, deactivate and do not process the key further
+                    if self.menu.screensaver.active:
+                        self.menu.screensaver.deactivate()
+                    else:
+                        self.eventKeydown(event)
  
     def eventKeydown(self, event) -> None:
         sel = self.menu.selection
@@ -79,3 +94,6 @@ class EventHandler():
             index = btns.index(possibleBtns[:1][0])
             
             self.menu.selection = game_positions[index]
+
+    def activate_screensaver(self):
+        self.menu.screensaver.activate()
