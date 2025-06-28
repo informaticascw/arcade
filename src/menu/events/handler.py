@@ -23,7 +23,7 @@ class EventHandler():
         screensaver_timeout = Constants.SCREENSAVER_TIMEOUT_MS  # Already in ms
 
         # Check for screensaver timeout
-        if current_time - self.last_keydown_time > screensaver_timeout:
+        if not self.menu.screensaver.active and current_time - self.last_keydown_time > screensaver_timeout:
             self.activate_screensaver()
             self.last_keydown_time = current_time  # Reset timer after activating screensaver
 
