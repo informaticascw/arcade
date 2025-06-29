@@ -39,7 +39,7 @@ restart_menu() {
 }
 
 sudo evtest "$KEYBOARD_DEVICE" | while true; do
-    if read -t 600 line; then  # if line read within 600 seconden
+    if read -t 300 line; then  # if line read within 300 seconden
 	if echo "$line" | grep -q "KEY_1" && echo "$line" | grep -q "value 1"; then
  		echo "KEY_1 pressed. Closing all games and restarting menu."
 		restart_menu
@@ -49,7 +49,7 @@ sudo evtest "$KEYBOARD_DEVICE" | while true; do
 		close_all_games
 	fi
      else
-        echo "No input for 10 minutes. Closing all games."
+        echo "No input for 5 minutes. Closing all games."
         close_all_games
      fi
 done
