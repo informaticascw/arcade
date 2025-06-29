@@ -13,7 +13,7 @@ class Screensaver:
             {"text": "LET'S PLAY!", "font_size": 120, "color": PINK, "y_offset": -60},
             {"text": "games gemaakt door leerlingen", "font_size": 80, "color": PINK, "y_offset": 220},
             {"text": "4e klas informatica", "font_size": 80, "color": PINK, "y_offset": 380},
-            {"text": "(wist je dat KOOU vandaag jarig is?)", "font_size": 40, "color": WHITE, "y_offset": 460},
+            {"text": Constants.SCREENSAVER_MESSAGE_OF_THE_DAY, "font_size": 40, "color": WHITE, "y_offset": 460},
         ]
 
         # Prepare fonts by size
