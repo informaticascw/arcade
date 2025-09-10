@@ -1,0 +1,18 @@
+1/2 paddle kan bal raken met zijkant (ook op hogere snelheden)(swept AABB (bepalen of en wanneer precies een collision is) op regel 40 tot 73 voor swept aabb, op onder andere regel 655 tot 691 voor toepassing)
+2/2 main menu met werkende knoppen: "play", "controlls", "how to play", "quit" (regel 89 tot 137 (mainMenu()))
+2/1 controlls scherm waar je keybinds kan aanpassen met preventie van dubbele keybinds (regel 139 tot 220 (controlls()))
+1/1 pauzeer functie tijdens het spel(normal mode: regel 574 tot 600, endless mode: regel 1256 tot 1282)
+0/1 bal gaat steeds sneller per geraakt blok (normal mode: regel 574 tot 600,  endless mode: regel 1398 tot 1399)
+1/1 return to menu functie (normal mode: regel 605 tot 608, en regel 730 tot 736, endless mode: regel 1287 tot 1290, en regel 1391 tot 1392)
+0/1 aftel functie voor starten game (normal mode: regel 532 tot 552, endless mode: regel 1210 tot 1230)
+1/1 how to play scherm toegevoegd (ook reactief op aangepaste keybinds)(regel 222 tot 264 (howToPlay()))
+zie main menu - game over scherm toegevoegd met you lost of you won en wachtscherm (normal mode: regel 777 tot 823, endless mode: regel 437 tot 1483)
+2/2 endless mode (met puntentelling)(regel 1063 tot 1483)
+2/2 levels (regel 266 tot 308 (levels()))
+1/1 highscore (door de hele code heen verspreidt, in de game te zien in de main menu linksboven)
+2/2 multiplayer (door de hele code heen verspreidt, duidelijk te zien in de game)
+arcadekast ondersteuning (door de hele code heen verspreidt, duidelijk te zien in de game)
+1/1 betere paddlebounces (beinvloed door waar op de paddle de bal landt en waar de paddle heen beweegt) (normal mode: regel 968 tot 993, endless mode: regel 1489 tot 1503, regel 1523 tot 1548)
+1/2 + 2/1 powerups (ballen splitsen, snellere paddle) (door de hele code heen verspreidt, duidelijk te zien in de game)
+
+ik heb een begin gemaakt om alle meer geavanceerde regels in de code uitleggen met comments, maar ik kwam er al snel achter dat dit me nog redelijk wat uur zou kosten om af te maken, ik hoop dat u dit begrijpt. Als u wilt kan ik u nog een keer uitleggen hoe alles werkt, maar dit allemaal opschrijven is eigenlijk echt niet te doen.
