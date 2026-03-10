@@ -30,4 +30,5 @@ class Constants:
     SCREENSAVER_IMAGE_PATH = "./assets/screensaver.png"  # Path to the screensaver image
     SCREENSAVER_OVERLAY_OPACITY = 127  # 0-255, 191 = 75% opacity = 25% transparency
     SCREENSAVER_FONT_PATH = "./assets/font.ttf" 
-    SCREENSAVER_MESSAGE_OF_THE_DAY = "Uit heel de omtrek komen wij naar de arcadekast"
+    #SCREENSAVER_MESSAGE_OF_THE_DAY = "Uit heel de omtrek komen wij naar de arcadekast"
+    SCREENSAVER_MESSAGE_OF_THE_DAY = "Nieuw: Fighter by Jasper & Semih"
