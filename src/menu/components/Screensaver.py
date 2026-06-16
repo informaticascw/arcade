@@ -6,14 +6,14 @@ class Screensaver:
     def __init__(self):
         # lines to render on the screensaver image
         # Each dict: text, font_size, color, y_offset (relative to center)
-        PINK = (255, 0, 128)
-        WHITE = (255, 255, 255)
+        SCREENSAVER_COLOR = (0, 255, 0)
+        MESSAGEOFTHEDAY_COLOR = (255, 255, 255)
         lines = [
-            {"text": "HIT ANY KEY", "font_size": 80, "color": PINK, "y_offset": -220},
-            {"text": "LET'S PLAY!", "font_size": 120, "color": PINK, "y_offset": -60},
-            {"text": "games gemaakt door leerlingen", "font_size": 80, "color": PINK, "y_offset": 220},
-            {"text": "4e klas informatica", "font_size": 80, "color": PINK, "y_offset": 380},
-            {"text": Constants.SCREENSAVER_MESSAGE_OF_THE_DAY, "font_size": 40, "color": WHITE, "y_offset": 460},
+            {"text": "HIT ANY KEY", "font_size": 80, "color": SCREENSAVER_COLOR, "y_offset": -220},
+            {"text": "LET'S PLAY!", "font_size": 120, "color": SCREENSAVER_COLOR, "y_offset": -60},
+            {"text": "games gemaakt door leerlingen", "font_size": 80, "color": SCREENSAVER_COLOR, "y_offset": 220},
+            {"text": "4e klas informatica", "font_size": 80, "color": SCREENSAVER_COLOR, "y_offset": 380},
+            {"text": Constants.SCREENSAVER_MESSAGE_OF_THE_DAY, "font_size": 40, "color": MESSAGEOFTHEDAY_COLOR, "y_offset": 460},
         ]
 
         # Prepare fonts by size
