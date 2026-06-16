@@ -3,12 +3,13 @@ from util.constants import Constants
 from importlib.machinery import SourceFileLoader
 
 class Game():
-	def __init__(self ,id, name, authors, instructionsPage, pathToGame):
+	def __init__(self ,id, name, authors, instructionsPage, pathToGame, screenshotPath=None):
 		self.id = id
 		self.name = name
 		self.authors = authors
 		self.instructionsPage = instructionsPage
 		self.entrypoint = pathToGame
+		self.screenshotPath = screenshotPath
 
 def fetchGames(path=Constants.GAMES_PATH) -> list:
 	res = []
@@ -27,7 +28,20 @@ def fetchGames(path=Constants.GAMES_PATH) -> list:
 		# not implemented, as old implementation resized screen in some cases
 		instructions = None
 
-		res.append(Game(index, metadata['name'], metadata['authors'], instructions, os.path.join(gameDir, metadata["entrypoint"])))
+		screenshot_path = os.path.join(gameDir, "screenshot.jpg")
+		if not os.path.exists(screenshot_path):
+			screenshot_path = None
+
+		res.append(
+			Game(
+				index,
+				metadata['name'],
+				metadata['authors'],
+				instructions,
+				os.path.join(gameDir, metadata["entrypoint"]),
+				screenshot_path,
+			)
+		)
 
 	return res
 

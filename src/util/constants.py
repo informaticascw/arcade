@@ -12,6 +12,9 @@ class Constants:
     DEFAULT_FONT_SIZE = 16
     
     GAMES_PATH = os.path.join("src", "games")
+    MENU_GRID_ROWS = 3
+    MENU_GRID_COLS = 5
+    MENU_GAMES_PER_SLIDE = MENU_GRID_ROWS * MENU_GRID_COLS
     
     # Console ansii escape code color values
     CNSL_ERROR:str = "\x1b[1;31m"

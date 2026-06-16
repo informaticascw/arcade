@@ -8,9 +8,9 @@ from util.data import data
 from util.games import start_game
 
 game_positions = []
-for i in range(2):
-    for j in range(3):
-        game_positions.append(list(reversed([i, j])))
+for row in range(Constants.MENU_GRID_ROWS):
+    for col in range(Constants.MENU_GRID_COLS):
+        game_positions.append([col, row])
 
 class EventHandler():
     def __init__(self, menu):
@@ -64,33 +64,51 @@ class EventHandler():
                 index = game_positions.index(sel)
                 if index < len(slide.batch):
                     self.launch_selected_game(slide.batch[index].entrypoint)
+                return
                 
-        if newSelection in game_positions and -1 < game_positions.index(newSelection) < len(slide.batch):
+        if newSelection in game_positions:
+            new_index = game_positions.index(newSelection)
+            if new_index < len(slide.batch):
                 self.menu.selection = newSelection
-        else:
-            # Selection is out of bounds
-            print(f"{Constants.CNSL_INFO}[Events] Selection out of bounds{Constants.CNSL_RESET}")
-            if len(self.menu.slides) == 1:
                 return
 
-            if newSelection[0] > self.menu.selection[0]:
-                if self.menu.slideIndex + 1 > len(self.menu.slides) - 1:
-                    self.menu.slideIndex = 0
-                else:
-                    self.menu.slideIndex += 1
-            
-            if newSelection[0] < 0:
-                if self.menu.slideIndex - 1 < 0:
-                    self.menu.slideIndex = len(self.menu.slides) - 1
-                else:
-                    self.menu.slideIndex -= 1
-                    
-            btns = self.menu.slides[self.menu.slideIndex].components.buttons
-            print(btns[:3])
-            possibleBtns = btns[3:] or btns[:3] if self.menu.selection[1] > 0 else btns[:3]
-            index = btns.index(possibleBtns[:1][0])
-            
-            self.menu.selection = game_positions[index]
+            # Selection is in grid, but there is no game at that slot on this (partial) slide.
+            clamped = self._pick_closest_in_row(newSelection[1], newSelection[0], self.menu.slideIndex)
+            if clamped is not None:
+                self.menu.selection = clamped
+                return
+
+        # Horizontal overflow moves between slides.
+        if len(self.menu.slides) > 1 and newSelection[0] >= Constants.MENU_GRID_COLS:
+            self.menu.slideIndex = (self.menu.slideIndex + 1) % len(self.menu.slides)
+            self.menu.selection = self._pick_entry_on_slide(self.menu.slideIndex, sel[1], from_right=False)
+            return
+
+        if len(self.menu.slides) > 1 and newSelection[0] < 0:
+            self.menu.slideIndex = (self.menu.slideIndex - 1) % len(self.menu.slides)
+            self.menu.selection = self._pick_entry_on_slide(self.menu.slideIndex, sel[1], from_right=True)
+            return
+
+        # Ignore out-of-bounds vertical movement.
+        print(f"{Constants.CNSL_INFO}[Events] Selection out of bounds{Constants.CNSL_RESET}")
+
+    def _pick_entry_on_slide(self, slide_index:int, preferred_row:int, from_right:bool=False) -> list[int]:
+        slide = self.menu.slides[slide_index]
+        available = game_positions[:len(slide.batch)]
+        row_positions = [pos for pos in available if pos[1] == preferred_row]
+        if row_positions:
+            return row_positions[-1] if from_right else row_positions[0]
+        if available:
+            return available[-1] if from_right else available[0]
+        return [0, 0]
+
+    def _pick_closest_in_row(self, row:int, preferred_col:int, slide_index:int):
+        slide = self.menu.slides[slide_index]
+        available = game_positions[:len(slide.batch)]
+        row_positions = [pos for pos in available if pos[1] == row]
+        if not row_positions:
+            return None
+        return min(row_positions, key=lambda pos: abs(pos[0] - preferred_col))
 
     def launch_selected_game(self, path: str) -> None:
         # Hide the menu window while the game process runs.

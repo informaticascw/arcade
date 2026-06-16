@@ -45,6 +45,7 @@ class Button(GUIComponent): # Text can be either components.gui.Text class and p
             raise Exception(f"Buttton must have either background image or rect to render")
         
         if isinstance(self.background, pg.Surface):
+            super().draw(surface)
             surface.blit(self.background, self.rect)
         else:
             super().draw(surface)

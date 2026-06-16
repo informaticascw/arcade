@@ -32,7 +32,7 @@ class Menu:
 		print(f"{Constants.CNSL_DATA}[GAMES]: {list(map(lambda game : game.name, self.games))}{Constants.CNSL_RESET}")
 		print(f"{Constants.CNSL_DATA}[DATA.JSON]: {data.data}{Constants.CNSL_RESET}")
 
-		self.batches = [self.games[i:i + 6] for i in range(0, len(self.games), 6)]
+		self.batches = [self.games[i:i + Constants.MENU_GAMES_PER_SLIDE] for i in range(0, len(self.games), Constants.MENU_GAMES_PER_SLIDE)]
 		self.slides = [components.Slide(self, batch) for batch in self.batches]
   
 		self.header = components.gui.Text("STANISLAS ARCADE", Constants.COLOR_PRIMARY, 108, ("center", 100), shadow=components.effects.Shadow((10, -2), Constants.COLOR_SECONDARY))
