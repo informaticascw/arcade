@@ -62,11 +62,8 @@ class EventHandler():
                 newSelection[0] += 1
             case pg.K_q | pg.K_e | pg.K_r | pg.K_z | pg.K_x | pg.K_c | pg.K_u | pg.K_o | pg.K_p | pg.K_b | pg.K_n | pg.K_m:
                 index = game_positions.index(sel)
-
-                try:
-                    slide.components.buttons[index].run()
-                except:
-                    pass # error popup maybe ~
+                if index < len(slide.batch):
+                    self.launch_selected_game(slide.batch[index].entrypoint)
                 
         if newSelection in game_positions and -1 < game_positions.index(newSelection) < len(slide.batch):
                 self.menu.selection = newSelection
@@ -94,6 +91,20 @@ class EventHandler():
             index = btns.index(possibleBtns[:1][0])
             
             self.menu.selection = game_positions[index]
+
+    def launch_selected_game(self, path: str) -> None:
+        # Hide the menu window while the game process runs.
+        try:
+            self.menu.screen = pg.display.set_mode((1, 1), pg.HIDDEN)
+        except Exception:
+            # Fallback for environments/window managers that do not support HIDDEN.
+            pg.display.iconify()
+
+        start_game(path)
+
+        # Recreate the menu display after the game exits.
+        self.menu.screen = pg.display.set_mode(Constants.RESOLUTION, Constants.DISPLAY_MODE)
+        pg.event.clear()
 
     def activate_screensaver(self):
         self.menu.screensaver.activate()
