@@ -3,6 +3,7 @@ import os
 import time
 import json
 import subprocess
+import random
 
 import pygame as pg
 
@@ -284,6 +285,17 @@ def _load_screensaver_font(size:int) -> pg.font.Font:
 		return load_font(size)
 
 
+def select_random_tile(tiles:list[dict], state:dict) -> None:
+	"""Select a random tile and update state to navigate to it."""
+	if not tiles:
+		return
+	random_tile = random.choice(tiles)
+	state["page_x"] = random_tile["page_x"]
+	state["page_y"] = random_tile["page_y"]
+	state["sel_col"] = random_tile["grid_col"]
+	state["sel_row"] = random_tile["grid_row"]
+
+
 def build_screensaver() -> dict:
 	font_cache = {}
 	for line in SCREENSAVER_LINES:
@@ -534,6 +546,8 @@ def run_menu():
 		print(f"{CNSL_ERROR}[MENU] Geen games gevonden.{CNSL_RESET}")
 		return
 
+	select_random_tile(tiles, state)
+
 	running = True
 	launch_keys = {
 		pg.K_q, pg.K_e, pg.K_r, pg.K_z, pg.K_x, pg.K_c,
@@ -575,10 +589,7 @@ def run_menu():
 				try_move_selection(tiles, state, 1, 0)
 			elif event.key in launch_keys:
 				screen = launch_selected(screen, current_tile(tiles, state))
-
-		if not running:
-			break
-
+				select_random_tile(tiles, state)
 		draw_menu(screen, bg, tiles, state, header_font, label_font)
 		draw_screensaver(screen, state)
 
