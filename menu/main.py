@@ -71,7 +71,7 @@ SCREENSAVER_LINES = [
 	{"text": "LET'S PLAY!", "font_size": 120, "color": (0, 255, 0), "y_offset": -60},
 	{"text": "games gemaakt door leerlingen", "font_size": 80, "color": (0, 255, 0), "y_offset": 220},
 	{"text": "4e klas informatica", "font_size": 80, "color": (0, 255, 0), "y_offset": 380},
-	{"text": "New games expected soon!", "font_size": 40, "color": (255, 255, 255), "y_offset": 460},
+	{"text": "New beta games arrived, play to test!", "font_size": 40, "color": (255, 255, 255), "y_offset": 460},
 ]
 def fetchGames(path=GAMES_PATH):
 	games = []
