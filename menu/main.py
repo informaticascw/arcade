@@ -32,6 +32,7 @@ COLOR_SECONDARY = pg.Color("#52AE32")
 COLOR_DARK = pg.Color("#424242")
 COLOR_SELECTED_HIGHLIGHT = pg.Color("#FFFFFF")
 UNSELECTED_TILE_OVERLAY_OPACITY = 0
+BACKGROUND_OVERLAY_OPACITY = 150
 
 # Screensaver Settings
 SCREENSAVER_TIMEOUT_MS = 10000
@@ -504,6 +505,9 @@ def launch_selected(screen:pg.Surface, tile:dict | None):
 
 def draw_menu(screen:pg.Surface, bg:pg.Surface, tiles:list[dict], state:dict, header_font:pg.font.Font, label_font:pg.font.Font):
 	screen.blit(bg, (0, 0))
+	bg_overlay = pg.Surface(RESOLUTION, pg.SRCALPHA)
+	bg_overlay.fill((0, 0, 0, BACKGROUND_OVERLAY_OPACITY))
+	screen.blit(bg_overlay, (0, 0))
 
 	title = header_font.render("STANISLAS ARCADE", True, COLOR_PRIMARY)
 	title_shadow = header_font.render("STANISLAS ARCADE", True, COLOR_SECONDARY)
