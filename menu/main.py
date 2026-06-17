@@ -30,6 +30,8 @@ CNSL_RESET = "\x1B[0m"
 COLOR_PRIMARY = pg.Color("#0094AA")
 COLOR_SECONDARY = pg.Color("#52AE32")
 COLOR_DARK = pg.Color("#424242")
+COLOR_SELECTED_HIGHLIGHT = pg.Color("#FFFFFF")
+UNSELECTED_TILE_OVERLAY_OPACITY = 0
 
 # Screensaver Settings
 SCREENSAVER_TIMEOUT_MS = 10000
@@ -452,22 +454,28 @@ def try_move_selection(tiles:list[dict], state:dict, delta_col:int, delta_row:in
 
 	# Vertical page overflow.
 	if new_row >= MENU_GRID_ROWS:
-		target_x = state["page_x"]
-		target_y = state["page_y"] + 1
-		if target_y < state["page_rows"]:
+		current_page = state["page_y"] * state["page_cols"] + state["page_x"]
+		next_page = current_page + 1
+		if next_page < state["page_count"]:
+			target_x = next_page % state["page_cols"]
+			target_y = next_page // state["page_cols"]
 			target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), state["sel_col"], 0)
 			if target_tile:
+				state["page_x"] = target_x
 				state["page_y"] = target_y
 				state["sel_col"] = target_tile["grid_col"]
 				state["sel_row"] = target_tile["grid_row"]
 		return
 
 	if new_row < 0:
-		target_x = state["page_x"]
-		target_y = state["page_y"] - 1
-		if target_y >= 0:
+		current_page = state["page_y"] * state["page_cols"] + state["page_x"]
+		previous_page = current_page - 1
+		if previous_page >= 0:
+			target_x = previous_page % state["page_cols"]
+			target_y = previous_page // state["page_cols"]
 			target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), state["sel_col"], MENU_GRID_ROWS - 1)
 			if target_tile:
+				state["page_x"] = target_x
 				state["page_y"] = target_y
 				state["sel_col"] = target_tile["grid_col"]
 				state["sel_row"] = target_tile["grid_row"]
@@ -505,6 +513,8 @@ def draw_menu(screen:pg.Surface, bg:pg.Surface, tiles:list[dict], state:dict, he
 	screen.blit(title, title_rect)
 
 	selected = current_tile(tiles, state)
+	tile_overlay = pg.Surface((TILE_W, TILE_H), pg.SRCALPHA)
+	tile_overlay.fill((0, 0, 0, UNSELECTED_TILE_OVERLAY_OPACITY))
 	for tile in tiles_on_page(tiles, state["page_x"], state["page_y"]):
 		tile_rect = tile["rect"].move(
 			RESOLUTION[0] // 2 - ((MENU_GRID_COLS - 1) * TILE_X_SPACING + TILE_W + 12) // 2,
@@ -512,12 +522,16 @@ def draw_menu(screen:pg.Surface, bg:pg.Surface, tiles:list[dict], state:dict, he
 		)
 
 		screen.blit(tile["image"], tile_rect.topleft)
-		if selected and tile["id"] == selected["id"]:
-			pg.draw.rect(screen, COLOR_PRIMARY, tile_rect.inflate(8, 8), 6, border_radius=10)
+		is_selected = bool(selected and tile["id"] == selected["id"])
+		if is_selected:
+			pg.draw.rect(screen, COLOR_SELECTED_HIGHLIGHT, tile_rect.inflate(8, 8), 6, border_radius=10)
+		else:
+			screen.blit(tile_overlay, tile_rect.topleft)
 
 		lines = wrap_title(tile["name"], label_font)
 		for i, line in enumerate(lines):
-			txt = label_font.render(line, True, COLOR_PRIMARY)
+			label_color = COLOR_SELECTED_HIGHLIGHT if is_selected else COLOR_PRIMARY
+			txt = label_font.render(line, True, label_color)
 			txt_rect = txt.get_rect(midtop=(tile_rect.centerx, tile_rect.bottom + LABEL_TOP_MARGIN + i * (LABEL_FONT_SIZE + LABEL_LINE_SPACING)))
 			screen.blit(txt, txt_rect)
 
