@@ -32,20 +32,7 @@ Exec=lxterminal -e "bash ~/Arcade/install-arcade.sh"
 Terminal=true
 ```
 
-## Menu
-
--   Run `python ./menu/main.py` to start
-
-    Ik doe mn best om over alles te commenten maar mischien mist er ergens nog iets.
-
-    `/menu` bevat:
-
-    -   `/components`: Dit is een componenten library met allemaal classes om menu pages / hud elements te maken.
-    -   `/events` Een apparte module om pygame events te handelen.
-    -   `/pages` Dit is een collectie aan pages die in het menu zitten, elke file stelt een pagina voor, hierin zit een variable dat verwijst naar een ge-inialized page component uit de components library. Er moet een page met de naam "main" aanwezig zijn, dit is het entry point voor het menu, er kunnen geen dubbele page namen voorkomen, dit veroorzaakt een error.
-
-    -   `/util` Extra utility om te helpen met verschillende dingen:
-        -   `/constants`: Constante waardes voor het project, zoals resolutie, fps, kleuren, etc.
-        -   `/data`: Een bestand dat een `data` variable bevat waarin je data mee op kunt slaan op een data.json bestand
-        -   `/router` Dit initialiseert de `Router` component van de components library. Dit is een centraal punt om te navigeren door de menu pages (en de verschillende games).
-
+## test in a Codespace
+-   Start a Codespace
+-   Run `python ./menu/main.py` in the terminal to start
+-   Type CTRL+C keys in the terminal to stop the menu or game
