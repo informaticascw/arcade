@@ -1,7 +1,10 @@
 {
-	"name": "Meryem & Joyce & Renate",
-	"authors": ["Meryem", "Joyce", "Renate"],
-	"coverimage": "screenshot.jpg",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
+    "name": "Meryem & Joyce & Renate",
+    "authors": [
+        "Meryem",
+        "Joyce",
+        "Renate"
+    ],
+    "coverimage": "screenshot.jpg",
+    "entrypoint": "main.py"
 }

@@ -1,7 +1,9 @@
 {
-	"name": "Umar & Fjodor",
-	"authors": ["Kees", "Annie"],
-	"coverimage": "screenshot.jpg",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
+    "name": "Umar & Fjodor",
+    "authors": [
+        "Umar",
+        "Fjodor"
+    ],
+    "coverimage": "screenshot.jpg",
+    "entrypoint": "main.py"
 }

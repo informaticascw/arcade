@@ -69,10 +69,19 @@ SCREENSAVER_MESSAGE_COLOR = (255, 255, 255)
 SCREENSAVER_LINES = [
 	{"text": "HIT ANY KEY", "font_size": 80, "color": (0, 255, 0), "y_offset": -220},
 	{"text": "LET'S PLAY!", "font_size": 120, "color": (0, 255, 0), "y_offset": -60},
-	{"text": "games gemaakt door leerlingen", "font_size": 80, "color": (0, 255, 0), "y_offset": 220},
-	{"text": "4e klas informatica", "font_size": 80, "color": (0, 255, 0), "y_offset": 380},
-	{"text": "New beta games arrived, play to test!", "font_size": 40, "color": (255, 255, 255), "y_offset": 460},
+	{"text": "games van leerlingen", "font_size": 80, "color": (0, 255, 0), "y_offset": 220},
+	{"text": "informatica - 4e klas", "font_size": 80, "color": (0, 255, 0), "y_offset": 380},
+	{"text": "Menu has been updated, new games will follow real soon!", "font_size": 40, "color": (255, 255, 255), "y_offset": 460},
 ]
+
+
+def format_authors(authors:list[str], fallback:str) -> str:
+	cleaned_authors = [author.strip() for author in authors if author and author.strip()]
+	if cleaned_authors:
+		return " & ".join(cleaned_authors)
+	return fallback
+
+
 def fetchGames(path=GAMES_PATH):
 	games = []
 	if not os.path.isdir(path):
@@ -104,7 +113,7 @@ def fetchGames(path=GAMES_PATH):
 		games.append(
 			{
 				"id": index,
-				"name": metadata.get("name", folder),
+				"name": format_authors(metadata.get("authors", []), folder),
 				"authors": metadata.get("authors", []),
 				"entrypoint": os.path.join(game_dir, entrypoint),
 				"screenshotPath": screenshot_path,
@@ -514,7 +523,7 @@ def draw_menu(screen:pg.Surface, bg:pg.Surface, tiles:list[dict], state:dict, he
 
 	# simple page indicator
 	page_label = label_font.render(
-		f"Pagina {state['page_y'] * state['page_cols'] + state['page_x'] + 1}/{state['page_count']}",
+		f"Page {state['page_y'] * state['page_cols'] + state['page_x'] + 1}/{state['page_count']}",
 		True,
 		COLOR_SECONDARY,
 	)

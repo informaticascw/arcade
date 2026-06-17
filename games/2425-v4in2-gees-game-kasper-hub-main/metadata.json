@@ -1,7 +1,9 @@
 {
-	"name": "Hub-Kasper",
-	"authors": ["Hub", "Kasper"],
-	"coverimage": "screenshot.jpg",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
+    "name": "Hub-Kasper",
+    "authors": [
+        "Kasper",
+        "Hub"
+    ],
+    "coverimage": "screenshot.jpg",
+    "entrypoint": "main.py"
 }

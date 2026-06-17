@@ -1,7 +1,9 @@
 {
-	"name": "Lars & Teun",
-	"authors": ["Lars", "Teun"],
-	"coverimage": "./assets/example.jpg",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
+    "name": "Lars & Teun",
+    "authors": [
+        "Lars",
+        "Teun"
+    ],
+    "coverimage": "./assets/example.jpg",
+    "entrypoint": "main.py"
 }
