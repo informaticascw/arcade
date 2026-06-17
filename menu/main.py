@@ -147,10 +147,13 @@ def load_background() -> pg.Surface:
 
 
 def build_placeholder(size:tuple[int, int]) -> pg.Surface:
-	surf = pg.Surface(size)
-	surf.fill((24, 28, 36))
-	pg.draw.rect(surf, (36, 44, 56), surf.get_rect(), 3, border_radius=8)
-	return surf
+	try:
+		return pg.image.load("assets/screenshot_placeholder.jpg").convert()
+	except Exception:
+		# Fallback: create dark surface if image not found
+		surf = pg.Surface(size)
+		surf.fill((5, 5, 15))
+		return surf
 
 
 def load_tile_image(path:str | None, placeholder:pg.Surface) -> pg.Surface:
