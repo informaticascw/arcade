@@ -34,7 +34,7 @@ Terminal=true
 
 ## Menu
 
--   Run `python ./src/menu/main.py` to start
+-   Run `python ./menu/main.py` to start
 
     Ik doe mn best om over alles te commenten maar mischien mist er ergens nog iets.
 
