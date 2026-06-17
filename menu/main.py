@@ -6,34 +6,73 @@ import subprocess
 
 import pygame as pg
 
-class Constants:
-	RESOLUTION:tuple = (1920, 1080)
-	FPS:int = 100
-	DISPLAY_MODE:int = pg.FULLSCREEN
-	DEFAULT_FONT_SIZE = 16
+# Display & Performance
+RESOLUTION = (1920, 1080)
+FPS = 100
+DISPLAY_MODE = pg.FULLSCREEN
+DEFAULT_FONT_SIZE = 16
 
-	GAMES_PATH = "games"
-	MENU_GRID_ROWS = 3
-	MENU_GRID_COLS = 5
-	MENU_GAMES_PER_SLIDE = MENU_GRID_ROWS * MENU_GRID_COLS
+# Game Discovery
+GAMES_PATH = "games"
+MENU_GRID_ROWS = 3
+MENU_GRID_COLS = 5
+MENU_GAMES_PER_SLIDE = MENU_GRID_ROWS * MENU_GRID_COLS
 
-	CNSL_ERROR:str = "\x1b[1;31m"
-	CNSL_SUCCESS:str = "\x1b[1;32m"
-	CNSL_DATA:str = "\x1b[1;33m"
-	CNSL_INFO:str = "\x1b[1;34m"
-	CNSL_RESET:str = "\x1B[0m"
+# Console Output Colors
+CNSL_ERROR = "\x1b[1;31m"
+CNSL_SUCCESS = "\x1b[1;32m"
+CNSL_DATA = "\x1b[1;33m"
+CNSL_INFO = "\x1b[1;34m"
+CNSL_RESET = "\x1B[0m"
 
-	COLOR_PRIMARY:pg.Color = pg.Color("#0094AA")
-	COLOR_SECONDARY:pg.Color = pg.Color("#52AE32")
-	COLOR_DARK:pg.Color = pg.Color("#424242")
+# UI Colors
+COLOR_PRIMARY = pg.Color("#0094AA")
+COLOR_SECONDARY = pg.Color("#52AE32")
+COLOR_DARK = pg.Color("#424242")
 
-	SCREENSAVER_TIMEOUT_MS = 10000
-	SCREENSAVER_OVERLAY_OPACITY = 127
-	SCREENSAVER_FONT_PATH = "./assets/font.ttf"
-	SCREENSAVER_MESSAGE_OF_THE_DAY = "New games expected soon!"
+# Screensaver Settings
+SCREENSAVER_TIMEOUT_MS = 10000
+SCREENSAVER_OVERLAY_OPACITY = 127
+SCREENSAVER_FONT_PATH = "./assets/font.ttf"
 
+# Tile Layout
+TILE_W = 300
+TILE_H = 168
+TILE_X_SPACING = 330
+TILE_Y_SPACING = 250
+GRID_PADDING = 6
+HEADER_Y = 100
+GRID_TOP_OFFSET = 80
+LABEL_FONT_SIZE = 22
 
-def fetchGames(path=Constants.GAMES_PATH):
+# Label Styling
+LABEL_TOP_MARGIN = 10
+LABEL_LINE_SPACING = 4
+LABEL_MAX_LINES = 2
+LABEL_SIDE_PADDING = 10
+
+# Screensaver Animation
+SCREENSAVER_CONFIG = [
+	{"mode": "scroll", "duration_ms": 500},
+	{"mode": "visible", "duration_ms": 2000},
+	{"mode": "invisible", "duration_ms": 250},
+	{"mode": "visible", "duration_ms": 500},
+	{"mode": "invisible", "duration_ms": 250},
+	{"mode": "visible", "duration_ms": 500},
+	{"mode": "invisible", "duration_ms": 250},
+	{"mode": "visible", "duration_ms": 10000},
+]
+SCREENSAVER_TEXT_COLOR = (0, 255, 0)
+SCREENSAVER_MESSAGE_COLOR = (255, 255, 255)
+# Screensaver Display Text
+SCREENSAVER_LINES = [
+	{"text": "HIT ANY KEY", "font_size": 80, "color": (0, 255, 0), "y_offset": -220},
+	{"text": "LET'S PLAY!", "font_size": 120, "color": (0, 255, 0), "y_offset": -60},
+	{"text": "games gemaakt door leerlingen", "font_size": 80, "color": (0, 255, 0), "y_offset": 220},
+	{"text": "4e klas informatica", "font_size": 80, "color": (0, 255, 0), "y_offset": 380},
+	{"text": "New games expected soon!", "font_size": 40, "color": (255, 255, 255), "y_offset": 460},
+]
+def fetchGames(path=GAMES_PATH):
 	games = []
 	if not os.path.isdir(path):
 		return games
@@ -75,7 +114,7 @@ def fetchGames(path=Constants.GAMES_PATH):
 
 
 def start_game(path):
-	print(Constants.CNSL_DATA, "[GAME PATH]", path, Constants.CNSL_RESET)
+	print(CNSL_DATA, "[GAME PATH]", path, CNSL_RESET)
 	game_dir = os.path.dirname(path)
 	game_file = os.path.basename(path)
 	env = os.environ.copy()
@@ -94,40 +133,7 @@ def start_game(path):
 		if result.stderr:
 			print("[GAME ERROR]", result.stderr)
 	except Exception as e:
-		print(f"{Constants.CNSL_ERROR}[GAME UTIL] Game failed to launch: {e}")
-
-
-TILE_W = 300
-TILE_H = 168
-TILE_X_SPACING = 330
-TILE_Y_SPACING = 250
-GRID_PADDING = 6
-HEADER_Y = 100
-GRID_TOP_OFFSET = 80
-LABEL_FONT_SIZE = 22
-LABEL_TOP_MARGIN = 10
-LABEL_LINE_SPACING = 4
-LABEL_MAX_LINES = 2
-LABEL_SIDE_PADDING = 10
-SCREENSAVER_CONFIG = [
-	{"mode": "scroll", "duration_ms": 500},
-	{"mode": "visible", "duration_ms": 2000},
-	{"mode": "invisible", "duration_ms": 250},
-	{"mode": "visible", "duration_ms": 500},
-	{"mode": "invisible", "duration_ms": 250},
-	{"mode": "visible", "duration_ms": 500},
-	{"mode": "invisible", "duration_ms": 250},
-	{"mode": "visible", "duration_ms": 10000},
-]
-SCREENSAVER_TEXT_COLOR = (0, 255, 0)
-SCREENSAVER_MESSAGE_COLOR = (255, 255, 255)
-SCREENSAVER_LINES = [
-	{"text": "HIT ANY KEY", "font_size": 80, "color": SCREENSAVER_TEXT_COLOR, "y_offset": -220},
-	{"text": "LET'S PLAY!", "font_size": 120, "color": SCREENSAVER_TEXT_COLOR, "y_offset": -60},
-	{"text": "games gemaakt door leerlingen", "font_size": 80, "color": SCREENSAVER_TEXT_COLOR, "y_offset": 220},
-	{"text": "4e klas informatica", "font_size": 80, "color": SCREENSAVER_TEXT_COLOR, "y_offset": 380},
-	{"text": "{MOTD}", "font_size": 40, "color": SCREENSAVER_MESSAGE_COLOR, "y_offset": 460},
-]
+		print(f"{CNSL_ERROR}[GAME UTIL] Game failed to launch: {e}")
 
 
 def load_font(size:int):
@@ -141,7 +147,7 @@ def load_background() -> pg.Surface:
 	try:
 		return pg.image.load("assets/menu_background.jpg").convert()
 	except Exception:
-		bg = pg.Surface(Constants.RESOLUTION)
+		bg = pg.Surface(RESOLUTION)
 		bg.fill((15, 20, 25))
 		return bg
 
@@ -167,13 +173,13 @@ def load_tile_image(path:str | None, placeholder:pg.Surface) -> pg.Surface:
 
 
 def trim_to_width(text:str, max_width:int, font:pg.font.Font) -> str:
-	if font.render(text, True, Constants.COLOR_PRIMARY).get_width() <= max_width:
+	if font.render(text, True, COLOR_PRIMARY).get_width() <= max_width:
 		return text
 
 	value = text
 	while len(value) > 1:
 		candidate = value[:-1].rstrip() + "..."
-		if font.render(candidate, True, Constants.COLOR_PRIMARY).get_width() <= max_width:
+		if font.render(candidate, True, COLOR_PRIMARY).get_width() <= max_width:
 			return candidate
 		value = value[:-1]
 	return "..."
@@ -191,7 +197,7 @@ def wrap_title(text:str, font:pg.font.Font) -> list[str]:
 	while i < len(words) and len(lines) < LABEL_MAX_LINES:
 		word = words[i]
 		candidate = word if not current else f"{current} {word}"
-		if font.render(candidate, True, Constants.COLOR_PRIMARY).get_width() <= max_width:
+		if font.render(candidate, True, COLOR_PRIMARY).get_width() <= max_width:
 			current = candidate
 			i += 1
 			continue
@@ -218,10 +224,10 @@ def wrap_title(text:str, font:pg.font.Font) -> list[str]:
 
 def build_tiles() -> tuple[list[dict], dict]:
 	games = fetchGames()
-	print(f"{Constants.CNSL_DATA}[GAMES]: {[g['name'] for g in games]}{Constants.CNSL_RESET}")
+	print(f"{CNSL_DATA}[GAMES]: {[g['name'] for g in games]}{CNSL_RESET}")
 
 	placeholder = build_placeholder((TILE_W, TILE_H))
-	page_size = Constants.MENU_GAMES_PER_SLIDE
+	page_size = MENU_GAMES_PER_SLIDE
 	page_count = max(1, math.ceil(len(games) / page_size))
 	page_cols = max(1, math.ceil(math.sqrt(page_count)))
 	page_rows = max(1, math.ceil(page_count / page_cols))
@@ -233,8 +239,8 @@ def build_tiles() -> tuple[list[dict], dict]:
 
 		page_x = page_index % page_cols
 		page_y = page_index // page_cols
-		grid_col = slot_index % Constants.MENU_GRID_COLS
-		grid_row = slot_index // Constants.MENU_GRID_COLS
+		grid_col = slot_index % MENU_GRID_COLS
+		grid_row = slot_index // MENU_GRID_COLS
 
 		tile_rect = pg.Rect(
 			grid_col * TILE_X_SPACING + GRID_PADDING,
@@ -273,41 +279,29 @@ def build_tiles() -> tuple[list[dict], dict]:
 
 def _load_screensaver_font(size:int) -> pg.font.Font:
 	try:
-		return pg.font.Font(Constants.SCREENSAVER_FONT_PATH, size)
+		return pg.font.Font(SCREENSAVER_FONT_PATH, size)
 	except Exception:
 		return load_font(size)
 
 
 def build_screensaver() -> dict:
-	lines = []
-	for line in SCREENSAVER_LINES:
-		resolved_text = line["text"].replace("{MOTD}", Constants.SCREENSAVER_MESSAGE_OF_THE_DAY)
-		lines.append(
-			{
-				"text": resolved_text,
-				"font_size": line["font_size"],
-				"color": line["color"],
-				"y_offset": line["y_offset"],
-			}
-		)
-
 	font_cache = {}
-	for line in lines:
+	for line in SCREENSAVER_LINES:
 		size = line["font_size"]
 		if size not in font_cache:
 			font_cache[size] = _load_screensaver_font(size)
 
-	image = pg.Surface(Constants.RESOLUTION, pg.SRCALPHA)
-	for line in lines:
+	image = pg.Surface(RESOLUTION, pg.SRCALPHA)
+	for line in SCREENSAVER_LINES:
 		font = font_cache[line["font_size"]]
 		text_surf = font.render(line["text"], True, line["color"])
 		rect = text_surf.get_rect(
-			center=(Constants.RESOLUTION[0] // 2, Constants.RESOLUTION[1] // 2 + line["y_offset"])
+			center=(RESOLUTION[0] // 2, RESOLUTION[1] // 2 + line["y_offset"])
 		)
 		image.blit(text_surf, rect)
 
-	overlay = pg.Surface(Constants.RESOLUTION, pg.SRCALPHA)
-	overlay.fill((0, 0, 0, Constants.SCREENSAVER_OVERLAY_OPACITY))
+	overlay = pg.Surface(RESOLUTION, pg.SRCALPHA)
+	overlay.fill((0, 0, 0, SCREENSAVER_OVERLAY_OPACITY))
 
 	now = time.time()
 	return {
@@ -321,8 +315,8 @@ def build_screensaver() -> dict:
 		"current_duration_s": SCREENSAVER_CONFIG[0]["duration_ms"] / 1000.0,
 		"state_start_s": now,
 		"last_update_s": now,
-		"scroll_y": float(Constants.RESOLUTION[1]),
-		"scroll_speed": float(Constants.RESOLUTION[1]) / (SCREENSAVER_CONFIG[0]["duration_ms"] / 1000.0),
+		"scroll_y": float(RESOLUTION[1]),
+		"scroll_speed": float(RESOLUTION[1]) / (SCREENSAVER_CONFIG[0]["duration_ms"] / 1000.0),
 	}
 
 
@@ -333,8 +327,8 @@ def _set_screensaver_state(saver:dict, state_index:int) -> None:
 	saver["current_duration_s"] = state["duration_ms"] / 1000.0
 	saver["state_start_s"] = time.time()
 	if saver["current_mode"] == "scroll":
-		saver["scroll_y"] = float(Constants.RESOLUTION[1])
-		saver["scroll_speed"] = float(Constants.RESOLUTION[1]) / saver["current_duration_s"]
+		saver["scroll_y"] = float(RESOLUTION[1])
+		saver["scroll_speed"] = float(RESOLUTION[1]) / saver["current_duration_s"]
 
 
 def activate_screensaver(state:dict) -> None:
@@ -413,7 +407,7 @@ def try_move_selection(tiles:list[dict], state:dict, delta_col:int, delta_row:in
 		return
 
 	# Horizontal page overflow.
-	if new_col >= Constants.MENU_GRID_COLS:
+	if new_col >= MENU_GRID_COLS:
 		target_x = state["page_x"] + 1
 		target_y = state["page_y"]
 		if target_x < state["page_cols"]:
@@ -428,7 +422,7 @@ def try_move_selection(tiles:list[dict], state:dict, delta_col:int, delta_row:in
 		target_x = state["page_x"] - 1
 		target_y = state["page_y"]
 		if target_x >= 0:
-			target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), Constants.MENU_GRID_COLS - 1, state["sel_row"])
+			target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), MENU_GRID_COLS - 1, state["sel_row"])
 			if target_tile:
 				state["page_x"] = target_x
 				state["sel_col"] = target_tile["grid_col"]
@@ -436,7 +430,7 @@ def try_move_selection(tiles:list[dict], state:dict, delta_col:int, delta_row:in
 		return
 
 	# Vertical page overflow.
-	if new_row >= Constants.MENU_GRID_ROWS:
+	if new_row >= MENU_GRID_ROWS:
 		target_x = state["page_x"]
 		target_y = state["page_y"] + 1
 		if target_y < state["page_rows"]:
@@ -451,7 +445,7 @@ def try_move_selection(tiles:list[dict], state:dict, delta_col:int, delta_row:in
 		target_x = state["page_x"]
 		target_y = state["page_y"] - 1
 		if target_y >= 0:
-			target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), state["sel_col"], Constants.MENU_GRID_ROWS - 1)
+			target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), state["sel_col"], MENU_GRID_ROWS - 1)
 			if target_tile:
 				state["page_y"] = target_y
 				state["sel_col"] = target_tile["grid_col"]
@@ -476,15 +470,15 @@ def launch_selected(screen:pg.Surface, tile:dict | None):
 
 	start_game(tile["entrypoint"])
 	pg.event.clear()
-	return pg.display.set_mode(Constants.RESOLUTION, Constants.DISPLAY_MODE)
+	return pg.display.set_mode(RESOLUTION, DISPLAY_MODE)
 
 
 def draw_menu(screen:pg.Surface, bg:pg.Surface, tiles:list[dict], state:dict, header_font:pg.font.Font, label_font:pg.font.Font):
 	screen.blit(bg, (0, 0))
 
-	title = header_font.render("STANISLAS ARCADE", True, Constants.COLOR_PRIMARY)
-	title_shadow = header_font.render("STANISLAS ARCADE", True, Constants.COLOR_SECONDARY)
-	title_rect = title.get_rect(center=(Constants.RESOLUTION[0] // 2, HEADER_Y))
+	title = header_font.render("STANISLAS ARCADE", True, COLOR_PRIMARY)
+	title_shadow = header_font.render("STANISLAS ARCADE", True, COLOR_SECONDARY)
+	title_rect = title.get_rect(center=(RESOLUTION[0] // 2, HEADER_Y))
 	shadow_rect = title_shadow.get_rect(center=(title_rect.centerx + 10, title_rect.centery - 2))
 	screen.blit(title_shadow, shadow_rect)
 	screen.blit(title, title_rect)
@@ -492,17 +486,17 @@ def draw_menu(screen:pg.Surface, bg:pg.Surface, tiles:list[dict], state:dict, he
 	selected = current_tile(tiles, state)
 	for tile in tiles_on_page(tiles, state["page_x"], state["page_y"]):
 		tile_rect = tile["rect"].move(
-			Constants.RESOLUTION[0] // 2 - ((Constants.MENU_GRID_COLS - 1) * TILE_X_SPACING + TILE_W + 12) // 2,
-			Constants.RESOLUTION[1] // 2 - ((Constants.MENU_GRID_ROWS - 1) * TILE_Y_SPACING + TILE_H + 12) // 2 + GRID_TOP_OFFSET,
+			RESOLUTION[0] // 2 - ((MENU_GRID_COLS - 1) * TILE_X_SPACING + TILE_W + 12) // 2,
+			RESOLUTION[1] // 2 - ((MENU_GRID_ROWS - 1) * TILE_Y_SPACING + TILE_H + 12) // 2 + GRID_TOP_OFFSET,
 		)
 
 		screen.blit(tile["image"], tile_rect.topleft)
 		if selected and tile["id"] == selected["id"]:
-			pg.draw.rect(screen, Constants.COLOR_PRIMARY, tile_rect.inflate(8, 8), 6, border_radius=10)
+			pg.draw.rect(screen, COLOR_PRIMARY, tile_rect.inflate(8, 8), 6, border_radius=10)
 
 		lines = wrap_title(tile["name"], label_font)
 		for i, line in enumerate(lines):
-			txt = label_font.render(line, True, Constants.COLOR_PRIMARY)
+			txt = label_font.render(line, True, COLOR_PRIMARY)
 			txt_rect = txt.get_rect(midtop=(tile_rect.centerx, tile_rect.bottom + LABEL_TOP_MARGIN + i * (LABEL_FONT_SIZE + LABEL_LINE_SPACING)))
 			screen.blit(txt, txt_rect)
 
@@ -510,9 +504,9 @@ def draw_menu(screen:pg.Surface, bg:pg.Surface, tiles:list[dict], state:dict, he
 	page_label = label_font.render(
 		f"Pagina {state['page_y'] * state['page_cols'] + state['page_x'] + 1}/{state['page_count']}",
 		True,
-		Constants.COLOR_SECONDARY,
+		COLOR_SECONDARY,
 	)
-	screen.blit(page_label, (40, Constants.RESOLUTION[1] - 60))
+	screen.blit(page_label, (40, RESOLUTION[1] - 60))
 
 
 def draw_screensaver(screen:pg.Surface, state:dict):
@@ -527,7 +521,7 @@ def draw_screensaver(screen:pg.Surface, state:dict):
 
 def run_menu():
 	pg.init()
-	screen = pg.display.set_mode(Constants.RESOLUTION, Constants.DISPLAY_MODE)
+	screen = pg.display.set_mode(RESOLUTION, DISPLAY_MODE)
 	clock = pg.time.Clock()
 	pg.mouse.set_visible(False)
 
@@ -537,7 +531,7 @@ def run_menu():
 
 	tiles, state = build_tiles()
 	if not tiles:
-		print(f"{Constants.CNSL_ERROR}[MENU] Geen games gevonden.{Constants.CNSL_RESET}")
+		print(f"{CNSL_ERROR}[MENU] Geen games gevonden.{CNSL_RESET}")
 		return
 
 	running = True
@@ -549,7 +543,7 @@ def run_menu():
 
 	while running:
 		now_ms = int(time.time() * 1000)
-		if not state["screensaver"]["active"] and now_ms - state["last_input_ms"] > Constants.SCREENSAVER_TIMEOUT_MS:
+		if not state["screensaver"]["active"] and now_ms - state["last_input_ms"] > SCREENSAVER_TIMEOUT_MS:
 			activate_screensaver(state)
 
 		update_screensaver(state)
@@ -589,7 +583,7 @@ def run_menu():
 		draw_screensaver(screen, state)
 
 		pg.display.update()
-		clock.tick(Constants.FPS)
+		clock.tick(FPS)
 
 	pg.quit()
 
