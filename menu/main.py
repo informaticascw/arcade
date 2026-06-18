@@ -432,54 +432,56 @@ def try_move_selection(tiles:list[dict], state:dict, delta_col:int, delta_row:in
 
 	# Horizontal page overflow.
 	if new_col >= MENU_GRID_COLS:
-		target_x = state["page_x"] + 1
-		target_y = state["page_y"]
-		if target_x < state["page_cols"]:
-			target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), 0, state["sel_row"])
-			if target_tile:
-				state["page_x"] = target_x
-				state["sel_col"] = target_tile["grid_col"]
-				state["sel_row"] = target_tile["grid_row"]
+		current_page = state["page_y"] * state["page_cols"] + state["page_x"]
+		next_page = (current_page + 1) % state["page_count"]
+		target_x = next_page % state["page_cols"]
+		target_y = next_page // state["page_cols"]
+		target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), 0, state["sel_row"])
+		if target_tile:
+			state["page_x"] = target_x
+			state["page_y"] = target_y
+			state["sel_col"] = target_tile["grid_col"]
+			state["sel_row"] = target_tile["grid_row"]
 		return
 
 	if new_col < 0:
-		target_x = state["page_x"] - 1
-		target_y = state["page_y"]
-		if target_x >= 0:
-			target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), MENU_GRID_COLS - 1, state["sel_row"])
-			if target_tile:
-				state["page_x"] = target_x
-				state["sel_col"] = target_tile["grid_col"]
-				state["sel_row"] = target_tile["grid_row"]
+		current_page = state["page_y"] * state["page_cols"] + state["page_x"]
+		previous_page = (current_page - 1) % state["page_count"]
+		target_x = previous_page % state["page_cols"]
+		target_y = previous_page // state["page_cols"]
+		target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), MENU_GRID_COLS - 1, state["sel_row"])
+		if target_tile:
+			state["page_x"] = target_x
+			state["page_y"] = target_y
+			state["sel_col"] = target_tile["grid_col"]
+			state["sel_row"] = target_tile["grid_row"]
 		return
 
 	# Vertical page overflow.
 	if new_row >= MENU_GRID_ROWS:
 		current_page = state["page_y"] * state["page_cols"] + state["page_x"]
-		next_page = current_page + 1
-		if next_page < state["page_count"]:
-			target_x = next_page % state["page_cols"]
-			target_y = next_page // state["page_cols"]
-			target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), state["sel_col"], 0)
-			if target_tile:
-				state["page_x"] = target_x
-				state["page_y"] = target_y
-				state["sel_col"] = target_tile["grid_col"]
-				state["sel_row"] = target_tile["grid_row"]
+		next_page = (current_page + 1) % state["page_count"]
+		target_x = next_page % state["page_cols"]
+		target_y = next_page // state["page_cols"]
+		target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), state["sel_col"], 0)
+		if target_tile:
+			state["page_x"] = target_x
+			state["page_y"] = target_y
+			state["sel_col"] = target_tile["grid_col"]
+			state["sel_row"] = target_tile["grid_row"]
 		return
 
 	if new_row < 0:
 		current_page = state["page_y"] * state["page_cols"] + state["page_x"]
-		previous_page = current_page - 1
-		if previous_page >= 0:
-			target_x = previous_page % state["page_cols"]
-			target_y = previous_page // state["page_cols"]
-			target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), state["sel_col"], MENU_GRID_ROWS - 1)
-			if target_tile:
-				state["page_x"] = target_x
-				state["page_y"] = target_y
-				state["sel_col"] = target_tile["grid_col"]
-				state["sel_row"] = target_tile["grid_row"]
+		previous_page = (current_page - 1) % state["page_count"]
+		target_x = previous_page % state["page_cols"]
+		target_y = previous_page // state["page_cols"]
+		target_tile = select_best_tile(tiles_on_page(tiles, target_x, target_y), state["sel_col"], MENU_GRID_ROWS - 1)
+		if target_tile:
+			state["page_x"] = target_x
+			state["page_y"] = target_y
+			state["sel_col"] = target_tile["grid_col"]
+			state["sel_row"] = target_tile["grid_row"]
 		return
 
 	# In bounds but empty cell: snap to closest tile in that row.
@@ -545,7 +547,8 @@ def draw_menu(screen:pg.Surface, bg:pg.Surface, tiles:list[dict], state:dict, he
 		True,
 		COLOR_SECONDARY,
 	)
-	screen.blit(page_label, (40, RESOLUTION[1] - 60))
+	page_label_rect = page_label.get_rect(midbottom=(RESOLUTION[0] // 2, RESOLUTION[1] - 20))
+	screen.blit(page_label, page_label_rect)
 
 
 def draw_screensaver(screen:pg.Surface, state:dict):
