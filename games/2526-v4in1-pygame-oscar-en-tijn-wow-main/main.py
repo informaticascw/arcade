@@ -8,7 +8,7 @@ import random
 # definitions 
 # define global variables
 game_started = False
-game_status_msg = "Press SPACE to start"
+game_status_msg = "Press SPACE or Q to start"
 brick_combo_msg = ""
 game_score_msg_combo = ""
 power_up_msg = ""
@@ -188,7 +188,7 @@ while running:
              paddle_speed = 20 # moves paddle faster to the right when power up is active
           else:
              paddle_speed = 11 # moves paddle 1 frame to the right
-    elif keys[pygame.K_SPACE] : # space-bar is down
+    elif keys[pygame.K_SPACE] or keys[pygame.K_q]: # space-bar or q is down
        if game_started == False : 
           game_started = True # starts game
           game_status_msg = ""
