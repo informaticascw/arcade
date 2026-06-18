@@ -266,11 +266,11 @@ while running:
         if event.type == pygame.KEYDOWN:
 
             if game_status == MENU:
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
                     menu_optie = (menu_optie - 1) % len(menu_opties)
-                if event.key == pygame.K_DOWN:
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     menu_optie = (menu_optie + 1) % len(menu_opties)
-                if event.key == pygame.K_RETURN:
+                if event.key == pygame.K_RETURN or event.key == pygame.K_d:
                     if menu_optie == 0:
                         player_name = ""
                         naam_invoeren = False
@@ -293,14 +293,14 @@ while running:
                         game_status = HIGH
 
             if game_status == UITLEG:
-                if event.key == pygame.K_BACKSPACE:
+                if event.key == pygame.K_BACKSPACE or event.key == pygame.K_a:
                     game_status = MENU
             if game_status == HIGH:
-                if event.key == pygame.K_BACKSPACE:
+                if event.key == pygame.K_BACKSPACE or event.key == pygame.K_a:
                     game_status = MENU
 
             if game_status == EIND and not naam_invoeren:
-                if event.key == pygame.K_RETURN:
+                if event.key == pygame.K_RETURN or event.key == pygame.K_a:
                     gamewin = 0
                     gamelost = 0
                     game_status = MENU
