@@ -1,0 +1,2 @@
+#game_status_img = font.render(game_status_msg, True, 'red')
+#screen.blit(game_status_img, (SCREEN_WIDTH/2))-(game_status_img.get_width()/2),(SCREEN_HEIGHT/2)-100# (0, 0) is top left corner of screen

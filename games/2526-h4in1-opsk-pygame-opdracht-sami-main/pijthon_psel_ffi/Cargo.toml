@@ -1,0 +1,12 @@
+[package]
+name = "pijthon_psel_ffi"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "pijthon_psel_ffi"
+crate-type = ["cdylib", "staticlib", "lib"]
+
+[dependencies]
+pyo3 = "0.28.3"
+

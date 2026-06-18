@@ -1,0 +1,22 @@
+<TextureAtlas imagePath="Breakout_Tile_Free.png">
+	<SubTexture cracked="false" name="1" x="772" y="390" width="384" height="128"/>
+	<SubTexture name="1" cracked="true" x="0" y="0" width="384" height="128"/>
+	<SubTexture cracked="false" name="2" x="0" y="130" width="384" height="128"/>
+	<SubTexture name="2" cracked="true" x="0" y="260" width="384" height="128"/>
+	<SubTexture cracked="false" name="3" x="0" y="390" width="384" height="128"/>
+	<SubTexture name="3" cracked="true" x="0" y="520" width="384" height="128"/>
+	<SubTexture cracked="false" name="4" x="772" y="260" width="384" height="128"/>
+	<SubTexture name="4" cracked="true" x="772" y="130" width="384" height="128"/>
+	<SubTexture cracked="false" name="5" x="772" y="0" width="384" height="128"/>
+	<SubTexture name="5" cracked="true" x="772" y="650" width="384" height="128"/>
+	<SubTexture cracked="false" name="6" x="386" y="650" width="384" height="128"/>
+	<SubTexture name="6" cracked="true" x="386" y="520" width="384" height="128"/>
+	<SubTexture cracked="false" name="7" x="386" y="390" width="384" height="128"/>
+	<SubTexture name="7" cracked="true" x="386" y="260" width="384" height="128"/>
+	<SubTexture cracked="false" name="8" x="386" y="130" width="384" height="128"/>
+	<SubTexture name="8" cracked="true" x="386" y="0" width="384" height="128"/>
+	<SubTexture cracked="false" name="9" x="772" y="520" width="384" height="128"/>
+	<SubTexture name="9" cracked="true" x="0" y="650" width="384" height="128"/>
+	<SubTexture cracked="false" name="10" x="386" y="780" width="384" height="128"/>
+	<SubTexture name="10" cracked="true" x="0" y="780" width="384" height="128"/>
+</TextureAtlas>

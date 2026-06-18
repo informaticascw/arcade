@@ -1,0 +1,47 @@
+// For format details, see https://aka.ms/devcontainer.json. 
+{
+	"name": "pygame",
+	// Image to use for the dev container. More info: https://containers.dev/templates
+	"image": "mcr.microsoft.com/devcontainers/python:3.13-trixie",
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/desktop-lite:latest": {
+			"version": "latest",
+			"noVncVersion": "1.6.0", 
+			"password": "noPassword",
+			"webPort": "6080",
+			"vncPort": "5901"
+		}
+	},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		6080,
+		5901
+
+	],
+	"portsAttributes": {
+		"6080": {
+			"label": "GUI",
+			"onAutoForward": "openPreview"
+		},
+		"5901": {
+			"onAutoForward": "ignore"
+		}
+	},
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
+
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			"extensions": [
+				"ms-python.python", // add common functionallity for python (syntax checking, autocomplete, debugging etc)
+				"mathematic.vscode-pdf", // add viewer for pdf-files (this one supports vscode-web)
+				"ms-vsliveshare.vsliveshare", // add google-docs like typing in same file, click on live-share button in left icon pane
+				"mhutchie.git-graph", // add graphical viewer for branches and commits, click on button in Source-Code tab
+				"GitHub.copilot-chat", "GitHub.copilot" // finish Copilot setup
+			]
+		}
+	}
+}

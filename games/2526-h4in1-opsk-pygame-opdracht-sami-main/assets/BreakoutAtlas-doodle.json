@@ -1,0 +1,368 @@
+{
+   "brick-blue": {
+      "x": 780,
+      "y": 389,
+      "width": 386,
+      "height": 130
+   },
+   "brick-blue-cracked": {
+      "x": 0,
+      "y": 0,
+      "width": 386,
+      "height": 130
+   },
+   "brick-lightgreen": {
+      "x": 0,
+      "y": 130,
+      "width": 386,
+      "height": 130
+   },
+   "brick-lightgreen-cracked": {
+      "x": 0,
+      "y": 260,
+      "width": 386,
+      "height": 130
+   },
+   "brick-purple": {
+      "x": 0,
+      "y": 390,
+      "width": 386,
+      "height": 130
+   },
+   "brick-purple-cracked": {
+      "x": 0,
+      "y": 520,
+      "width": 386,
+      "height": 130
+   },
+   "brick-red": {
+      "x": 780,
+      "y": 260,
+      "width": 386,
+      "height": 130
+   },
+   "brick-red-cracked": {
+      "x": 780,
+      "y": 130,
+      "width": 386,
+      "height": 130
+   },
+   "brick-orange": {
+      "x": 780,
+      "y": 0,
+      "width": 386,
+      "height": 130
+   },
+   "brick-orange-cracked": {
+      "x": 780,
+      "y": 649,
+      "width": 386,
+      "height": 130
+   },
+   "brick-lightblue": {
+      "x": 390,
+      "y": 649,
+      "width": 386,
+      "height": 130
+   },
+   "brick-lightblue-cracked": {
+      "x": 390,
+      "y": 520,
+      "width": 386,
+      "height": 130
+   },
+   "brick-yellow": {
+      "x": 390,
+      "y": 390,
+      "width": 386,
+      "height": 130
+   },
+   "brick-yellow-cracked": {
+      "x": 390,
+      "y": 260,
+      "width": 386,
+      "height": 130
+   },
+   "brick-green": {
+      "x": 390,
+      "y": 130,
+      "width": 386,
+      "height": 130
+   },
+   "brick-green-cracked": {
+      "x": 390,
+      "y": 0,
+      "width": 386,
+      "height": 130
+   },
+   "brick-grey": {
+      "x": 780,
+      "y": 520,
+      "width": 386,
+      "height": 130
+   },
+   "brick-grey-cracked": {
+      "x": 0,
+      "y": 650,
+      "width": 386,
+      "height": 130
+   },
+   "brick-brown": {
+      "x": 390,
+      "y": 779,
+      "width": 386,
+      "height": 130
+   },
+   "brick-brown-cracked": {
+      "x": 0,
+      "y": 780,
+      "width": 386,
+      "height": 130
+   },
+   "block-brown": {
+      "x": 1546,
+      "y": 390,
+      "width": 130,
+      "height": 130
+   },
+   "block-lightgreen": {
+      "x": 1416,
+      "y": 130,
+      "width": 130,
+      "height": 130
+   },
+   "block-purple": {
+      "x": 1416,
+      "y": 260,
+      "width": 130,
+      "height": 130
+   },
+   "block-red": {
+      "x": 1416,
+      "y": 390,
+      "width": 130,
+      "height": 130
+   },
+   "block-orange": {
+      "x": 1416,
+      "y": 520,
+      "width": 130,
+      "height": 130
+   },
+   "block-yellow": {
+      "x": 1500,
+      "y": 649,
+      "width": 130,
+      "height": 130
+   },
+   "block-lightblue": {
+      "x": 1546,
+      "y": 130,
+      "width": 130,
+      "height": 130
+   },
+   "block-green": {
+      "x": 1546,
+      "y": 260,
+      "width": 130,
+      "height": 130
+   },
+   "block-gray": {
+      "x": 1572,
+      "y": 779,
+      "width": 130,
+      "height": 130
+   },
+   "block-blue": {
+      "x": 1546,
+      "y": 520,
+      "width": 130,
+      "height": 130
+   },
+   "paddle-plus50": {
+      "x": 1416,
+      "y": 65,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-plus100-step7": {
+      "x": 1166,
+      "y": 0,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-plus100-step6": {
+      "x": 1093,
+      "y": 910,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-plus100-step5": {
+      "x": 1093,
+      "y": 844,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-plus100-step3": {
+      "x": 1025,
+      "y": 779,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-plus100-step2": {
+      "x": 848,
+      "y": 910,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-plus100-step1": {
+      "x": 1338,
+      "y": 856,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-plus100-step4": {
+      "x": 1338,
+      "y": 791,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-plus250": {
+      "x": 1416,
+      "y": 0,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-plus500": {
+      "x": 1338,
+      "y": 921,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-slow": {
+      "x": 1166,
+      "y": 65,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-fast": {
+      "x": 353,
+      "y": 910,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-balls": {
+      "x": 598,
+      "y": 910,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-comet-red": {
+      "x": 1271,
+      "y": 725,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-comet-green": {
+      "x": 1166,
+      "y": 130,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-arrows-inside": {
+      "x": 1166,
+      "y": 195,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-arrows-outside": {
+      "x": 1166,
+      "y": 260,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-redbar": {
+      "x": 1166,
+      "y": 326,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-default": {
+      "x": 1166,
+      "y": 391,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-electric-step1": {
+      "x": 1166,
+      "y": 456,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-electric-step2": {
+      "x": 1166,
+      "y": 522,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-electric-step3": {
+      "x": 1166,
+      "y": 587,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-shoot-electric-step1": {
+      "x": 1166,
+      "y": 652,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-shoot-electric-step3": {
+      "x": 848,
+      "y": 844,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-shoot-electric-step2": {
+      "x": 780,
+      "y": 779,
+      "width": 245,
+      "height": 65
+   },
+   "paddle-wide": {
+      "x": 0,
+      "y": 910,
+      "width": 353,
+      "height": 65
+   },
+   "paddle-narrow": {
+      "x": 1583,
+      "y": 910,
+      "width": 119,
+      "height": 65
+   },
+   "ball": {
+      "x": 1416,
+      "y": 649,
+      "width": 65,
+      "height": 65
+   },
+   "star": {
+      "x": 780,
+      "y": 844,
+      "width": 65,
+      "height": 62
+   },
+   "heart": {
+      "x": 1630,
+      "y": 649,
+      "width": 65,
+      "height": 59
+   },
+   "bullet": {
+      "x": 0,
+      "y": 988,
+      "width": 11,
+      "height": 22
+   }
+}

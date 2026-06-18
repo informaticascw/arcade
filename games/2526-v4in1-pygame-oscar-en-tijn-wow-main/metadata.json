@@ -1,0 +1,7 @@
+{
+	"name": "Oscar van Geest & Tijn Geurtzen",
+	"authors": ["Oscar", "Tijn"],
+	"coverimage": "screenshot.jpg",
+	"entrypoint": "main.py",
+	"instructionspage": "instructions.py"
+}

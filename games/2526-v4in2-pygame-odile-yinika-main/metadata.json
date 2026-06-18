@@ -1,0 +1,7 @@
+{
+	"name": "Odile & Yinika",
+	"authors": ["Yinika", "Odile"],
+	"coverimage": "screenshot.jpg",
+	"entrypoint": "main.py",
+	"instructionspage": "instructions.py"
+}

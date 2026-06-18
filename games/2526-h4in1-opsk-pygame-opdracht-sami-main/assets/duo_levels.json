@@ -1,0 +1,60 @@
+[
+    [
+        { "x": 500, "y": 500, "width": 192, "height": 48, "tier": 1 }
+    ],
+    [
+        { "x": 360, "y": 440, "width": 200, "height": 50, "tier": 2 },
+        { "x": 610, "y": 440, "width": 200, "height": 50, "tier": 2 },
+        { "x": 1110, "y": 440, "width": 200, "height": 50, "tier": 2 },
+        { "x": 1360, "y": 440, "width": 200, "height": 50, "tier": 2 },
+        { "x": 360, "y": 590, "width": 200, "height": 50, "tier": 2 },
+        { "x": 610, "y": 590, "width": 200, "height": 50, "tier": 2 },
+        { "x": 1110, "y": 590, "width": 200, "height": 50, "tier": 2 },
+        { "x": 1360, "y": 590, "width": 200, "height": 50, "tier": 2 },
+        { "x": 860, "y": 515, "width": 200, "height": 50, "tier": 4 }
+    ],
+    [
+        { "x": 160, "y": 515, "width": 150, "height": 50, "tier": 9 },
+        { "x": 410, "y": 490, "width": 150, "height": 50, "tier": 5 },
+        { "x": 410, "y": 540, "width": 150, "height": 50, "tier": 5 },
+        { "x": 660, "y": 465, "width": 150, "height": 50, "tier": 3 },
+        { "x": 660, "y": 565, "width": 150, "height": 50, "tier": 3 },
+        { "x": 1110, "y": 465, "width": 150, "height": 50, "tier": 3 },
+        { "x": 1110, "y": 565, "width": 150, "height": 50, "tier": 3 },
+        { "x": 1360, "y": 490, "width": 150, "height": 50, "tier": 5 },
+        { "x": 1360, "y": 540, "width": 150, "height": 50, "tier": 5 },
+        { "x": 1610, "y": 515, "width": 150, "height": 50, "tier": 9 }
+    ],
+    [
+        { "x": 160, "y": 360, "width": 150, "height": 40, "tier": 1 },
+        { "x": 360, "y": 380, "width": 150, "height": 40, "tier": 2 },
+        { "x": 560, "y": 400, "width": 150, "height": 40, "tier": 3 },
+        { "x": 760, "y": 420, "width": 150, "height": 40, "tier": 4 },
+        { "x": 1010, "y": 420, "width": 150, "height": 40, "tier": 4 },
+        { "x": 1210, "y": 400, "width": 150, "height": 40, "tier": 3 },
+        { "x": 1410, "y": 380, "width": 150, "height": 40, "tier": 2 },
+        { "x": 1610, "y": 360, "width": 150, "height": 40, "tier": 1 },
+        { "x": 160, "y": 680, "width": 150, "height": 40, "tier": 1 },
+        { "x": 360, "y": 660, "width": 150, "height": 40, "tier": 2 },
+        { "x": 560, "y": 640, "width": 150, "height": 40, "tier": 3 },
+        { "x": 760, "y": 620, "width": 150, "height": 40, "tier": 4 },
+        { "x": 1010, "y": 620, "width": 150, "height": 40, "tier": 4 },
+        { "x": 1210, "y": 640, "width": 150, "height": 40, "tier": 3 },
+        { "x": 1410, "y": 660, "width": 150, "height": 40, "tier": 2 },
+        { "x": 1610, "y": 680, "width": 150, "height": 40, "tier": 1 }
+    ],
+    [
+        { "x": 885, "y": 360, "width": 150, "height": 50, "tier": 8 },
+        { "x": 685, "y": 420, "width": 150, "height": 50, "tier": 6 },
+        { "x": 1085, "y": 420, "width": 150, "height": 50, "tier": 6 },
+        { "x": 485, "y": 480, "width": 150, "height": 50, "tier": 4 },
+        { "x": 1285, "y": 480, "width": 150, "height": 50, "tier": 4 },
+        { "x": 285, "y": 540, "width": 150, "height": 50, "tier": 2 },
+        { "x": 1485, "y": 540, "width": 150, "height": 50, "tier": 2 },
+        { "x": 485, "y": 600, "width": 150, "height": 50, "tier": 4 },
+        { "x": 1285, "y": 600, "width": 150, "height": 50, "tier": 4 },
+        { "x": 685, "y": 660, "width": 150, "height": 50, "tier": 6 },
+        { "x": 1085, "y": 660, "width": 150, "height": 50, "tier": 6 },
+        { "x": 885, "y": 720, "width": 150, "height": 50, "tier": 8 }
+    ]
+]

@@ -1,9 +1,0 @@
-{
-    "name": "Stan & David",
-    "authors": [
-        "Stan",
-        "David"
-    ],
-    "coverimage": "screenshot.jpg",
-    "entrypoint": "main.py"
-}

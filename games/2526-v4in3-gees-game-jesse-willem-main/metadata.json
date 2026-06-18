@@ -1,0 +1,7 @@
+{
+	"name": "Jesse van 't Veer & Willem Oderwald",
+	"authors": ["Jesse van 't Veer", "Willem Oderwald"],
+	"coverimage": "screenshot.jpg",
+	"entrypoint": "main.py",
+	"instructionspage": "instructions.py"
+}

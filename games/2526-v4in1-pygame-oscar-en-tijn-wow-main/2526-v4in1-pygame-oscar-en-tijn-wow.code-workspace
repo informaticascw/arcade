@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"name": "2526-v4in1-pygame-oscar-en-tijn-wow",
+			"path": "."
+		}
+	],
+	"settings": {
+		"git.useEditorAsCommitInput": false,
+		"git.confirmSync": false,
+		"git.enableSmartCommit": true,
+		"git.postCommitCommand": "sync",
+		"git.rebaseWhenSync": false,
+		"git.mergeEditor": true,
+		"git.autofetch": true,
+		"git.autofetchPeriod": 60,
+		"merge-conflict.autoNavigateNextConflict.enabled": true,
+		"extensions.ignoreRecommendations": true,
+		"terminal.integrated.sendKeybindingsToShell": true,
+		"python.createEnvironment.trigger": "off",
+		"files.exclude": {
+			"**/.*": true,
+			"__pycache__/": true
+		}
+	}
+}

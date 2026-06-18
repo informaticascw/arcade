@@ -1,0 +1,39 @@
+[build-system]
+requires = ["maturin>=1.5"]
+build-backend = "maturin"
+
+[project]
+name = "pijthon_psel"
+version = "0.2.0" # geen zin om te maintainen
+dependencies = [
+    "pygame",
+    "httpx",
+]
+
+license = { file = "LICENSE.txt" }
+keywords = ["python game ig"]
+requires-python = ">=3.14"
+readme = "README.md"
+
+authors = [ 
+    { name = "samicpp", email = "135907@stanislascollege.net" },
+]
+maintainers = [
+    { name = "samicpp", email = "135907@stanislascollege.net" },
+]
+
+
+[project.urls]
+Repository = "https://github.com/leerlingenscw/2526-h4in1-opsk-pygame-opdracht-sami"
+Issues = "https://github.com/leerlingenscw/2526-h4in1-opsk-pygame-opdracht-sami/issues"
+
+[project.scripts]
+game = "pijton_psel.game:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pijton_psel*"]
+
+[tool.maturin]
+manifest-path = "pijthon_psel_ffi/Cargo.toml"
+python-packages = ["pijthon_psel"]

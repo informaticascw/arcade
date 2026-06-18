@@ -1,0 +1,39 @@
+<TextureAtlas imagePath="ExplosionSpritesheet.png">
+
+	<!-- Grote explosie animatie -->
+	<SubTexture name="explosion3_0.png" x="22" y="23" width="64" height="64"/>
+	<SubTexture name="explosion3_1.png" x="118" y="23" width="64" height="64"/>
+	<SubTexture name="explosion3_2.png" x="214" y="23" width="64" height="64"/>
+	<SubTexture name="explosion3_3.png" x="310" y="23" width="64" height="64"/>
+	<SubTexture name="explosion3_4.png" x="406" y="23" width="64" height="64"/>
+
+	<SubTexture name="explosion3_5.png" x="22" y="119" width="64" height="64"/>
+	<SubTexture name="explosion3_6.png" x="118" y="119" width="64" height="64"/>
+	<SubTexture name="explosion3_7.png" x="214" y="119" width="64" height="64"/>
+	<SubTexture name="explosion3_8.png" x="310" y="119" width="64" height="64"/>
+	<SubTexture name="explosion3_9.png" x="406" y="119" width="64" height="64"/>
+
+
+	<!-- Kleine explosie animatie -->
+	<SubTexture name="explosion3_10.png" x="22" y="215" width="32" height="32"/>
+	<SubTexture name="explosion3_11.png" x="118" y="215" width="32" height="32"/>
+	<SubTexture name="explosion3_12.png" x="214" y="215" width="32" height="32"/>
+	<SubTexture name="explosion3_13.png" x="310" y="215" width="32" height="32"/>
+	<SubTexture name="explosion3_14.png" x="406" y="215" width="32" height="32"/>
+
+	<SubTexture name="explosion3_15.png" x="22" y="311" width="32" height="32"/>
+	<SubTexture name="explosion3_16.png" x="118" y="311" width="32" height="32"/>
+	<SubTexture name="explosion3_17.png" x="214" y="311" width="32" height="32"/>
+	<SubTexture name="explosion3_18.png" x="310" y="311" width="32" height="32"/>
+	<SubTexture name="explosion3_19.png" x="406" y="311" width="32" height="32"/>
+
+
+	<!-- Particle animatie -->
+	<SubTexture name="explosion3_20.png" x="22" y="407" width="16" height="16"/>
+	<SubTexture name="explosion3_21.png" x="118" y="407" width="16" height="16"/>
+	<SubTexture name="explosion3_22.png" x="214" y="407" width="16" height="16"/>
+	<SubTexture name="explosion3_23.png" x="310" y="407" width="16" height="16"/>
+	<SubTexture name="explosion3_24.png" x="406" y="407" width="16" height="16"/>
+	<SubTexture name="explosion3_25.png" x="502" y="407" width="16" height="16"/>
+
+</TextureAtlas>
