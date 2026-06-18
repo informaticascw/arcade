@@ -1,8 +1,8 @@
 {
-    "name": "Annie & Kees",
+    "name": "Abel & Thomad",
     "authors": [
-        "Zaara",
-        "Mena"
+        "Abel",
+        "Thomas"
     ],
     "coverimage": "screenshot.jpg",
     "entrypoint": "main.py"

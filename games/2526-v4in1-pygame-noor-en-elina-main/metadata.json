@@ -1,7 +1,9 @@
 {
-	"name": "Elina & Noor",
-	"authors": ["Noor", "Elina"],
-	"coverimage": "spelafbeelding.png",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
+    "name": "Elina & Noor",
+    "authors": [
+        "Noor",
+        "Elina"
+    ],
+    "coverimage": "spelafbeelding.png",
+    "entrypoint": "main.py"
 }

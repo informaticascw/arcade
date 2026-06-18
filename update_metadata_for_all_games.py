@@ -27,7 +27,7 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parent
 GAMES_DIR = ROOT_DIR / "games"
 PLACEHOLDER_AUTHORS = ["Kees", "Annie"]
-ANCHOR_TOKENS = ("game", "opdracht", "eindopdracht")
+ANCHOR_TOKENS = ("game", "opdracht", "eindopdracht", "pygame")
 IGNORED_TOKENS = {
     "en",
     "main",

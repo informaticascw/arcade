@@ -1,7 +1,9 @@
 {
-	"name": "Matvey & Bastiaan",
-	"authors": ["Matvey", "Bastiaan"],
-	"coverimage": "screenshot.jpg",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
+    "name": "Matvey & Bastiaan",
+    "authors": [
+        "Matvey",
+        "Bastiaan"
+    ],
+    "coverimage": "screenshot.jpg",
+    "entrypoint": "main.py"
 }

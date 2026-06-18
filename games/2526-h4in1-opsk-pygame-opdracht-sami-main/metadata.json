@@ -1,7 +1,7 @@
 {
 	"name": "samicpp",
 	"authors": ["samicpp"],
-	"coverimage": "rest/screenshot.jpg",
-	"entrypoint": "pijthon_psel_ffi/__main__.py",
+	"coverimage": "screenshot.jpg",
+	"entrypoint": "main.py",
 	"instructionspage": "rest/instructions.py"
 }

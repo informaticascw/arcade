@@ -1,7 +1,9 @@
 {
-	"name": "Yadin & Nilan",
-	"authors": ["Yadin", "Nilan"],
-	"coverimage": "screenshot.jpg",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
+    "name": "Yadin & Nilan",
+    "authors": [
+        "Yadin",
+        "Nilan"
+    ],
+    "coverimage": "screenshot.jpg",
+    "entrypoint": "main.py"
 }
