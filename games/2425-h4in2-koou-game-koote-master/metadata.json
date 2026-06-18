@@ -1,0 +1,8 @@
+{
+    "name": "Sami",
+    "authors": [
+        "Sami"
+    ],
+    "coverimage": "screenshot.jpg",
+    "entrypoint": "main.py"
+}

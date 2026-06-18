@@ -1,7 +1,0 @@
-{
-	"name": "Fighter by Jasper & Semih",
-	"authors": ["Kees", "Annie"],
-	"coverimage": "screenshot.jpg",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
-}

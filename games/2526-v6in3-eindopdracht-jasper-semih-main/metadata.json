@@ -1,0 +1,9 @@
+{
+    "name": "Fighter by Jasper & Semih",
+    "authors": [
+        "Jasper",
+        "Semih"
+    ],
+    "coverimage": "screenshot.jpg",
+    "entrypoint": "main.py"
+}

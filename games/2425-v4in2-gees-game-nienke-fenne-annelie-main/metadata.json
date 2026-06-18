@@ -1,0 +1,10 @@
+{
+    "name": "Fenne-Nienke-Annelie",
+    "authors": [
+        "Nienke",
+        "Fenne",
+        "Annelie"
+    ],
+    "coverimage": "screenshot.jpg",
+    "entrypoint": "main.py"
+}

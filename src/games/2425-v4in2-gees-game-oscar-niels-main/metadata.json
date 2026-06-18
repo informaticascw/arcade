@@ -1,7 +1,0 @@
-{
-	"name": "Oscar & Niels",
-	"authors": ["Kees", "Annie"],
-	"coverimage": "screenshot.jpg",
-	"entrypoint": "main.py",
-	"instructionspage": "instructions.py"
-}

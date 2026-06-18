@@ -15,7 +15,7 @@ if [ -z "$KEYBOARD_DEVICE" ]; then
  	exit 1
 fi
 
-PYTHON_SCRIPT="src/menu/main.py"
+PYTHON_SCRIPT="menu/main.py"
 
 python "$PYTHON_SCRIPT" &
 
