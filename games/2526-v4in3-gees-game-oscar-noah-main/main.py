@@ -242,22 +242,22 @@ spritesheet = pygame.image.load('Breakout_Tile_Free.png').convert_alpha()
 explosionsheet = pygame.image.load('explosie.png').convert_alpha()
 
 stage_1 = pygame.image.load('pixel_art_1.png').convert_alpha()
-stage_1 = pygame.transform.scale(stage_1, screen.get_size())
+stage_1 = pygame.transform.scale(stage_1, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 stage_2 = pygame.image.load('pixel_art_2.png').convert_alpha()
-stage_2 = pygame.transform.scale(stage_2, screen.get_size())
+stage_2 = pygame.transform.scale(stage_2, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 stage_3 = pygame.image.load('pixel_art_3.png').convert_alpha()
-stage_3 = pygame.transform.scale(stage_3, screen.get_size())
+stage_3 = pygame.transform.scale(stage_3, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 stage_4 = pygame.image.load('pixel_art_4.png').convert_alpha()
-stage_4 = pygame.transform.scale(stage_4, screen.get_size())
+stage_4 = pygame.transform.scale(stage_4, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 dead_message = pygame.image.load('you lost.png').convert_alpha()
-dead_message = pygame.transform.scale(dead_message, screen.get_size())
+dead_message = pygame.transform.scale(dead_message, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 start_knop = pygame.image.load('start_knop.png').convert_alpha()
-start_knop = pygame.transform.scale(start_knop, screen.get_size())
+start_knop = pygame.transform.scale(start_knop, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 ball_img = pygame.Surface((64, 64), pygame.SRCALPHA)  #create bounce space
 ball_img.blit(spritesheet, (0, 0), (1403, 652, 64, 64))   
