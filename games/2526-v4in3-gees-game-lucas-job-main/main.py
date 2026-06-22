@@ -399,7 +399,7 @@ while running:
     # clear screen
     screen.fill('purple')
     if game_status == STATUS_PLAY:
-        screen.blit(background)
+        screen.blit(background,(0,0))
         screen.blit(ball_img, (ball_x, ball_y))
         screen.blit(paddle_img, (paddle_x, paddle_y))
         if game_mode == MODE_1VS1:
@@ -416,7 +416,7 @@ while running:
             level_text = small_font.render('1 VS 1', True, 'White')
         screen.blit(level_text, (SCREEN_WIDTH//2 - level_text.get_width()//2, 0))
     elif game_status == STATUS_WIN:
-        screen.blit(winbackground)
+        screen.blit(winbackground,(0,0))
         if game_mode == MODE_SOLO:
             small_font = pygame.font.Font('PressStart2P-Regular.ttf', 20)
             sub = small_font.render('You win!', True, 'White')
@@ -428,7 +428,7 @@ while running:
         prompt = small_font.render('Press [r] to restart, or press [q] for menu', True, 'White')
         screen.blit(prompt, (SCREEN_WIDTH//2 - prompt.get_width()//2, 450))
     elif game_status == STATUS_LOSE:
-        screen.blit(losebackground)
+        screen.blit(losebackground, (0,0))
         if game_mode == MODE_SOLO:
             small_font = pygame.font.Font('PressStart2P-Regular.ttf', 20)
             sub = small_font.render('You lost in LEVEL ' + str(level), True, 'White')
@@ -440,7 +440,7 @@ while running:
         prompt = small_font.render('Press [r] to restart, or press [q] for menu', True, 'White')
         screen.blit(prompt, (SCREEN_WIDTH//2 - prompt.get_width()//2, 450))
     elif game_status == STATUS_MENU:
-        screen.blit(menubackground)
+        screen.blit(menubackground, (0,0))
         small_font = pygame.font.Font('PressStart2P-Regular.ttf', 20)
         sub = small_font.render('A / D or J / L to move paddle', True, 'yellow')
         screen.blit(sub, (SCREEN_WIDTH//2 - sub.get_width()//2, 350))
@@ -450,7 +450,7 @@ while running:
         prompt2 = small_font.render('Press [z] to start 1 VS 1', True, 'White')
         screen.blit(prompt2, (SCREEN_WIDTH//2 - prompt2.get_width()//2, 300))
     elif game_status == STATUS_EASTER:
-        screen.blit(easter_egg)
+        screen.blit(easter_egg,(0,0))
         small_font = pygame.font.Font('PressStart2P-Regular.ttf', 20)
         sub = small_font.render('Je Hebt het gevonden, JIPPIE!!!!', True, 'White')
         sub2 = small_font.render('Dit heb je verdient!', True, 'White')
