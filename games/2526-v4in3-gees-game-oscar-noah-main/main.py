@@ -303,7 +303,7 @@ while running:
     #
 
     if game_status == 0:
-      screen.blit(stage_1)
+      screen.blit(stage_1,(0,0))
       game_status_msg = "Druk op [X] om singelplayer te starten"
       game_status_img = mid_font.render(game_status_msg, True, 'red')
       screen.blit(game_status_img, (SCREEN_WIDTH/2 - 400, 100))
@@ -319,7 +319,7 @@ while running:
         start_tijd = pygame.time.get_ticks()
 
     elif game_status == 2:
-      screen.blit(stage_4)
+      screen.blit(stage_4,(0,0))
 
       game_status_msg = "Je bent dood"
       game_status_img = font.render(game_status_msg, True, 'yellow')
@@ -338,7 +338,7 @@ while running:
     
     elif game_status == 3:
       
-      screen.blit(stage_1)
+      screen.blit(stage_1,(0,0))
       game_status_msg = "Je hebt gewonnen"
       game_status_img = font.render(game_status_msg, True, 'red')
       screen.blit(game_status_img, (SCREEN_WIDTH/2 - 260, 100))      
@@ -627,7 +627,7 @@ while running:
       screen.blit(ball_img, (ball_x, ball_y))
 
     if game_status == 5: # player 2 wint
-      screen.blit(stage_1)
+      screen.blit(stage_1,(0,0))
 
       game_status_msg = "Player 2 heeft gewonnen"
       game_status_img = font.render(game_status_msg, True, 'yellow')
@@ -645,7 +645,7 @@ while running:
         reset_game()
 
     if game_status == 6: # player 1 wint
-      screen.blit(stage_1)
+      screen.blit(stage_1,(0,0))
 
       game_status_msg = "Player 1 heeft gewonnen"
       game_status_img = font.render(game_status_msg, True, 'yellow')
