@@ -7,7 +7,10 @@ ONLINE=1
 TRIES=0
 
 start_with_internet() {
-	sudo apt install -y wget unzip
+	sudo apt update
+	sudo apt upgrade -y
+	sudo apt remove -y pygame || true
+	sudo apt install -y wget unzip pygame-ce
 	wget https://github.com/informaticascw/arcade/archive/refs/heads/main.zip
 	rm -rf ~/Arcade/arcade-main
 	unzip -o ~/main.zip  -d ~/Arcade/
@@ -25,9 +28,9 @@ do
  		if [ $TRIES \> 2 ] 
 		then
    			echo "No internet was found within 3 attempts"
-      			echo "Starting Arcade without internet..."
-	 		break 1
-	 	else
+       			echo "Starting Arcade without internet..."
+ 	 		break 1
+ 	 	else
 			echo "Couldn't establish an internet connection, trying again after 10 seconds"
 			sleep 10
    		fi
@@ -37,7 +40,7 @@ if [ $ONLINE -eq 0 ]
 then
 	echo "Internet Connected!"
 	echo "Downloading and updating Arcade..."
- 	start_with_internet
+  	start_with_internet
 fi
 
 bash ~/Arcade/arcade-main/watchdog.sh
