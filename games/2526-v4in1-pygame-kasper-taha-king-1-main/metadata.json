@@ -1,10 +1,10 @@
 {
-  "name": "Annie & Kees",
-  "authors": [
-    "Kasper",
-    "Taha",
-    "King"
-  ],
-  "coverimage": "screenshot.jpg",
-  "entrypoint": "main.py"
+    "name": "Annie & Kees",
+    "authors": [
+        "Kasper",
+        "Taha",
+        "King"
+    ],
+    "coverimage": "screenshot.jpg",
+    "entrypoint": "main.py"
 }

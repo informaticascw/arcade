@@ -1,9 +1,9 @@
 {
-  "name": "Annie & Kees",
-  "authors": [
-    "Iu",
-    "Irenre"
-  ],
-  "coverimage": "screenshot.jpg",
-  "entrypoint": "main.py"
+    "name": "Annie & Kees",
+    "authors": [
+        "Iu",
+        "Irenre"
+    ],
+    "coverimage": "screenshot.jpg",
+    "entrypoint": "main.py"
 }
